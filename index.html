@@ -1,55 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang=\"en\" dir=\"ltr\">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset=\"UTF-8\">
+<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
 <title>Donda.Digital — We Build Digital Futures</title>
-<meta name="description" content="E-commerce platforms, high-performance websites and precision marketing for brands that demand results.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+<meta name=\"description\" content=\"E-commerce platforms, high-performance websites and precision marketing for brands that demand results.\">
+<link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">
+<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>
+<link href=\"https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap\" rel=\"stylesheet\">
+<script src=\"https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js\"></script>
 <style>
-/* ===================== RESET + ROOT ===================== */
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
-  --bg:#05090f;
-  --surface:#080e18;
-  --surface2:#0c1520;
-  --text:#e4eff5;
-  --muted:#4a7285;
-  --accent:#00d4e8;
-  --accent2:#00ff88;
-  --stroke:#0d1e2e;
-  --font-body:'Syne',sans-serif;
-  --font-display:'DM Serif Display',serif;
-  --font-mono:'Space Mono',monospace;
-  --glow:0 0 20px rgba(0,212,232,.3);
-  --glow-s:0 0 40px rgba(0,212,232,.5);
+  --bg:#05090f;--surface:#080e18;--surface2:#0c1520;--text:#e4eff5;--muted:#4a7285;
+  --accent:#00d4e8;--accent2:#00ff88;--stroke:#0d1e2e;
+  --font-body:'Syne',sans-serif;--font-display:'DM Serif Display',serif;--font-mono:'Space Mono',monospace;
+  --glow:0 0 20px rgba(0,212,232,.3);--glow-s:0 0 40px rgba(0,212,232,.5);
   --ease-out:cubic-bezier(.16,1,.3,1);
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
 body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflow-x:hidden;cursor:none}
+html[dir=\"rtl\"] body{cursor:auto}
+html[dir=\"rtl\"] #cur,html[dir=\"rtl\"] #cur-r{display:none}
 
-/* ===================== CURSOR ===================== */
-#cur,#cur-r{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%)}
+#cur,#cur-r{position:fixed;border-radius:50%;pointer-events:none;z-index:99999;transform:translate(-50%,-50%);left:0;top:0}
 #cur{width:8px;height:8px;background:var(--accent);box-shadow:0 0 10px var(--accent);transition:width .2s,height .2s}
 #cur-r{width:36px;height:36px;border:1px solid rgba(0,212,232,.3);transition:width .25s,height .25s}
 .cursor-big #cur{width:5px;height:5px}
 .cursor-big #cur-r{width:55px;height:55px;border-color:rgba(0,212,232,.5)}
 
-/* ===================== SCROLL PROGRESS ===================== */
 #prog{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0%;z-index:9998;box-shadow:0 0 8px var(--accent);transition:width .1s linear}
 
-/* ===================== LOADER ===================== */
 #loader{position:fixed;inset:0;background:var(--bg);z-index:9999;display:flex;flex-direction:column;justify-content:space-between;padding:2rem;overflow:hidden}
 #loader-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(0,212,232,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,232,.04) 1px,transparent 1px);background-size:60px 60px;animation:fadeIn .8s .3s both}
 #loader-scan{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);animation:scan 2.5s ease-in-out infinite}
 @keyframes scan{0%{top:-2px;opacity:0}5%{opacity:1}95%{opacity:.6}100%{top:100%;opacity:0}}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 .l-corner{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.28em;color:var(--muted);text-transform:uppercase;position:absolute}
-.l-tl{top:2rem;left:2rem}
-.l-tr{top:2rem;right:2rem}
+.l-tl{top:2rem;left:2rem}.l-tr{top:2rem;right:2rem}
 #l-status{display:flex;gap:2rem}
 #l-status span{opacity:.4;transition:opacity .3s}
 #l-status span.on{opacity:1;color:var(--accent)}
@@ -57,14 +45,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--font-body);overflo
 #l-count{position:absolute;bottom:2rem;right:2rem;font-family:var(--font-mono);font-size:clamp(5rem,10vw,11rem);color:var(--text);opacity:.06;line-height:1;user-select:none}
 #l-bar{position:absolute;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--accent),var(--accent2));box-shadow:0 0 14px rgba(0,212,232,.6);width:0%}
 
-/* ===================== NAV ===================== */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;transition:background .4s,border-color .4s,backdrop-filter .4s;border-bottom:1px solid transparent}
 nav.scrolled{background:rgba(5,9,15,.93);backdrop-filter:blur(24px);border-color:var(--stroke)}
 .nav-logo{display:flex;align-items:center;gap:.7rem;text-decoration:none}
 .logo-hex{position:relative;width:36px;height:36px;flex-shrink:0}
 .logo-hex .hex-outer{animation:hexSpin 8s linear infinite}
-.logo-hex .hex-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-.logo-hex .hex-inner svg{animation:hexSpin 8s linear infinite reverse}
+.logo-hex-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
+.logo-hex-inner svg{animation:hexSpin 8s linear infinite reverse}
 @keyframes hexSpin{to{transform:rotate(360deg)}}
 .logo-text{font-family:var(--font-mono);font-size:.82rem;letter-spacing:.35em;text-transform:uppercase;color:var(--text)}
 .logo-text .a{color:var(--accent)}
@@ -72,35 +59,17 @@ nav.scrolled{background:rgba(5,9,15,.93);backdrop-filter:blur(24px);border-color
 .nav-links a{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none;padding:.5rem 1rem;border:1px solid transparent;transition:all .3s}
 .nav-links a:hover{color:var(--accent);border-color:rgba(0,212,232,.2)}
 .nav-r{display:flex;align-items:center;gap:.9rem}
-/* LANG WRAPPER */
 .lang-wrap{position:relative}
 #lang-btn{display:flex;align-items:center;gap:.4rem;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--text);background:transparent;border:1px solid var(--stroke);padding:.5rem 1rem;cursor:none;transition:all .3s}
 #lang-btn:hover{border-color:var(--accent);color:var(--accent)}
 #lang-btn .arr{transition:transform .35s var(--ease-out);display:inline-block;font-size:.65rem}
 #lang-btn.open .arr{transform:rotate(180deg)}
-#lang-drawer{
-  position:absolute;top:calc(100% + 10px);right:0;
-  background:rgba(8,14,24,.97);
-  border:1px solid var(--stroke);
-  backdrop-filter:blur(24px);
-  width:300px;
-  clip-path:inset(0 0 100% 0);
-  transition:clip-path .45s var(--ease-out),border-color .3s;
-  z-index:999;pointer-events:none;
-}
+#lang-drawer{position:absolute;top:calc(100% + 10px);right:0;background:rgba(8,14,24,.97);border:1px solid var(--stroke);backdrop-filter:blur(24px);width:300px;clip-path:inset(0 0 100% 0);transition:clip-path .45s var(--ease-out),border-color .3s;z-index:999;pointer-events:none}
 #lang-drawer.open{clip-path:inset(0 0 0% 0);pointer-events:all;border-color:rgba(0,212,232,.2)}
 .ld-inner{padding:1.4rem}
 .ld-title{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.35em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;padding-bottom:.7rem;border-bottom:1px solid var(--stroke)}
 .ld-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.lang-opt{
-  display:flex;align-items:center;gap:.6rem;
-  padding:.65rem .9rem;
-  border:1px solid var(--stroke);
-  background:transparent;
-  cursor:none;transition:all .3s;text-align:left;
-  font-family:var(--font-body);font-size:.8rem;color:var(--muted);
-  position:relative;overflow:hidden;
-}
+.lang-opt{display:flex;align-items:center;gap:.6rem;padding:.65rem .9rem;border:1px solid var(--stroke);background:transparent;cursor:none;transition:all .3s;text-align:left;font-family:var(--font-body);font-size:.8rem;color:var(--muted);position:relative;overflow:hidden}
 .lang-opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,212,232,.06),transparent);opacity:0;transition:opacity .3s}
 .lang-opt:hover::before,.lang-opt.active::before{opacity:1}
 .lang-opt:hover,.lang-opt.active{color:var(--text);border-color:rgba(0,212,232,.25)}
@@ -111,16 +80,13 @@ nav.scrolled{background:rgba(5,9,15,.93);backdrop-filter:blur(24px);border-color
 .l-nat{font-size:.6rem;color:var(--muted);font-family:var(--font-mono)}
 .l-tick{color:var(--accent);font-size:.65rem;opacity:0;margin-left:auto}
 .lang-opt.active .l-tick{opacity:1}
-/* NAV CTA */
 .nav-cta{font-family:var(--font-mono);font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:.6rem 1.3rem;text-decoration:none;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%);transition:background .3s,box-shadow .3s;white-space:nowrap}
 .nav-cta:hover{background:#2adff0;box-shadow:var(--glow)}
 
-/* ===================== HERO ===================== */
 #hero{min-height:100vh;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:0;padding:7rem 5vw 4rem;position:relative;overflow:hidden}
 #hero-particles{position:absolute;inset:0;z-index:0}
 .hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(0,212,232,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,232,.022) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
 .hero-vignette{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 70% 70% at 50% 50%,transparent 40%,rgba(5,9,15,.7) 100%);pointer-events:none}
-/* floating badges */
 .h-badge{position:absolute;z-index:5;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.18em;text-transform:uppercase;background:rgba(8,15,24,.88);border:1px solid rgba(0,212,232,.2);color:var(--muted);padding:.45rem .75rem;display:flex;align-items:center;gap:.45rem;backdrop-filter:blur(8px)}
 .h-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);animation:bdot 2s infinite;flex-shrink:0}
 @keyframes bdot{0%,100%{opacity:1}50%{opacity:.3}}
@@ -128,40 +94,50 @@ nav.scrolled{background:rgba(5,9,15,.93);backdrop-filter:blur(24px);border-color
 .hb2{bottom:22%;left:3%;animation:hfloat 4s ease-in-out infinite 1.3s}
 .hb3{top:22%;right:2%;animation:hfloat 4s ease-in-out infinite .7s}
 @keyframes hfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-/* hero content */
 .hero-content{position:relative;z-index:10;padding-right:2rem}
-.hero-eye{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;opacity:0;transform:translateY(14px)}
+.hero-eye{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.4em;color:var(--accent);text-transform:uppercase;margin-bottom:1.4rem;display:flex;align-items:center;gap:1rem;opacity:0;transform:translateY(14px);animation:fadeUp .9s .9s var(--ease-out) forwards}
 .hero-eye::before{content:'';width:28px;height:1px;background:var(--accent);box-shadow:0 0 8px rgba(0,212,232,.4);flex-shrink:0}
-/* HERO TITLE — key fix */
+
+/* ============== HERO TITLE — SMOOTH FIX ============== */
 .hero-title{font-family:var(--font-display);font-size:clamp(3rem,5.5vw,7rem);line-height:.95;letter-spacing:-.025em;margin-bottom:2rem}
-.ht-row{display:block;overflow:hidden}
-.ht-word{display:inline-block;transform:translateY(105%);will-change:transform}
-.ht-accent{color:var(--accent);font-style:italic;text-shadow:0 0 50px rgba(0,212,232,.25)}
-.hero-desc{color:var(--muted);font-size:.9rem;line-height:1.8;max-width:440px;margin-bottom:2.2rem;opacity:0;transform:translateY(14px)}
-.hero-ctas{display:flex;gap:1rem;opacity:0;transform:translateY(14px)}
-.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;opacity:0;transform:translateY(14px)}
+.ht-row{display:block;overflow:hidden;padding:.05em 0}
+.ht-word{display:inline-block;opacity:0;transform:translateY(100%);animation:slideUpFade 1.1s var(--ease-out) forwards}
+.ht-row:nth-child(1) .ht-word{animation-delay:1.0s}
+.ht-row:nth-child(2) .ht-word{animation-delay:1.15s}
+.ht-row:nth-child(3) .ht-word{animation-delay:1.30s}
+@keyframes slideUpFade{
+  0%{opacity:0;transform:translateY(100%) skewY(6deg);filter:blur(8px)}
+  60%{opacity:1;filter:blur(0)}
+  100%{opacity:1;transform:translateY(0) skewY(0deg);filter:blur(0)}
+}
+.ht-accent{color:var(--accent);font-style:italic;text-shadow:0 0 50px rgba(0,212,232,.25);position:relative}
+.ht-accent::after{content:'';position:absolute;bottom:.1em;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transform-origin:left;animation:underline 1.2s 2.2s var(--ease-out) forwards;box-shadow:0 0 12px var(--accent)}
+@keyframes underline{to{transform:scaleX(1)}}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
+
+.hero-desc{color:var(--muted);font-size:.9rem;line-height:1.8;max-width:440px;margin-bottom:2.2rem;opacity:0;transform:translateY(14px);animation:fadeUp .9s 1.6s var(--ease-out) forwards}
+.hero-ctas{display:flex;gap:1rem;opacity:0;transform:translateY(14px);animation:fadeUp .9s 1.8s var(--ease-out) forwards}
+.hero-stats{display:flex;gap:2.5rem;margin-top:2.5rem;opacity:0;transform:translateY(14px);animation:fadeUp .9s 2.0s var(--ease-out) forwards;flex-wrap:wrap}
 .hs-num{font-family:var(--font-display);font-size:1.9rem;color:var(--text);line-height:1}
 .hs-label{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.18em;color:var(--muted);text-transform:uppercase}
-/* hero 3D canvas */
-.hero-3d{position:relative;z-index:10;height:520px;display:flex;align-items:center;justify-content:center}
+
+/* ============== HERO 3D — FULL VISIBLE ============== */
+.hero-3d{position:relative;z-index:10;height:560px;display:flex;align-items:center;justify-content:center;overflow:visible}
 #laptop-cv{width:100%;height:100%;display:block}
 
-/* buttons */
 .btn{font-family:var(--font-mono);font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;padding:.9rem 2rem;text-decoration:none;transition:all .3s;display:inline-block;cursor:none;border:none}
 .btn-primary{color:var(--bg);background:var(--accent);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
 .btn-primary:hover{background:#2adff0;transform:translateY(-2px);box-shadow:var(--glow-s)}
-.btn-outline{color:var(--accent);border:1px solid rgba(0,212,232,.35)}
+.btn-outline{color:var(--accent);border:1px solid rgba(0,212,232,.35);background:transparent}
 .btn-outline:hover{border-color:var(--accent);background:rgba(0,212,232,.05);transform:translateY(-2px);box-shadow:var(--glow)}
 .btn-arrow::after{content:' →';font-family:inherit}
 
-/* ===================== MARQUEE ===================== */
 .marquee-wrap{overflow:hidden;border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke);padding:.8rem 0;background:rgba(0,212,232,.015)}
 .marquee-track{display:flex;animation:mq 22s linear infinite;width:max-content}
 .mq-item{font-family:var(--font-mono);font-size:.58rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);padding:0 2.5rem;display:flex;align-items:center;gap:2.5rem;white-space:nowrap}
 .mq-item::after{content:'◆';color:var(--accent);font-size:.38rem;opacity:.55}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ===================== SECTIONS ===================== */
 section{position:relative;overflow:hidden}
 .container{max-width:1300px;margin:0 auto;padding:0 2rem}
 .sec-eye{font-family:var(--font-mono);font-size:.57rem;letter-spacing:.4em;text-transform:uppercase;color:var(--accent);margin-bottom:1.1rem;display:flex;align-items:center;gap:.9rem}
@@ -170,17 +146,20 @@ section{position:relative;overflow:hidden}
 .sec-head em{font-style:italic;color:var(--accent)}
 .label-pill{display:inline-block;font-family:var(--font-mono);font-size:.52rem;letter-spacing:.3em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(0,212,232,.3);padding:.25rem .8rem;margin-bottom:1rem}
 
-/* REVEAL */
 .reveal{opacity:0;transform:translateY(32px);transition:opacity .85s var(--ease-out),transform .85s var(--ease-out)}
 .reveal.vis{opacity:1;transform:translateY(0)}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}.d5{transition-delay:.5s}
 
-/* scroll micro-animations */
-.scroll-line{position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--stroke);overflow:hidden}
-.scroll-line::after{content:'';position:absolute;top:0;left:0;width:100%;height:30%;background:linear-gradient(to bottom,transparent,var(--accent),transparent);animation:linescroll 2.5s ease-in-out infinite}
-@keyframes linescroll{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+/* ============== NEW IT-style scroll micro-animations ============== */
+.glitch-text{position:relative;display:inline-block}
+.glitch-text.vis::before,.glitch-text.vis::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none}
+.glitch-text.vis::before{color:var(--accent);transform:translate(2px,0);mix-blend-mode:screen;animation:glitch1 .7s ease-out}
+.glitch-text.vis::after{color:#ff00aa;transform:translate(-2px,0);mix-blend-mode:screen;animation:glitch2 .7s ease-out}
+@keyframes glitch1{0%{clip-path:inset(0 0 70% 0);transform:translate(3px,0)}40%{clip-path:inset(40% 0 30% 0)}80%{clip-path:inset(70% 0 0% 0);transform:translate(0,0)}100%{clip-path:inset(100% 0 0 0);transform:translate(0,0);opacity:0}}
+@keyframes glitch2{0%{clip-path:inset(80% 0 0 0);transform:translate(-3px,0)}40%{clip-path:inset(30% 0 40% 0)}80%{clip-path:inset(0% 0 70% 0);transform:translate(0,0)}100%{clip-path:inset(100% 0 0 0);transform:translate(0,0);opacity:0}}
+.data-stream{position:absolute;font-family:var(--font-mono);font-size:.5rem;letter-spacing:.15em;color:rgba(0,212,232,.35);pointer-events:none;white-space:nowrap;animation:streamDown 9s linear infinite;writing-mode:vertical-rl;text-orientation:mixed}
+@keyframes streamDown{0%{transform:translateY(-100%);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(100vh);opacity:0}}
 
-/* ===================== SOLUTIONS ===================== */
 #solutions{padding:7rem 0 5rem;background:var(--bg)}
 .sol-header{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:3.5rem}
 .sol-sub{color:var(--muted);font-size:.88rem;line-height:1.8;align-self:end}
@@ -193,7 +172,6 @@ section{position:relative;overflow:hidden}
 .sol-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--accent),transparent);transform:scaleX(0);transform-origin:left;transition:transform .55s var(--ease-out)}
 .sol-card:hover::before{transform:scaleX(1)}
 .sol-card:hover{background:var(--surface)}
-/* radial glow follows cursor */
 .sol-glow{position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(0,212,232,.05) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
 .sol-card:hover .sol-glow{opacity:1}
 .sol-num{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.25em;color:var(--accent);margin-bottom:1.8rem}
@@ -210,7 +188,6 @@ section{position:relative;overflow:hidden}
 .badge-pop{position:absolute;top:1.2rem;right:1.2rem;font-family:var(--font-mono);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;background:var(--accent);color:var(--bg);padding:.22rem .65rem;clip-path:polygon(0 0,calc(100% - 5px) 0,100% 5px,100% 100%,0 100%)}
 .sol-cta-wrap{margin-top:1.2rem}
 
-/* ===================== TECH 3D (planet) ===================== */
 #tech3d{padding:6rem 0;background:var(--surface);position:relative}
 #t3d-wrap{width:100%;height:480px;position:relative}
 #t3d-cv{width:100%;height:100%;display:block}
@@ -224,22 +201,20 @@ section{position:relative;overflow:hidden}
 .t3d-header{text-align:center;margin-bottom:2rem}
 .t3d-sub{text-align:center;color:var(--muted);font-size:.86rem;line-height:1.75;max-width:480px;margin:.8rem auto 0}
 
-/* ===================== PROCESS ===================== */
 #process{padding:7rem 0;background:var(--bg)}
 .proc-head{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:end;margin-bottom:4.5rem}
 .proc-steps{position:relative;padding-left:4rem}
 .proc-spine{position:absolute;left:1.5rem;top:0;bottom:0;width:1px;background:var(--stroke)}
-.proc-fill{position:absolute;left:1.5rem;top:0;width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2));height:0%;box-shadow:0 0 10px var(--accent)}
+.proc-fill{position:absolute;left:1.5rem;top:0;width:1px;background:linear-gradient(to bottom,var(--accent),var(--accent2));height:0%;box-shadow:0 0 10px var(--accent);transition:height .3s ease-out}
 .proc-step{padding:2.5rem 0;border-bottom:1px solid var(--stroke);position:relative;transition:all .3s}
 .proc-step:last-child{border-bottom:none}
 .proc-dot{position:absolute;left:-2.69rem;top:2.7rem;width:10px;height:10px;border:1px solid var(--stroke);background:var(--bg);transition:all .3s}
-.proc-step:hover .proc-dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.proc-step:hover .proc-dot,.proc-step.reached .proc-dot{border-color:var(--accent);background:var(--accent);box-shadow:0 0 10px var(--accent)}
 .proc-num{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.2em;color:var(--muted);margin-bottom:.5rem}
 .proc-tag{font-family:var(--font-mono);font-size:.48rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(0,212,232,.2);padding:.18rem .55rem;display:inline-block;margin-bottom:.7rem}
 .proc-title{font-family:var(--font-display);font-size:1.9rem;margin-bottom:.55rem}
 .proc-desc{color:var(--muted);font-size:.82rem;line-height:1.75;max-width:480px}
 
-/* ===================== STATS ===================== */
 #stats{padding:4.5rem 0;background:var(--surface);border-top:1px solid var(--stroke);border-bottom:1px solid var(--stroke)}
 .stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--stroke)}
 .stat-item{padding:3rem 2.5rem;background:var(--surface);text-align:center;position:relative;overflow:hidden}
@@ -248,7 +223,6 @@ section{position:relative;overflow:hidden}
 .stat-num{font-family:var(--font-display);font-size:clamp(2.8rem,5vw,5rem);line-height:1;color:var(--accent);letter-spacing:-.03em;margin-bottom:.45rem;text-shadow:0 0 30px rgba(0,212,232,.25)}
 .stat-lbl{font-family:var(--font-mono);font-size:.56rem;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}
 
-/* ===================== CONTACT (corner-box) ===================== */
 #contact{padding:7rem 0}
 .contact-inner{max-width:1100px;margin:0 auto;padding:0 2rem}
 .corner-box{position:relative;border:1px solid var(--stroke);background:var(--surface);padding:3rem}
@@ -269,10 +243,13 @@ section{position:relative;overflow:hidden}
 .form-submit{display:flex;align-items:center;justify-content:space-between;margin-top:1.5rem;flex-wrap:wrap;gap:1rem}
 .form-note{font-family:var(--font-mono);font-size:.52rem;letter-spacing:.15em;color:var(--muted)}
 #form-success{display:none;text-align:center;padding:3rem 1rem}
+#form-success.show{display:block;animation:fadeUp .6s var(--ease-out)}
 #form-success h3{font-family:var(--font-display);font-style:italic;font-size:2rem;color:var(--accent);margin-bottom:.8rem}
 #form-success p{color:var(--muted);font-size:.85rem}
+#form-error{display:none;margin-top:1rem;padding:.8rem 1rem;border:1px solid rgba(255,80,80,.4);background:rgba(255,80,80,.05);color:#ff8080;font-family:var(--font-mono);font-size:.7rem}
+#form-error.show{display:block}
+.btn-primary[disabled]{opacity:.5;pointer-events:none}
 
-/* ===================== FOOTER ===================== */
 footer{background:var(--bg);border-top:1px solid var(--stroke);padding:2.2rem 2rem}
 .footer-inner{max-width:1300px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:2rem;flex-wrap:wrap}
 .f-logo{display:flex;align-items:center;gap:.6rem;text-decoration:none}
@@ -284,13 +261,11 @@ footer{background:var(--bg);border-top:1px solid var(--stroke);padding:2.2rem 2r
 .avail-dot{width:7px;height:7px;background:#22c55e;border-radius:50%;animation:pdot 2s infinite;flex-shrink:0}
 @keyframes pdot{0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}50%{box-shadow:0 0 0 6px rgba(34,197,94,0)}}
 
-/* ===================== SCANLINES (body overlay) ===================== */
 body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.012) 3px,rgba(0,0,0,.012) 4px);pointer-events:none;z-index:99900}
 
-/* ===================== MOBILE ===================== */
 @media(max-width:960px){
   #hero{grid-template-columns:1fr;padding:6.5rem 5vw 3.5rem}
-  .hero-3d{height:320px;order:-1;margin-bottom:1rem}
+  .hero-3d{height:340px;order:-1;margin-bottom:1rem}
   .hb1,.hb2,.hb3{display:none}
   .sol-header{grid-template-columns:1fr}
   .sol-grid{grid-template-columns:1fr}
@@ -304,1208 +279,1098 @@ body::after{content:'';position:fixed;inset:0;background:repeating-linear-gradie
   #hero{padding:6rem 1.2rem 3rem}
   .hero-title{font-size:clamp(2.5rem,11vw,4rem)}
   .hero-ctas{flex-direction:column}
-  .hero-3d{height:260px}
+  .hero-3d{height:280px}
   .form-row{grid-template-columns:1fr}
   .corner-box{padding:1.8rem 1.2rem}
   .form-submit{flex-direction:column;align-items:flex-start}
   #t3d-wrap{height:340px}
+  #lang-drawer{width:260px}
 }
 </style>
 </head>
 <body>
 
-<!-- CURSOR -->
-<div id="cur"></div>
-<div id="cur-r"></div>
-<!-- PROGRESS -->
-<div id="prog"></div>
+<div id=\"cur\"></div>
+<div id=\"cur-r\"></div>
+<div id=\"prog\"></div>
 
 <!-- LOADER -->
-<div id="loader">
-  <div id="loader-grid"></div>
-  <div id="loader-scan"></div>
-  <div class="l-corner l-tl" id="l-status">
-    <span class="on" id="ls0">SYSTEM ONLINE</span>
-    <span id="ls1">SECURE</span>
-    <span id="ls2">v2.4.1</span>
+<div id=\"loader\">
+  <div id=\"loader-grid\"></div>
+  <div id=\"loader-scan\"></div>
+  <div class=\"l-corner l-tl\" id=\"l-status\">
+    <span class=\"on\" id=\"ls0\">SYSTEM ONLINE</span>
+    <span id=\"ls1\">SECURE</span>
+    <span id=\"ls2\">v2.4.1</span>
   </div>
-  <div class="l-corner l-tr">DONDA.DIGITAL</div>
-  <div id="l-word">Build</div>
-  <div id="l-count">000</div>
-  <div id="l-bar"></div>
+  <div class=\"l-corner l-tr\">DONDA.DIGITAL</div>
+  <div id=\"l-word\">Build</div>
+  <div id=\"l-count\">000</div>
+  <div id=\"l-bar\"></div>
 </div>
 
 <!-- NAV -->
-<nav id="nav">
-  <a href="#hero" class="nav-logo">
-    <div class="logo-hex">
-      <svg class="hex-outer" viewBox="0 0 36 36" fill="none" width="36" height="36">
-        <polygon points="18,1.5 33,9.75 33,26.25 18,34.5 3,26.25 3,9.75" stroke="#00d4e8" stroke-width="1" fill="none" stroke-dasharray="2 3" opacity=".55"/>
-        <polygon points="18,5 30,12 30,24 18,31 6,24 6,12" stroke="#00d4e8" stroke-width=".8" fill="rgba(0,212,232,.07)"/>
+<nav id=\"nav\">
+  <a href=\"#hero\" class=\"nav-logo\">
+    <div class=\"logo-hex\">
+      <svg class=\"hex-outer\" viewBox=\"0 0 36 36\" fill=\"none\" width=\"36\" height=\"36\">
+        <polygon points=\"18,1.5 33,9.75 33,26.25 18,34.5 3,26.25 3,9.75\" stroke=\"#00d4e8\" stroke-width=\"1\" fill=\"none\" stroke-dasharray=\"2 3\" opacity=\".55\"/>
+        <polygon points=\"18,5 30,12 30,24 18,31 6,24 6,12\" stroke=\"#00d4e8\" stroke-width=\".8\" fill=\"rgba(0,212,232,.07)\"/>
       </svg>
-      <div class="logo-hex-inner">
-        <svg viewBox="0 0 14 14" fill="none" width="14" height="14">
-          <polygon points="7,0.5 13,3.75 13,10.25 7,13.5 1,10.25 1,3.75" fill="#00d4e8" opacity=".95"/>
+      <div class=\"logo-hex-inner\">
+        <svg viewBox=\"0 0 14 14\" fill=\"none\" width=\"14\" height=\"14\">
+          <polygon points=\"7,0.5 13,3.75 13,10.25 7,13.5 1,10.25 1,3.75\" fill=\"#00d4e8\" opacity=\".95\"/>
         </svg>
       </div>
     </div>
-    <span class="logo-text">DONDA<span class="a"> . </span>DIGITAL</span>
+    <span class=\"logo-text\">DONDA<span class=\"a\"> . </span>DIGITAL</span>
   </a>
-  <ul class="nav-links">
-    <li><a href="#hero" data-i18n="nav-home">HOME</a></li>
-    <li><a href="#solutions" data-i18n="nav-solutions">SOLUTIONS</a></li>
-    <li><a href="#process" data-i18n="nav-process">PROCESS</a></li>
-    <li><a href="#contact" data-i18n="nav-contact">CONTACT</a></li>
+  <ul class=\"nav-links\">
+    <li><a href=\"#hero\" data-i18n=\"nav-home\">HOME</a></li>
+    <li><a href=\"#solutions\" data-i18n=\"nav-solutions\">SOLUTIONS</a></li>
+    <li><a href=\"#process\" data-i18n=\"nav-process\">PROCESS</a></li>
+    <li><a href=\"#contact\" data-i18n=\"nav-contact\">CONTACT</a></li>
   </ul>
-  <div class="nav-r">
-    <div class="lang-wrap">
-      <button id="lang-btn"><span id="lang-cur">EN</span><span class="arr">▾</span></button>
-      <div id="lang-drawer">
-        <div class="ld-inner">
-          <div class="ld-title" data-i18n="lang-select">Select Language</div>
-          <div class="ld-grid" id="ld-grid">
-            <button class="lang-opt active" data-lang="en"><span class="l-flag">🇬🇧</span><div class="l-info"><span class="l-name">English</span><span class="l-nat">English</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="cs"><span class="l-flag">🇨🇿</span><div class="l-info"><span class="l-name">Czech</span><span class="l-nat">Čeština</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="pl"><span class="l-flag">🇵🇱</span><div class="l-info"><span class="l-name">Polish</span><span class="l-nat">Polski</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="es"><span class="l-flag">🇪🇸</span><div class="l-info"><span class="l-name">Spanish</span><span class="l-nat">Español</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="de"><span class="l-flag">🇩🇪</span><div class="l-info"><span class="l-name">German</span><span class="l-nat">Deutsch</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="fr"><span class="l-flag">🇫🇷</span><div class="l-info"><span class="l-name">French</span><span class="l-nat">Français</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="ar"><span class="l-flag">🇦🇪</span><div class="l-info"><span class="l-name">Arabic</span><span class="l-nat">العربية</span></div><span class="l-tick">✓</span></button>
-            <button class="lang-opt" data-lang="zh"><span class="l-flag">🇨🇳</span><div class="l-info"><span class="l-name">Chinese</span><span class="l-nat">中文</span></div><span class="l-tick">✓</span></button>
+  <div class=\"nav-r\">
+    <div class=\"lang-wrap\">
+      <button id=\"lang-btn\"><span id=\"lang-cur\">EN</span><span class=\"arr\">▾</span></button>
+      <div id=\"lang-drawer\">
+        <div class=\"ld-inner\">
+          <div class=\"ld-title\" data-i18n=\"lang-select\">Select Language</div>
+          <div class=\"ld-grid\" id=\"ld-grid\">
+            <button class=\"lang-opt active\" data-lang=\"en\"><span class=\"l-flag\">🇬🇧</span><div class=\"l-info\"><span class=\"l-name\">English</span><span class=\"l-nat\">English</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"cs\"><span class=\"l-flag\">🇨🇿</span><div class=\"l-info\"><span class=\"l-name\">Czech</span><span class=\"l-nat\">Čeština</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"pl\"><span class=\"l-flag\">🇵🇱</span><div class=\"l-info\"><span class=\"l-name\">Polish</span><span class=\"l-nat\">Polski</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"es\"><span class=\"l-flag\">🇪🇸</span><div class=\"l-info\"><span class=\"l-name\">Spanish</span><span class=\"l-nat\">Español</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"de\"><span class=\"l-flag\">🇩🇪</span><div class=\"l-info\"><span class=\"l-name\">German</span><span class=\"l-nat\">Deutsch</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"fr\"><span class=\"l-flag\">🇫🇷</span><div class=\"l-info\"><span class=\"l-name\">French</span><span class=\"l-nat\">Français</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"ar\"><span class=\"l-flag\">🇦🇪</span><div class=\"l-info\"><span class=\"l-name\">Arabic</span><span class=\"l-nat\">العربية</span></div><span class=\"l-tick\">✓</span></button>
+            <button class=\"lang-opt\" data-lang=\"zh\"><span class=\"l-flag\">🇨🇳</span><div class=\"l-info\"><span class=\"l-name\">Chinese</span><span class=\"l-nat\">中文</span></div><span class=\"l-tick\">✓</span></button>
           </div>
         </div>
       </div>
     </div>
-    <a href="#contact" class="nav-cta" data-i18n="nav-cta">GET STARTED</a>
+    <a href=\"#contact\" class=\"nav-cta\" data-i18n=\"nav-cta\">GET STARTED</a>
   </div>
 </nav>
 
 <!-- HERO -->
-<section id="hero">
-  <canvas id="hero-particles"></canvas>
-  <div class="hero-grid"></div>
-  <div class="hero-vignette"></div>
-  <div class="h-badge hb1" data-i18n="badge1">System Online — v2.4.1</div>
-  <div class="h-badge hb2" data-i18n="badge2">EU Based — Global Reach</div>
-  <div class="h-badge hb3" data-i18n="badge3">98% Satisfaction Rate</div>
+<section id=\"hero\">
+  <canvas id=\"hero-particles\"></canvas>
+  <div class=\"hero-grid\"></div>
+  <div class=\"hero-vignette\"></div>
+  <div class=\"h-badge hb1\" data-i18n=\"badge1\">System Online — v2.4.1</div>
+  <div class=\"h-badge hb2\" data-i18n=\"badge2\">EU Based — Global Reach</div>
+  <div class=\"h-badge hb3\" data-i18n=\"badge3\">98% Satisfaction Rate</div>
 
-  <div class="hero-content">
-    <p class="hero-eye" id="hero-eye" data-i18n="hero-eye">Collection '26 — Digital Agency</p>
-    <h1 class="hero-title" id="hero-title">
-      <span class="ht-row"><span class="ht-word" data-i18n="hl1">We Build</span></span>
-      <span class="ht-row"><span class="ht-word ht-accent" data-i18n="hl2">Digital</span></span>
-      <span class="ht-row"><span class="ht-word" data-i18n="hl3">Futures</span></span>
+  <div class=\"hero-content\">
+    <p class=\"hero-eye\" id=\"hero-eye\" data-i18n=\"hero-eye\">Collection '26 — Digital Agency</p>
+    <h1 class=\"hero-title\" id=\"hero-title\">
+      <span class=\"ht-row\"><span class=\"ht-word\" data-i18n=\"hl1\">We Build</span></span>
+      <span class=\"ht-row\"><span class=\"ht-word ht-accent\" data-i18n=\"hl2\">Digital</span></span>
+      <span class=\"ht-row\"><span class=\"ht-word\" data-i18n=\"hl3\">Futures</span></span>
     </h1>
-    <p class="hero-desc" id="hero-desc" data-i18n="hero-desc">E-commerce platforms, high-performance websites and precision marketing for brands that demand results.</p>
-    <div class="hero-ctas" id="hero-ctas">
-      <a href="#solutions" class="btn btn-primary" data-i18n="cta1">VIEW SOLUTIONS</a>
-      <a href="#contact" class="btn btn-outline" data-i18n="cta2">CONTACT US</a>
+    <p class=\"hero-desc\" id=\"hero-desc\" data-i18n=\"hero-desc\">E-commerce platforms, high-performance websites and precision marketing for brands that demand results.</p>
+    <div class=\"hero-ctas\" id=\"hero-ctas\">
+      <a href=\"#solutions\" class=\"btn btn-primary\" data-i18n=\"cta1\">VIEW SOLUTIONS</a>
+      <a href=\"#contact\" class=\"btn btn-outline\" data-i18n=\"cta2\">CONTACT US</a>
     </div>
-    <div class="hero-stats" id="hero-stats">
-      <div><div class="hs-num">120+</div><div class="hs-label" data-i18n="stat-projects">Projects</div></div>
-      <div><div class="hs-num">98%</div><div class="hs-label" data-i18n="stat-sat">Satisfaction</div></div>
-      <div><div class="hs-num" id="hero-revenue">€35k+</div><div class="hs-label" data-i18n="stat-rev">Avg. Revenue</div></div>
+    <div class=\"hero-stats\" id=\"hero-stats\">
+      <div><div class=\"hs-num\">120+</div><div class=\"hs-label\" data-i18n=\"stat-projects\">Projects</div></div>
+      <div><div class=\"hs-num\">98%</div><div class=\"hs-label\" data-i18n=\"stat-sat\">Satisfaction</div></div>
+      <div><div class=\"hs-num\" id=\"hero-revenue\" data-price=\"35000\" data-price-suffix-key=\"k-plus\">€35k+</div><div class=\"hs-label\" data-i18n=\"stat-rev\">Avg. Revenue</div></div>
     </div>
   </div>
 
-  <div class="hero-3d">
-    <canvas id="laptop-cv"></canvas>
+  <div class=\"hero-3d\">
+    <canvas id=\"laptop-cv\"></canvas>
   </div>
 </section>
 
 <!-- MARQUEE -->
-<div class="marquee-wrap">
-  <div class="marquee-track" id="mq-track">
-    <span class="mq-item" data-i18n="mq1">E-Commerce</span><span class="mq-item" data-i18n="mq2">Web Design</span><span class="mq-item" data-i18n="mq3">Performance Marketing</span><span class="mq-item">SEO</span><span class="mq-item" data-i18n="mq4">Brand Identity</span><span class="mq-item" data-i18n="mq5">Conversion Optimisation</span><span class="mq-item">UI / UX</span><span class="mq-item" data-i18n="mq6">Web Apps</span>
-    <span class="mq-item" data-i18n="mq1">E-Commerce</span><span class="mq-item" data-i18n="mq2">Web Design</span><span class="mq-item" data-i18n="mq3">Performance Marketing</span><span class="mq-item">SEO</span><span class="mq-item" data-i18n="mq4">Brand Identity</span><span class="mq-item" data-i18n="mq5">Conversion Optimisation</span><span class="mq-item">UI / UX</span><span class="mq-item" data-i18n="mq6">Web Apps</span>
+<div class=\"marquee-wrap\">
+  <div class=\"marquee-track\" id=\"mq-track\">
+    <span class=\"mq-item\" data-i18n=\"mq1\">E-Commerce</span><span class=\"mq-item\" data-i18n=\"mq2\">Web Design</span><span class=\"mq-item\" data-i18n=\"mq3\">Performance Marketing</span><span class=\"mq-item\">SEO</span><span class=\"mq-item\" data-i18n=\"mq4\">Brand Identity</span><span class=\"mq-item\" data-i18n=\"mq5\">Conversion Optimisation</span><span class=\"mq-item\">UI / UX</span><span class=\"mq-item\" data-i18n=\"mq6\">Web Apps</span>
+    <span class=\"mq-item\" data-i18n=\"mq1\">E-Commerce</span><span class=\"mq-item\" data-i18n=\"mq2\">Web Design</span><span class=\"mq-item\" data-i18n=\"mq3\">Performance Marketing</span><span class=\"mq-item\">SEO</span><span class=\"mq-item\" data-i18n=\"mq4\">Brand Identity</span><span class=\"mq-item\" data-i18n=\"mq5\">Conversion Optimisation</span><span class=\"mq-item\">UI / UX</span><span class=\"mq-item\" data-i18n=\"mq6\">Web Apps</span>
   </div>
 </div>
 
 <!-- SOLUTIONS -->
-<section id="solutions">
-  <div class="container">
-    <div class="sol-header">
-      <div class="reveal">
-        <p class="sec-eye" data-i18n="sol-eye">Our Solutions</p>
-        <h2 class="sec-head"><span data-i18n="sol-head1">Precision Engineered</span><br><em data-i18n="sol-head2">Services</em></h2>
+<section id=\"solutions\">
+  <div class=\"container\">
+    <div class=\"sol-header\">
+      <div class=\"reveal\">
+        <p class=\"sec-eye\" data-i18n=\"sol-eye\">Our Solutions</p>
+        <h2 class=\"sec-head\"><span data-i18n=\"sol-head1\">Precision Engineered</span><br><em data-i18n=\"sol-head2\">Services</em></h2>
       </div>
-      <p class="sol-sub reveal d1" data-i18n="sol-sub">Every package is built around measurable outcomes. No bloat, no guesswork — only systems that perform.</p>
+      <p class=\"sol-sub reveal d1\" data-i18n=\"sol-sub\">Every package is built around measurable outcomes. No bloat, no guesswork — only systems that perform.</p>
     </div>
-    <div class="sol-grid reveal d2">
-      <!-- E-COMMERCE -->
-      <div class="sol-card">
-        <div class="sol-glow"></div>
-        <div class="sol-num">01 / E-COMMERCE</div>
-        <div class="sol-icon">🛒</div>
-        <h3 class="sol-title"><span data-i18n="s1-title1">Online Store</span><br><em data-i18n="s1-title2">Development</em></h3>
-        <p class="sol-desc" data-i18n="s1-desc">Full-stack e-commerce on Shopify, WooCommerce or custom stack. Optimised for conversion, speed and scale from day one.</p>
-        <ul class="sol-feats">
-          <li data-i18n="s1-f1">Custom storefront design</li>
-          <li data-i18n="s1-f2">Payment &amp; logistics integration</li>
-          <li data-i18n="s1-f3">SEO-ready product architecture</li>
-          <li data-i18n="s1-f4">Analytics &amp; conversion tracking</li>
+    <div class=\"sol-grid reveal d2\">
+      <div class=\"sol-card\">
+        <div class=\"sol-glow\"></div>
+        <div class=\"sol-num\">01 / E-COMMERCE</div>
+        <div class=\"sol-icon\">🛒</div>
+        <h3 class=\"sol-title\"><span data-i18n=\"s1-title1\">Online Store</span><br><em data-i18n=\"s1-title2\">Development</em></h3>
+        <p class=\"sol-desc\" data-i18n=\"s1-desc\">Full-stack e-commerce on Shopify, WooCommerce or custom stack. Optimised for conversion, speed and scale from day one.</p>
+        <ul class=\"sol-feats\">
+          <li data-i18n=\"s1-f1\">Custom storefront design</li>
+          <li data-i18n=\"s1-f2\">Payment & logistics integration</li>
+          <li data-i18n=\"s1-f3\">SEO-ready product architecture</li>
+          <li data-i18n=\"s1-f4\">Analytics & conversion tracking</li>
         </ul>
-        <div class="sol-price"><span data-i18n="starting-from">STARTING FROM</span><span class="sol-price-num" data-price="2500" data-i18n-price>2 500 €</span></div>
-        <div class="sol-cta-wrap"><a href="#contact" class="btn btn-outline btn-arrow" style="font-size:.56rem;padding:.7rem 1.4rem" data-i18n="get-started">GET STARTED</a></div>
+        <div class=\"sol-price\"><span data-i18n=\"starting-from\">STARTING FROM</span><span class=\"sol-price-num\" data-price=\"2500\">2,500 €</span></div>
+        <div class=\"sol-cta-wrap\"><a href=\"#contact\" class=\"btn btn-outline btn-arrow\" style=\"font-size:.56rem;padding:.7rem 1.4rem\" data-i18n=\"get-started\">GET STARTED</a></div>
       </div>
-      <!-- WEB -->
-      <div class="sol-card">
-        <div class="sol-glow"></div>
-        <div class="badge-pop" data-i18n="most-pop">MOST POPULAR</div>
-        <div class="sol-num">02 / WEB</div>
-        <div class="sol-icon">⬡</div>
-        <h3 class="sol-title"><span data-i18n="s2-title1">Website</span><br><em data-i18n="s2-title2">Design &amp; Dev</em></h3>
-        <p class="sol-desc" data-i18n="s2-desc">Bespoke marketing sites, landing pages and web apps with elite UX, blazing performance scores and scroll-stopping visual design.</p>
-        <ul class="sol-feats">
-          <li data-i18n="s2-f1">Responsive, mobile-first build</li>
-          <li data-i18n="s2-f2">CMS integration (headless-ready)</li>
-          <li data-i18n="s2-f3">Core Web Vitals optimised</li>
-          <li data-i18n="s2-f4">Motion &amp; interaction design</li>
+      <div class=\"sol-card\">
+        <div class=\"sol-glow\"></div>
+        <div class=\"badge-pop\" data-i18n=\"most-pop\">MOST POPULAR</div>
+        <div class=\"sol-num\">02 / WEB</div>
+        <div class=\"sol-icon\">⬡</div>
+        <h3 class=\"sol-title\"><span data-i18n=\"s2-title1\">Website</span><br><em data-i18n=\"s2-title2\">Design & Dev</em></h3>
+        <p class=\"sol-desc\" data-i18n=\"s2-desc\">Bespoke marketing sites, landing pages and web apps with elite UX, blazing performance scores and scroll-stopping visual design.</p>
+        <ul class=\"sol-feats\">
+          <li data-i18n=\"s2-f1\">Responsive, mobile-first build</li>
+          <li data-i18n=\"s2-f2\">CMS integration (headless-ready)</li>
+          <li data-i18n=\"s2-f3\">Core Web Vitals optimised</li>
+          <li data-i18n=\"s2-f4\">Motion & interaction design</li>
         </ul>
-        <div class="sol-price"><span data-i18n="starting-from">STARTING FROM</span><span class="sol-price-num" data-price="1500" data-i18n-price>1 500 €</span></div>
-        <div class="sol-cta-wrap"><a href="#contact" class="btn btn-outline btn-arrow" style="font-size:.56rem;padding:.7rem 1.4rem" data-i18n="get-started">GET STARTED</a></div>
+        <div class=\"sol-price\"><span data-i18n=\"starting-from\">STARTING FROM</span><span class=\"sol-price-num\" data-price=\"1500\">1,500 €</span></div>
+        <div class=\"sol-cta-wrap\"><a href=\"#contact\" class=\"btn btn-outline btn-arrow\" style=\"font-size:.56rem;padding:.7rem 1.4rem\" data-i18n=\"get-started\">GET STARTED</a></div>
       </div>
-      <!-- MARKETING -->
-      <div class="sol-card">
-        <div class="sol-glow"></div>
-        <div class="sol-num">03 / MARKETING</div>
-        <div class="sol-icon">◈</div>
-        <h3 class="sol-title"><span data-i18n="s3-title1">Growth</span><br><em data-i18n="s3-title2">Marketing</em></h3>
-        <p class="sol-desc" data-i18n="s3-desc">Data-driven paid media, SEO and social strategy managed as a unified growth system. Every euro tracked to its return.</p>
-        <ul class="sol-feats">
-          <li data-i18n="s3-f1">Google &amp; Meta Ads management</li>
-          <li data-i18n="s3-f2">SEO &amp; content strategy</li>
-          <li data-i18n="s3-f3">Weekly performance reporting</li>
-          <li data-i18n="s3-f4">CRO &amp; A/B testing</li>
+      <div class=\"sol-card\">
+        <div class=\"sol-glow\"></div>
+        <div class=\"sol-num\">03 / MARKETING</div>
+        <div class=\"sol-icon\">◈</div>
+        <h3 class=\"sol-title\"><span data-i18n=\"s3-title1\">Growth</span><br><em data-i18n=\"s3-title2\">Marketing</em></h3>
+        <p class=\"sol-desc\" data-i18n=\"s3-desc\">Data-driven paid media, SEO and social strategy managed as a unified growth system. Every euro tracked to its return.</p>
+        <ul class=\"sol-feats\">
+          <li data-i18n=\"s3-f1\">Google & Meta Ads management</li>
+          <li data-i18n=\"s3-f2\">SEO & content strategy</li>
+          <li data-i18n=\"s3-f3\">Weekly performance reporting</li>
+          <li data-i18n=\"s3-f4\">CRO & A/B testing</li>
         </ul>
-        <div class="sol-price"><span data-i18n="starting-from">STARTING FROM</span><span class="sol-price-num" data-price="800" data-price-suffix="/mo" data-i18n-price>800 € /mo</span></div>
-        <div class="sol-cta-wrap"><a href="#contact" class="btn btn-outline btn-arrow" style="font-size:.56rem;padding:.7rem 1.4rem" data-i18n="get-started">GET STARTED</a></div>
+        <div class=\"sol-price\"><span data-i18n=\"starting-from\">STARTING FROM</span><span class=\"sol-price-num\" data-price=\"800\" data-price-suffix=\"/mo\">800 €/mo</span></div>
+        <div class=\"sol-cta-wrap\"><a href=\"#contact\" class=\"btn btn-outline btn-arrow\" style=\"font-size:.56rem;padding:.7rem 1.4rem\" data-i18n=\"get-started\">GET STARTED</a></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- TECH 3D (planet / sphere) -->
-<section id="tech3d">
-  <div class="container">
-    <div class="t3d-header reveal">
-      <p class="sec-eye" style="justify-content:center" data-i18n="t3d-eye">Technology</p>
-      <h2 class="sec-head" style="text-align:center"><span data-i18n="t3d-head1">Built with</span> <em data-i18n="t3d-head2">Precision</em></h2>
+<!-- TECH 3D (planet) -->
+<section id=\"tech3d\">
+  <div class=\"container\">
+    <div class=\"t3d-header reveal\">
+      <p class=\"sec-eye\" style=\"justify-content:center\" data-i18n=\"t3d-eye\">Technology</p>
+      <h2 class=\"sec-head\" style=\"text-align:center\"><span data-i18n=\"t3d-head1\">Built with</span> <em data-i18n=\"t3d-head2\">Precision</em></h2>
     </div>
-    <p class="t3d-sub reveal d1" data-i18n="t3d-sub">Every project engineered to the highest technical standard — from architecture to deployment.</p>
+    <p class=\"t3d-sub reveal d1\" data-i18n=\"t3d-sub\">Every project engineered to the highest technical standard — from architecture to deployment.</p>
   </div>
-  <div id="t3d-wrap">
-    <canvas id="t3d-cv"></canvas>
-    <div class="t3d-overlay"></div>
-    <div class="t3d-labels">
-      <div class="t3d-lbl tl1" data-i18n="tl1">Core Architecture</div>
-      <div class="t3d-lbl tl2" data-i18n="tl2">Performance Layer</div>
-      <div class="t3d-lbl tl3" data-i18n="tl3">Data Processing</div>
-      <div class="t3d-lbl tl4" data-i18n="tl4">Security Protocol</div>
+  <div id=\"t3d-wrap\">
+    <canvas id=\"t3d-cv\"></canvas>
+    <div class=\"t3d-overlay\"></div>
+    <div class=\"t3d-labels\">
+      <div class=\"t3d-lbl tl1\" data-i18n=\"tl1\">Core Architecture</div>
+      <div class=\"t3d-lbl tl2\" data-i18n=\"tl2\">Performance Layer</div>
+      <div class=\"t3d-lbl tl3\" data-i18n=\"tl3\">Data Processing</div>
+      <div class=\"t3d-lbl tl4\" data-i18n=\"tl4\">Security Protocol</div>
     </div>
   </div>
 </section>
 
 <!-- PROCESS -->
-<section id="process">
-  <div class="container">
-    <div class="proc-head">
-      <div class="reveal">
-        <p class="sec-eye" data-i18n="proc-eye">How We Work</p>
-        <h2 class="sec-head"><span data-i18n="proc-head1">The</span><br><em data-i18n="proc-head2">Protocol</em></h2>
+<section id=\"process\">
+  <div class=\"container\">
+    <div class=\"proc-head\">
+      <div class=\"reveal\">
+        <p class=\"sec-eye\" data-i18n=\"proc-eye\">How We Work</p>
+        <h2 class=\"sec-head\"><span data-i18n=\"proc-head1\">The</span><br><em data-i18n=\"proc-head2\">Protocol</em></h2>
       </div>
-      <p class="sol-sub reveal d1" data-i18n="proc-sub">A precise four-phase system designed to take your project from brief to live — with zero ambiguity at every step.</p>
+      <p class=\"sol-sub reveal d1\" data-i18n=\"proc-sub\">A precise four-phase system designed to take your project from brief to live — with zero ambiguity at every step.</p>
     </div>
-    <div class="proc-steps reveal">
-      <div class="proc-spine"></div>
-      <div class="proc-fill" id="proc-fill"></div>
-      <div class="proc-step">
-        <div class="proc-dot"></div>
-        <div class="proc-num">01</div>
-        <span class="proc-tag" data-i18n="ph1">Phase One</span>
-        <h3 class="proc-title" data-i18n="proc-t1">Discovery</h3>
-        <p class="proc-desc" data-i18n="proc-d1">We map your goals, audience and competitive landscape before writing a single line of code.</p>
-      </div>
-      <div class="proc-step">
-        <div class="proc-dot"></div>
-        <div class="proc-num">02</div>
-        <span class="proc-tag" data-i18n="ph2">Phase Two</span>
-        <h3 class="proc-title" data-i18n="proc-t2">Strategy</h3>
-        <p class="proc-desc" data-i18n="proc-d2">A custom growth architecture — content, UX and channel mix — aligned to your KPIs.</p>
-      </div>
-      <div class="proc-step">
-        <div class="proc-dot"></div>
-        <div class="proc-num">03</div>
-        <span class="proc-tag" data-i18n="ph3">Phase Three</span>
-        <h3 class="proc-title" data-i18n="proc-t3">Execution</h3>
-        <p class="proc-desc" data-i18n="proc-d3">Design, development and campaign launch in agile sprints with weekly progress updates.</p>
-      </div>
-      <div class="proc-step">
-        <div class="proc-dot"></div>
-        <div class="proc-num">04</div>
-        <span class="proc-tag" data-i18n="ph4">Phase Four</span>
-        <h3 class="proc-title" data-i18n="proc-t4">Scale</h3>
-        <p class="proc-desc" data-i18n="proc-d4">Ongoing optimisation, A/B testing and growth iteration based on live performance data.</p>
-      </div>
+    <div class=\"proc-steps reveal\">
+      <div class=\"proc-spine\"></div>
+      <div class=\"proc-fill\" id=\"proc-fill\"></div>
+      <div class=\"proc-step\"><div class=\"proc-dot\"></div><div class=\"proc-num\">01</div><span class=\"proc-tag\" data-i18n=\"ph1\">Phase One</span><h3 class=\"proc-title\" data-i18n=\"proc-t1\">Discovery</h3><p class=\"proc-desc\" data-i18n=\"proc-d1\">We map your goals, audience and competitive landscape before writing a single line of code.</p></div>
+      <div class=\"proc-step\"><div class=\"proc-dot\"></div><div class=\"proc-num\">02</div><span class=\"proc-tag\" data-i18n=\"ph2\">Phase Two</span><h3 class=\"proc-title\" data-i18n=\"proc-t2\">Strategy</h3><p class=\"proc-desc\" data-i18n=\"proc-d2\">A custom growth architecture — content, UX and channel mix — aligned to your KPIs.</p></div>
+      <div class=\"proc-step\"><div class=\"proc-dot\"></div><div class=\"proc-num\">03</div><span class=\"proc-tag\" data-i18n=\"ph3\">Phase Three</span><h3 class=\"proc-title\" data-i18n=\"proc-t3\">Execution</h3><p class=\"proc-desc\" data-i18n=\"proc-d3\">Design, development and campaign launch in agile sprints with weekly progress updates.</p></div>
+      <div class=\"proc-step\"><div class=\"proc-dot\"></div><div class=\"proc-num\">04</div><span class=\"proc-tag\" data-i18n=\"ph4\">Phase Four</span><h3 class=\"proc-title\" data-i18n=\"proc-t4\">Scale</h3><p class=\"proc-desc\" data-i18n=\"proc-d4\">Ongoing optimisation, A/B testing and growth iteration based on live performance data.</p></div>
     </div>
   </div>
 </section>
 
 <!-- STATS -->
-<section id="stats">
-  <div class="container">
-    <div class="stats-grid">
-      <div class="stat-item reveal"><div class="stat-num" data-target="20" data-suffix="+">0</div><div class="stat-lbl" data-i18n="st1">Years Experience</div></div>
-      <div class="stat-item reveal d1"><div class="stat-num" data-target="95" data-suffix="+">0</div><div class="stat-lbl" data-i18n="st2">Projects Done</div></div>
-      <div class="stat-item reveal d2"><div class="stat-num" data-target="200" data-suffix="%">0</div><div class="stat-lbl" data-i18n="st3">Satisfied Clients</div></div>
+<section id=\"stats\">
+  <div class=\"container\">
+    <div class=\"stats-grid\">
+      <div class=\"stat-item reveal\"><div class=\"stat-num\" data-target=\"20\" data-suffix=\"+\">0</div><div class=\"stat-lbl\" data-i18n=\"st1\">Years Experience</div></div>
+      <div class=\"stat-item reveal d1\"><div class=\"stat-num\" data-target=\"95\" data-suffix=\"+\">0</div><div class=\"stat-lbl\" data-i18n=\"st2\">Projects Done</div></div>
+      <div class=\"stat-item reveal d2\"><div class=\"stat-num\" data-target=\"200\" data-suffix=\"%\">0</div><div class=\"stat-lbl\" data-i18n=\"st3\">Satisfied Clients</div></div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact">
-  <div class="contact-inner">
-    <div class="section-header center">
-      <div class="label-pill reveal" data-i18n="contact-label">Contact</div>
-      <h2 class="section-title reveal d1">
-        <span data-i18n="contact-title-1">START YOUR</span><span class="accent" data-i18n="contact-title-2"> PROJECT</span>
-      </h2>
-      <p class="section-sub reveal d2" data-i18n="contact-sub">Tell us about your goals. We respond within 24 hours with a tailored plan — no obligation.</p>
+<section id=\"contact\">
+  <div class=\"contact-inner\">
+    <div class=\"section-header center\">
+      <div class=\"label-pill reveal\" data-i18n=\"contact-label\">Contact</div>
+      <h2 class=\"section-title reveal d1\"><span data-i18n=\"contact-title-1\">START YOUR</span><span class=\"accent\" data-i18n=\"contact-title-2\"> PROJECT</span></h2>
+      <p class=\"section-sub reveal d2\" data-i18n=\"contact-sub\">Tell us about your goals. We respond within 24 hours with a tailored plan — no obligation.</p>
     </div>
-    <div class="contact-form corner-box reveal">
-      <form action="https://formspree.io/f/xaqvgjje" method="POST" id="contactForm">
-        <div class="form-row">
-          <div class="form-group">
-            <label data-i18n="field-name">Full Name</label>
-            <input type="text" name="name" required data-i18n-placeholder="ph-name" placeholder="Your full name"/>
-          </div>
-          <div class="form-group">
-            <label data-i18n="field-email">Email Address</label>
-            <input type="email" name="email" required data-i18n-placeholder="ph-email" placeholder="hello@yourbrand.com"/>
-          </div>
+    <div class=\"contact-form corner-box reveal\">
+      <form action=\"https://formspree.io/f/xaqvgjje\" method=\"POST\" id=\"contactForm\">
+        <div class=\"form-row\">
+          <div class=\"form-group\"><label data-i18n=\"field-name\">Full Name</label><input type=\"text\" name=\"name\" required data-i18n-placeholder=\"ph-name\" placeholder=\"Your full name\"/></div>
+          <div class=\"form-group\"><label data-i18n=\"field-email\">Email Address</label><input type=\"email\" name=\"email\" required data-i18n-placeholder=\"ph-email\" placeholder=\"hello@yourbrand.com\"/></div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label data-i18n="field-website">Website URL</label>
-            <input type="text" name="company" placeholder="Company name or Website">
-          </div>
-          <div class="form-group">
-            <label data-i18n="field-budget">Budget</label>
-            <select name="budget">
-              <option value="" disabled selected data-i18n="budget-select">Select range</option>
-              <option value="starter" data-i18n="budget-1">Starter</option>
-              <option value="growth" data-i18n="budget-2">Growth</option>
-              <option value="enterprise" data-i18n="budget-3">Enterprise</option>
-            </select>
-          </div>
+        <div class=\"form-row\">
+          <div class=\"form-group\"><label data-i18n=\"field-website\">Website URL</label><input type=\"text\" name=\"company\" data-i18n-placeholder=\"ph-company\" placeholder=\"Company name or Website\"></div>
+          <div class=\"form-group\"><label data-i18n=\"field-budget\">Budget</label><select name=\"budget\"><option value=\"\" disabled selected data-i18n=\"budget-select\">Select range</option><option value=\"starter\" data-i18n=\"budget-1\">Starter</option><option value=\"growth\" data-i18n=\"budget-2\">Growth</option><option value=\"enterprise\" data-i18n=\"budget-3\">Enterprise</option></select></div>
         </div>
-        <div class="form-row full">
-          <div class="form-group">
-            <label data-i18n="field-message">Your Goal</label>
-            <textarea name="message" rows="5" data-i18n-placeholder="ph-message" placeholder="Describe your vision and what success looks like…"></textarea>
-          </div>
+        <div class=\"form-row full\">
+          <div class=\"form-group\"><label data-i18n=\"field-message\">Your Goal</label><textarea name=\"message\" rows=\"5\" data-i18n-placeholder=\"ph-message\" placeholder=\"Describe your vision and what success looks like…\"></textarea></div>
         </div>
-        <div class="form-submit">
-          <p class="form-note" data-i18n="form-note">Your data is handled with full discretion.</p>
-          <button type="submit" class="btn btn-primary btn-arrow" data-i18n="form-submit">SEND MESSAGE</button>
-        </div>
+        <div class=\"form-submit\"><p class=\"form-note\" data-i18n=\"form-note\">Your data is handled with full discretion.</p><button type=\"submit\" class=\"btn btn-primary btn-arrow\" id=\"form-submit-btn\" data-i18n=\"form-submit\">SEND MESSAGE</button></div>
+        <div id=\"form-error\" data-i18n=\"form-error-msg\">Something went wrong. Please try again or email us directly.</div>
       </form>
-      <div id="form-success">
-        <h3 data-i18n="success-h">TRANSMISSION RECEIVED</h3>
-        <p data-i18n="success-p">We will be in contact within 24 hours with a personalised plan for your brand.</p>
-      </div>
+      <div id=\"form-success\"><h3 data-i18n=\"success-h\">TRANSMISSION RECEIVED</h3><p data-i18n=\"success-p\">We will be in contact within 24 hours with a personalised plan for your brand.</p></div>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <a href="#hero" class="f-logo">
-      <div class="f-hex">
-        <svg viewBox="0 0 26 26" fill="none" width="26" height="26">
-          <polygon points="13,1 24,7 24,19 13,25 2,19 2,7" stroke="#00d4e8" stroke-width=".8" fill="rgba(0,212,232,.08)"/>
-          <polygon points="13,4.5 21,9 21,17 13,21.5 5,17 5,9" fill="#00d4e8" opacity=".75"/>
-        </svg>
-      </div>
-      <span class="f-logo-text">DONDA<span class="a"> . </span>DIGITAL</span>
+<footer id=\"footer\">
+  <div class=\"footer-inner\">
+    <a href=\"#hero\" class=\"f-logo\">
+      <div class=\"f-hex\"><svg viewBox=\"0 0 26 26\" fill=\"none\"><polygon points=\"13,2 23,7.5 23,18.5 13,24 3,18.5 3,7.5\" stroke=\"#00d4e8\" stroke-width=\"1\" fill=\"rgba(0,212,232,.08)\"/></svg></div>
+      <span class=\"f-logo-text\">DONDA<span class=\"a\"> . </span>DIGITAL</span>
     </a>
-    <div class="f-copy">© 2025 DONDA.DIGITAL — ALL RIGHTS RESERVED</div>
-    <div class="avail"><div class="avail-dot"></div><span data-i18n="avail">Available for projects</span></div>
+    <div class=\"avail\"><span class=\"avail-dot\"></span><span data-i18n=\"avail\">Available for new projects</span></div>
+    <p class=\"f-copy\">© 2026 DONDA.DIGITAL — <span data-i18n=\"rights\">All rights reserved</span></p>
   </div>
 </footer>
 
 <script>
-// ================================================================
-//  UTILS
-// ================================================================
-const $ = s => document.querySelector(s);
-const $$ = s => document.querySelectorAll(s);
-const ease3 = t => 1 - Math.pow(1-t, 3);
-
-// ================================================================
-//  CURSOR
-// ================================================================
-const cur=$('#cur'), curR=$('#cur-r');
-let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
-(function tickR(){ rx+=(mx-rx)*.11; ry+=(my-ry)*.11; curR.style.left=rx+'px'; curR.style.top=ry+'px'; requestAnimationFrame(tickR); })();
-$$('a,button,input,select,textarea,.sol-card,.proc-step').forEach(el=>{
-  el.addEventListener('mouseenter',()=>document.body.classList.add('cursor-big'));
-  el.addEventListener('mouseleave',()=>document.body.classList.remove('cursor-big'));
-});
-
-// ================================================================
-//  LOADER
-// ================================================================
-const lWord=$('#l-word'), lCount=$('#l-count'), lBar=$('#l-bar');
-const lStatuses = [$$('#l-status span')[0],$$('#l-status span')[1],$$('#l-status span')[2]];
-const lWords = ['Build','Design','Create','Launch','Scale'];
-let lwIdx=0, lsIdx=0;
-
-const lWordInt = setInterval(()=>{
-  lwIdx=(lwIdx+1)%lWords.length;
-  lWord.style.opacity='0'; lWord.style.transform='translate(-50%,-60%)';
-  setTimeout(()=>{ lWord.textContent=lWords[lwIdx]; lWord.style.opacity='1'; lWord.style.transform='translate(-50%,-50%)'; },260);
-},700);
-
-const lStatInt = setInterval(()=>{
-  lStatuses.forEach(s=>s.classList.remove('on'));
-  lsIdx=(lsIdx+1)%lStatuses.length; lStatuses[lsIdx].classList.add('on');
-},600);
-
-const LS = performance.now(), LD = 2800;
-function loaderTick(now){
-  const pct = Math.min(100, Math.round((now-LS)/LD*100));
-  lCount.textContent = String(pct).padStart(3,'0');
-  lBar.style.width = pct+'%';
-  if(pct<100){ requestAnimationFrame(loaderTick); return; }
-  clearInterval(lWordInt); clearInterval(lStatInt);
-  setTimeout(()=>{
-    const loader = $('#loader');
-    loader.style.transition='opacity .85s ease'; loader.style.opacity='0'; loader.style.pointerEvents='none';
-    setTimeout(()=>{ loader.style.display='none'; startHero(); },850);
-  },300);
-}
-requestAnimationFrame(loaderTick);
-
-// ================================================================
-//  HERO ENTRANCE  — smooth stagger, no lag
-// ================================================================
-function startHero(){
-  // Title words slide up one by one
-  $$('.ht-word').forEach((w,i)=>{
-    w.style.transition = `transform .9s cubic-bezier(.16,1,.3,1) ${.05+i*.14}s`;
-    w.style.transform = 'translateY(0)';
-  });
-  // Fade elements in sequence
-  [['#hero-eye',.45],['#hero-desc',.62],['#hero-ctas',.78],['#hero-stats',.95]].forEach(([sel,delay])=>{
-    const el=$(sel); if(!el) return;
-    el.style.transition = `opacity .85s cubic-bezier(.16,1,.3,1) ${delay}s, transform .85s cubic-bezier(.16,1,.3,1) ${delay}s`;
-    el.style.opacity='1'; el.style.transform='translateY(0)';
-  });
-}
-
-// ================================================================
-//  SCROLL PROGRESS
-// ================================================================
-const prog=$('#prog');
-window.addEventListener('scroll',()=>{
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  prog.style.width = (window.scrollY/total*100)+'%';
-},{passive:true});
-
-// ================================================================
-//  NAV SCROLL
-// ================================================================
-window.addEventListener('scroll',()=>$('#nav').classList.toggle('scrolled',window.scrollY>80),{passive:true});
-
-// ================================================================
-//  REVEAL ON SCROLL
-// ================================================================
-const revObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('vis'); });
-},{threshold:.08, rootMargin:'-35px'});
-$$('.reveal').forEach(r=>revObs.observe(r));
-
-// ================================================================
-//  COUNTER ANIMATION
-// ================================================================
-function animCount(el,target,suffix){
-  const dur=1600, t0=performance.now();
-  function tick(now){ const p=Math.min((now-t0)/dur,1); el.textContent=Math.round(ease3(p)*target)+(suffix||''); if(p<1) requestAnimationFrame(tick); }
-  requestAnimationFrame(tick);
-}
-const statObs = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      const n=e.target.querySelector('[data-target]');
-      if(n&&!n.dataset.done){ n.dataset.done='1'; animCount(n,+n.dataset.target,n.dataset.suffix||''); }
-    }
-  });
-},{threshold:.3});
-$$('.stat-item').forEach(s=>statObs.observe(s));
-
-// ================================================================
-//  PROCESS FILL
-// ================================================================
-const procSec=$('#process'), procFill=$('#proc-fill');
-window.addEventListener('scroll',()=>{
-  if(!procSec||!procFill) return;
-  const r=procSec.getBoundingClientRect();
-  const pct=Math.min(100,Math.max(0,-r.top/procSec.offsetHeight*155));
-  procFill.style.height=pct+'%';
-},{passive:true});
-
-// ================================================================
-//  SOL CARD GLOW
-// ================================================================
-$$('.sol-card').forEach(c=>{
-  c.addEventListener('mousemove',e=>{
-    const r=c.getBoundingClientRect();
-    c.style.setProperty('--mx',((e.clientX-r.left)/r.width*100).toFixed(1)+'%');
-    c.style.setProperty('--my',((e.clientY-r.top)/r.height*100).toFixed(1)+'%');
-    c.style.transform=`perspective(900px) rotateX(${((e.clientY-r.top)/r.height-.5)*-3.5}deg) rotateY(${((e.clientX-r.left)/r.width-.5)*3.5}deg)`;
-  });
-  c.addEventListener('mouseleave',()=>{ c.style.transform=''; c.style.transition='transform .5s var(--ease-out)'; setTimeout(()=>c.style.transition='',500); });
-});
-
-// ================================================================
-//  SMOOTH SCROLL
-// ================================================================
-$$('a[href^="#"]').forEach(a=>{
-  a.addEventListener('click',e=>{
-    const id=a.getAttribute('href').slice(1), el=document.getElementById(id);
-    if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
-  });
-});
-
-// ================================================================
-//  FORM (Formspree AJAX)
-// ================================================================
-const cForm=$('#contactForm'), fSuccess=$('#form-success');
-if(cForm){
-  cForm.addEventListener('submit', async e=>{
-    e.preventDefault();
-    const btn=cForm.querySelector('[type=submit]');
-    const orig=btn.textContent; btn.textContent='SENDING…'; btn.disabled=true;
-    try{
-      const res=await fetch(cForm.action,{ method:'POST', body:new FormData(cForm), headers:{'Accept':'application/json'} });
-      if(res.ok){ cForm.style.display='none'; fSuccess.style.display='block'; }
-      else{ btn.textContent='ERROR — TRY AGAIN'; btn.disabled=false; }
-    }catch(err){ btn.textContent='ERROR — TRY AGAIN'; btn.disabled=false; }
-  });
-}
-
-// ================================================================
-//  LANGUAGE SYSTEM  — full deep switch
-// ================================================================
+/* =================================================
+   I18N DICTIONARY
+================================================= */
 const I18N = {
   en:{
-    'nav-home':'HOME','nav-solutions':'SOLUTIONS','nav-process':'PROCESS','nav-contact':'CONTACT','nav-cta':'GET STARTED',
-    'lang-select':'Select Language',
-    'badge1':'System Online — v2.4.1','badge2':'EU Based — Global Reach','badge3':'98% Satisfaction Rate',
-    'hero-eye':"Collection '26 — Digital Agency",
-    'hl1':'We Build','hl2':'Digital','hl3':'Futures',
-    'hero-desc':'E-commerce platforms, high-performance websites and precision marketing for brands that demand results.',
-    'cta1':'VIEW SOLUTIONS','cta2':'CONTACT US',
-    'stat-projects':'Projects','stat-sat':'Satisfaction','stat-rev':'Avg. Revenue',
-    'sol-eye':'Our Solutions','sol-head1':'Precision Engineered','sol-head2':'Services',
-    'sol-sub':'Every package is built around measurable outcomes. No bloat, no guesswork — only systems that perform.',
-    's1-title1':'Online Store','s1-title2':'Development','s1-desc':'Full-stack e-commerce on Shopify, WooCommerce or custom stack.','s1-f1':'Custom storefront design','s1-f2':'Payment & logistics integration','s1-f3':'SEO-ready product architecture','s1-f4':'Analytics & conversion tracking',
-    's2-title1':'Website','s2-title2':'Design & Dev','s2-desc':'Bespoke marketing sites, landing pages and web apps with elite UX.','s2-f1':'Responsive, mobile-first build','s2-f2':'CMS integration (headless-ready)','s2-f3':'Core Web Vitals optimised','s2-f4':'Motion & interaction design',
-    's3-title1':'Growth','s3-title2':'Marketing','s3-desc':'Data-driven paid media, SEO and social strategy managed as a unified growth system.','s3-f1':'Google & Meta Ads management','s3-f2':'SEO & content strategy','s3-f3':'Weekly performance reporting','s3-f4':'CRO & A/B testing',
-    'starting-from':'STARTING FROM','get-started':'GET STARTED','most-pop':'MOST POPULAR',
-    't3d-eye':'Technology','t3d-head1':'Built with','t3d-head2':'Precision','t3d-sub':'Every project engineered to the highest technical standard — from architecture to deployment.',
-    'tl1':'Core Architecture','tl2':'Performance Layer','tl3':'Data Processing','tl4':'Security Protocol',
-    'proc-eye':'How We Work','proc-head1':'The','proc-head2':'Protocol','proc-sub':'A precise four-phase system designed to take your project from brief to live — with zero ambiguity at every step.',
-    'ph1':'Phase One','ph2':'Phase Two','ph3':'Phase Three','ph4':'Phase Four',
-    'proc-t1':'Discovery','proc-d1':'We map your goals, audience and competitive landscape before writing a single line of code.',
-    'proc-t2':'Strategy','proc-d2':'A custom growth architecture — content, UX and channel mix — aligned to your KPIs.',
-    'proc-t3':'Execution','proc-d3':'Design, development and campaign launch in agile sprints with weekly progress updates.',
-    'proc-t4':'Scale','proc-d4':'Ongoing optimisation, A/B testing and growth iteration based on live performance data.',
-    'st1':'Years Experience','st2':'Projects Done','st3':'Satisfied Clients',
-    'contact-label':'Contact','contact-title-1':'START YOUR','contact-title-2':' PROJECT',
-    'contact-sub':'Tell us about your goals. We respond within 24 hours with a tailored plan — no obligation.',
-    'field-name':'Full Name','field-email':'Email Address','field-website':'Website URL','field-budget':'Budget','field-message':'Your Goal',
-    'budget-select':'Select range','budget-1':'Starter','budget-2':'Growth','budget-3':'Enterprise',
-    'form-note':'Your data is handled with full discretion.','form-submit':'SEND MESSAGE',
-    'success-h':'TRANSMISSION RECEIVED','success-p':'We will be in contact within 24 hours with a personalised plan for your brand.',
-    'avail':'Available for projects',
-    'ph-name':'Your full name','ph-email':'hello@yourbrand.com','ph-message':'Describe your vision and what success looks like…',
-    'mq1':'E-Commerce','mq2':'Web Design','mq3':'Performance Marketing','mq4':'Brand Identity','mq5':'Conversion Optimisation','mq6':'Web Apps',
+    \"nav-home\":\"HOME\",\"nav-solutions\":\"SOLUTIONS\",\"nav-process\":\"PROCESS\",\"nav-contact\":\"CONTACT\",\"nav-cta\":\"GET STARTED\",\"lang-select\":\"Select Language\",
+    \"badge1\":\"System Online — v2.4.1\",\"badge2\":\"EU Based — Global Reach\",\"badge3\":\"98% Satisfaction Rate\",
+    \"hero-eye\":\"Collection '26 — Digital Agency\",\"hl1\":\"We Build\",\"hl2\":\"Digital\",\"hl3\":\"Futures\",
+    \"hero-desc\":\"E-commerce platforms, high-performance websites and precision marketing for brands that demand results.\",
+    \"cta1\":\"VIEW SOLUTIONS\",\"cta2\":\"CONTACT US\",\"stat-projects\":\"Projects\",\"stat-sat\":\"Satisfaction\",\"stat-rev\":\"Avg. Revenue\",
+    \"mq1\":\"E-Commerce\",\"mq2\":\"Web Design\",\"mq3\":\"Performance Marketing\",\"mq4\":\"Brand Identity\",\"mq5\":\"Conversion Optimisation\",\"mq6\":\"Web Apps\",
+    \"sol-eye\":\"Our Solutions\",\"sol-head1\":\"Precision Engineered\",\"sol-head2\":\"Services\",\"sol-sub\":\"Every package is built around measurable outcomes. No bloat, no guesswork — only systems that perform.\",
+    \"s1-title1\":\"Online Store\",\"s1-title2\":\"Development\",\"s1-desc\":\"Full-stack e-commerce on Shopify, WooCommerce or custom stack. Optimised for conversion, speed and scale from day one.\",
+    \"s1-f1\":\"Custom storefront design\",\"s1-f2\":\"Payment & logistics integration\",\"s1-f3\":\"SEO-ready product architecture\",\"s1-f4\":\"Analytics & conversion tracking\",
+    \"s2-title1\":\"Website\",\"s2-title2\":\"Design & Dev\",\"s2-desc\":\"Bespoke marketing sites, landing pages and web apps with elite UX, blazing performance scores and scroll-stopping visual design.\",
+    \"s2-f1\":\"Responsive, mobile-first build\",\"s2-f2\":\"CMS integration (headless-ready)\",\"s2-f3\":\"Core Web Vitals optimised\",\"s2-f4\":\"Motion & interaction design\",
+    \"s3-title1\":\"Growth\",\"s3-title2\":\"Marketing\",\"s3-desc\":\"Data-driven paid media, SEO and social strategy managed as a unified growth system. Every euro tracked to its return.\",
+    \"s3-f1\":\"Google & Meta Ads management\",\"s3-f2\":\"SEO & content strategy\",\"s3-f3\":\"Weekly performance reporting\",\"s3-f4\":\"CRO & A/B testing\",
+    \"starting-from\":\"STARTING FROM\",\"most-pop\":\"MOST POPULAR\",\"get-started\":\"GET STARTED\",
+    \"t3d-eye\":\"Technology\",\"t3d-head1\":\"Built with\",\"t3d-head2\":\"Precision\",\"t3d-sub\":\"Every project engineered to the highest technical standard — from architecture to deployment.\",
+    \"tl1\":\"Core Architecture\",\"tl2\":\"Performance Layer\",\"tl3\":\"Data Processing\",\"tl4\":\"Security Protocol\",
+    \"proc-eye\":\"How We Work\",\"proc-head1\":\"The\",\"proc-head2\":\"Protocol\",\"proc-sub\":\"A precise four-phase system designed to take your project from brief to live — with zero ambiguity at every step.\",
+    \"ph1\":\"Phase One\",\"ph2\":\"Phase Two\",\"ph3\":\"Phase Three\",\"ph4\":\"Phase Four\",
+    \"proc-t1\":\"Discovery\",\"proc-d1\":\"We map your goals, audience and competitive landscape before writing a single line of code.\",
+    \"proc-t2\":\"Strategy\",\"proc-d2\":\"A custom growth architecture — content, UX and channel mix — aligned to your KPIs.\",
+    \"proc-t3\":\"Execution\",\"proc-d3\":\"Design, development and campaign launch in agile sprints with weekly progress updates.\",
+    \"proc-t4\":\"Scale\",\"proc-d4\":\"Ongoing optimisation, A/B testing and growth iteration based on live performance data.\",
+    \"st1\":\"Years Experience\",\"st2\":\"Projects Done\",\"st3\":\"Satisfied Clients\",
+    \"contact-label\":\"Contact\",\"contact-title-1\":\"START YOUR\",\"contact-title-2\":\" PROJECT\",\"contact-sub\":\"Tell us about your goals. We respond within 24 hours with a tailored plan — no obligation.\",
+    \"field-name\":\"Full Name\",\"field-email\":\"Email Address\",\"field-website\":\"Website URL\",\"field-budget\":\"Budget\",\"field-message\":\"Your Goal\",
+    \"ph-name\":\"Your full name\",\"ph-email\":\"hello@yourbrand.com\",\"ph-company\":\"Company name or Website\",\"ph-message\":\"Describe your vision and what success looks like…\",
+    \"budget-select\":\"Select range\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"Your data is handled with full discretion.\",\"form-submit\":\"SEND MESSAGE\",\"form-error-msg\":\"Something went wrong. Please try again or email us directly.\",
+    \"success-h\":\"TRANSMISSION RECEIVED\",\"success-p\":\"We will be in contact within 24 hours with a personalised plan for your brand.\",
+    \"avail\":\"Available for new projects\",\"rights\":\"All rights reserved\",\"k-plus\":\"k+\"
   },
   cs:{
-    'nav-home':'DOMOV','nav-solutions':'SLUŽBY','nav-process':'PROCES','nav-contact':'KONTAKT','nav-cta':'ZAČÍT',
-    'lang-select':'Vyberte jazyk',
-    'badge1':'Systém online — v2.4.1','badge2':'EU — Globální dosah','badge3':'98% spokojenost',
-    'hero-eye':"Kolekce '26 — Digitální agentura",
-    'hl1':'Stavíme','hl2':'Digitální','hl3':'Budoucnost',
-    'hero-desc':'E-commerce platformy, výkonné weby a precizní marketing pro značky, které vyžadují výsledky.',
-    'cta1':'NAŠE SLUŽBY','cta2':'KONTAKT',
-    'stat-projects':'Projektů','stat-sat':'Spokojenost','stat-rev':'Prům. výnos',
-    'sol-eye':'Naše řešení','sol-head1':'Precizně navržené','sol-head2':'Služby',
-    'sol-sub':'Každý balíček je postaven kolem měřitelných výsledků. Žádné zbytečnosti — jen systémy, které fungují.',
-    's1-title1':'Internetový obchod','s1-title2':'Vývoj','s1-desc':'Full-stack e-commerce na Shopify, WooCommerce nebo custom řešení.','s1-f1':'Vlastní design shopu','s1-f2':'Platby & logistika','s1-f3':'SEO architektura produktů','s1-f4':'Analytika & sledování konverzí',
-    's2-title1':'Webové stránky','s2-title2':'Design & Vývoj','s2-desc':'Prémiové marketingové weby a webové aplikace s výjimečným UX.','s2-f1':'Responzivní, mobile-first','s2-f2':'Integrace CMS','s2-f3':'Optimalizace Core Web Vitals','s2-f4':'Motion & interaction design',
-    's3-title1':'Růstový','s3-title2':'Marketing','s3-desc':'Data-driven reklama, SEO a sociální strategie jako jednotný růstový systém.','s3-f1':'Google & Meta Ads','s3-f2':'SEO & obsahová strategie','s3-f3':'Týdenní reporty výkonu','s3-f4':'CRO & A/B testování',
-    'starting-from':'OD','get-started':'ZAČÍT','most-pop':'NEJOBLÍBENĚJŠÍ',
-    't3d-eye':'Technologie','t3d-head1':'Postaveno s','t3d-head2':'Precizností','t3d-sub':'Každý projekt je navržen podle nejvyšších technických standardů.',
-    'tl1':'Hlavní architektura','tl2':'Vrstva výkonu','tl3':'Zpracování dat','tl4':'Bezpečnostní protokol',
-    'proc-eye':'Jak pracujeme','proc-head1':'','proc-head2':'Protokol','proc-sub':'Přesný čtyřfázový systém od zadání po spuštění — bez nejasností.',
-    'ph1':'Fáze jedna','ph2':'Fáze dvě','ph3':'Fáze tři','ph4':'Fáze čtyři',
-    'proc-t1':'Průzkum','proc-d1':'Mapujeme vaše cíle, cílovou skupinu a konkurenci dříve, než napíšeme řádek kódu.',
-    'proc-t2':'Strategie','proc-d2':'Vlastní růstová architektura — obsah, UX a mix kanálů — zarovnaná s vašimi KPI.',
-    'proc-t3':'Realizace','proc-d3':'Design, vývoj a spuštění kampaně v agilních sprintech s týdenními aktualizacemi.',
-    'proc-t4':'Škálování','proc-d4':'Průběžná optimalizace, A/B testování a iterace na základě živých dat.',
-    'st1':'Let zkušeností','st2':'Dokončených projektů','st3':'Spokojených klientů',
-    'contact-label':'Kontakt','contact-title-1':'ZAHAJTE SVŮJ','contact-title-2':' PROJEKT',
-    'contact-sub':'Řekněte nám o svých cílech. Odpovíme do 24 hodin s přizpůsobeným plánem.',
-    'field-name':'Celé jméno','field-email':'E-mailová adresa','field-website':'URL webu','field-budget':'Rozpočet','field-message':'Váš cíl',
-    'budget-select':'Vyberte rozsah','budget-1':'Starter','budget-2':'Growth','budget-3':'Enterprise',
-    'form-note':'Vaše data jsou zpracovávána s plnou diskrecí.','form-submit':'ODESLAT ZPRÁVU',
-    'success-h':'PŘIJATO','success-p':'Ozveme se do 24 hodin s personalizovaným plánem pro vaši značku.',
-    'avail':'Dostupní pro projekty',
-    'ph-name':'Vaše celé jméno','ph-email':'hello@vasfirma.cz','ph-message':'Popište svou vizi a jak vypadá úspěch…',
-    'mq1':'E-Commerce','mq2':'Web Design','mq3':'Výkonnostní marketing','mq4':'Brand Identity','mq5':'Optimalizace konverzí','mq6':'Webové aplikace',
+    \"nav-home\":\"DOMŮ\",\"nav-solutions\":\"ŘEŠENÍ\",\"nav-process\":\"PROCES\",\"nav-contact\":\"KONTAKT\",\"nav-cta\":\"ZAČÍT\",\"lang-select\":\"Vyberte jazyk\",
+    \"badge1\":\"Systém online — v2.4.1\",\"badge2\":\"Sídlo v EU — globální dosah\",\"badge3\":\"98% spokojenost\",
+    \"hero-eye\":\"Kolekce '26 — Digitální agentura\",\"hl1\":\"Stavíme\",\"hl2\":\"Digitální\",\"hl3\":\"Budoucnost\",
+    \"hero-desc\":\"E-shopy, vysoce výkonné weby a přesný marketing pro značky, které vyžadují výsledky.\",
+    \"cta1\":\"ZOBRAZIT ŘEŠENÍ\",\"cta2\":\"KONTAKTUJTE NÁS\",\"stat-projects\":\"Projektů\",\"stat-sat\":\"Spokojenost\",\"stat-rev\":\"Prům. tržby\",
+    \"mq1\":\"E-shopy\",\"mq2\":\"Web design\",\"mq3\":\"Výkonnostní marketing\",\"mq4\":\"Identita značky\",\"mq5\":\"Optimalizace konverzí\",\"mq6\":\"Webové aplikace\",
+    \"sol-eye\":\"Naše řešení\",\"sol-head1\":\"Přesně navržené\",\"sol-head2\":\"Služby\",\"sol-sub\":\"Každý balíček je postaven na měřitelných výsledcích. Žádná zbytečnost — jen systémy, které fungují.\",
+    \"s1-title1\":\"Online obchod\",\"s1-title2\":\"Vývoj\",\"s1-desc\":\"Komplexní e-commerce na Shopify, WooCommerce nebo na míru. Optimalizováno pro konverze, rychlost a růst.\",
+    \"s1-f1\":\"Design obchodu na míru\",\"s1-f2\":\"Platby a logistika\",\"s1-f3\":\"SEO produktová architektura\",\"s1-f4\":\"Analytika a sledování konverzí\",
+    \"s2-title1\":\"Webové stránky\",\"s2-title2\":\"Design a vývoj\",\"s2-desc\":\"Marketingové weby, landing pages a aplikace s prvotřídním UX a vizuálním designem.\",
+    \"s2-f1\":\"Responzivní mobile-first\",\"s2-f2\":\"CMS integrace (headless)\",\"s2-f3\":\"Optimalizace Core Web Vitals\",\"s2-f4\":\"Motion a interakce\",
+    \"s3-title1\":\"Růstový\",\"s3-title2\":\"Marketing\",\"s3-desc\":\"Data-driven reklama, SEO a sociální sítě jako jednotný růstový systém. Každá koruna sledována k návratnosti.\",
+    \"s3-f1\":\"Správa Google a Meta Ads\",\"s3-f2\":\"SEO a obsahová strategie\",\"s3-f3\":\"Týdenní reporty\",\"s3-f4\":\"CRO a A/B testování\",
+    \"starting-from\":\"OD\",\"most-pop\":\"NEJOBLÍBENĚJŠÍ\",\"get-started\":\"ZAČÍT\",
+    \"t3d-eye\":\"Technologie\",\"t3d-head1\":\"Postaveno s\",\"t3d-head2\":\"přesností\",\"t3d-sub\":\"Každý projekt na nejvyšší technické úrovni — od architektury po nasazení.\",
+    \"tl1\":\"Core architektura\",\"tl2\":\"Výkonnostní vrstva\",\"tl3\":\"Zpracování dat\",\"tl4\":\"Bezpečnostní protokol\",
+    \"proc-eye\":\"Jak pracujeme\",\"proc-head1\":\"Náš\",\"proc-head2\":\"Protokol\",\"proc-sub\":\"Čtyřfázový systém, který provede váš projekt od briefu po spuštění — bez nejasností.\",
+    \"ph1\":\"Fáze první\",\"ph2\":\"Fáze druhá\",\"ph3\":\"Fáze třetí\",\"ph4\":\"Fáze čtvrtá\",
+    \"proc-t1\":\"Discovery\",\"proc-d1\":\"Zmapujeme cíle, publikum a konkurenci, než napíšeme první řádek kódu.\",
+    \"proc-t2\":\"Strategie\",\"proc-d2\":\"Růstová architektura — obsah, UX a kanály — sladěná s vašimi KPI.\",
+    \"proc-t3\":\"Realizace\",\"proc-d3\":\"Design, vývoj a spuštění v agilních sprintech s týdenními reporty.\",
+    \"proc-t4\":\"Škálování\",\"proc-d4\":\"Průběžná optimalizace, A/B testy a iterace na základě dat.\",
+    \"st1\":\"Let zkušeností\",\"st2\":\"Hotových projektů\",\"st3\":\"Spokojených klientů\",
+    \"contact-label\":\"Kontakt\",\"contact-title-1\":\"ZAČNĚTE SVŮJ\",\"contact-title-2\":\" PROJEKT\",\"contact-sub\":\"Řekněte nám o svých cílech. Do 24 hodin se ozveme s plánem na míru — nezávazně.\",
+    \"field-name\":\"Celé jméno\",\"field-email\":\"E-mail\",\"field-website\":\"Web\",\"field-budget\":\"Rozpočet\",\"field-message\":\"Váš cíl\",
+    \"ph-name\":\"Vaše celé jméno\",\"ph-email\":\"ahoj@vasznacka.cz\",\"ph-company\":\"Firma nebo web\",\"ph-message\":\"Popište svou vizi a jak vypadá úspěch…\",
+    \"budget-select\":\"Vyberte rozpětí\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"S vašimi daty zacházíme diskrétně.\",\"form-submit\":\"ODESLAT ZPRÁVU\",\"form-error-msg\":\"Něco se pokazilo. Zkuste to znovu nebo nám napište přímo.\",
+    \"success-h\":\"PŘENOS PŘIJAT\",\"success-p\":\"Do 24 hodin se ozveme s plánem na míru pro vaši značku.\",
+    \"avail\":\"K dispozici pro nové projekty\",\"rights\":\"Všechna práva vyhrazena\",\"k-plus\":\"k+\"
   },
   pl:{
-    'nav-home':'START','nav-solutions':'USŁUGI','nav-process':'PROCES','nav-contact':'KONTAKT','nav-cta':'ZACZNIJ',
-    'lang-select':'Wybierz język',
-    'badge1':'System online — v2.4.1','badge2':'UE — Zasięg globalny','badge3':'98% satysfakcja',
-    'hero-eye':"Kolekcja '26 — Agencja cyfrowa",
-    'hl1':'Budujemy','hl2':'Cyfrową','hl3':'Przyszłość',
-    'hero-desc':'Platformy e-commerce, wydajne strony i precyzyjny marketing dla marek wymagających rezultatów.',
-    'cta1':'NASZE USŁUGI','cta2':'KONTAKT',
-    'stat-projects':'Projektów','stat-sat':'Satysfakcja','stat-rev':'Śr. przychód',
-    'sol-eye':'Nasze rozwiązania','sol-head1':'Precyzyjnie zaprojektowane','sol-head2':'Usługi',
-    'sol-sub':'Każdy pakiet jest zbudowany wokół mierzalnych wyników. Bez zbędnych rzeczy — tylko systemy, które działają.',
-    's1-title1':'Sklep internetowy','s1-title2':'Wdrożenie','s1-desc':'Full-stack e-commerce na Shopify, WooCommerce lub własnym stacku.','s1-f1':'Indywidualny design sklepu','s1-f2':'Płatności & logistyka','s1-f3':'Architektura SEO produktów','s1-f4':'Analityka & śledzenie konwersji',
-    's2-title1':'Strona internetowa','s2-title2':'Design & Dev','s2-desc':'Dedykowane strony marketingowe i aplikacje webowe z elitarnym UX.','s2-f1':'Responsywny, mobile-first','s2-f2':'Integracja CMS','s2-f3':'Optymalizacja Core Web Vitals','s2-f4':'Motion & interaction design',
-    's3-title1':'Growth','s3-title2':'Marketing','s3-desc':'Data-driven reklama, SEO i strategia społeczna jako jeden system wzrostu.','s3-f1':'Google & Meta Ads','s3-f2':'SEO & strategia treści','s3-f3':'Tygodniowe raporty','s3-f4':'CRO & A/B testing',
-    'starting-from':'OD','get-started':'ZACZNIJ','most-pop':'NAJPOPULARNIEJSZY',
-    't3d-eye':'Technologia','t3d-head1':'Zbudowane z','t3d-head2':'Precyzją','t3d-sub':'Każdy projekt inżynierowany zgodnie z najwyższymi standardami technicznymi.',
-    'tl1':'Architektura','tl2':'Warstwa wydajności','tl3':'Przetwarzanie danych','tl4':'Protokół bezpieczeństwa',
-    'proc-eye':'Jak pracujemy','proc-head1':'','proc-head2':'Protokół','proc-sub':'Precyzyjny czteroetapowy system od briefu do wdrożenia.',
-    'ph1':'Etap pierwszy','ph2':'Etap drugi','ph3':'Etap trzeci','ph4':'Etap czwarty',
-    'proc-t1':'Odkrycie','proc-d1':'Mapujemy Twoje cele, odbiorców i konkurencję zanim napiszemy linijkę kodu.',
-    'proc-t2':'Strategia','proc-d2':'Indywidualna architektura wzrostu dopasowana do Twoich KPI.',
-    'proc-t3':'Realizacja','proc-d3':'Design, development i launch kampanii w sprintach agile.',
-    'proc-t4':'Skalowanie','proc-d4':'Ciągła optymalizacja i iteracje na podstawie danych na żywo.',
-    'st1':'Lat doświadczenia','st2':'Projektów','st3':'Zadowolonych klientów',
-    'contact-label':'Kontakt','contact-title-1':'ROZPOCZNIJ SWÓJ','contact-title-2':' PROJEKT',
-    'contact-sub':'Opowiedz nam o swoich celach. Odpowiadamy w 24 godziny.',
-    'field-name':'Imię i nazwisko','field-email':'Adres e-mail','field-website':'Adres strony','field-budget':'Budżet','field-message':'Twój cel',
-    'budget-select':'Wybierz zakres','budget-1':'Starter','budget-2':'Growth','budget-3':'Enterprise',
-    'form-note':'Twoje dane są traktowane z pełną dyskrecją.','form-submit':'WYŚLIJ WIADOMOŚĆ',
-    'success-h':'ODEBRANO','success-p':'Skontaktujemy się w ciągu 24 godzin z planem dla Twojej marki.',
-    'avail':'Dostępni dla projektów',
-    'ph-name':'Twoje imię i nazwisko','ph-email':'hello@twojafirma.pl','ph-message':'Opisz swoją wizję i jak wygląda sukces…',
-    'mq1':'E-Commerce','mq2':'Web Design','mq3':'Marketing efektywnościowy','mq4':'Brand Identity','mq5':'Optymalizacja konwersji','mq6':'Aplikacje webowe',
+    \"nav-home\":\"START\",\"nav-solutions\":\"USŁUGI\",\"nav-process\":\"PROCES\",\"nav-contact\":\"KONTAKT\",\"nav-cta\":\"ZACZNIJ\",\"lang-select\":\"Wybierz język\",
+    \"badge1\":\"System Online — v2.4.1\",\"badge2\":\"Siedziba w UE — Globalny Zasięg\",\"badge3\":\"98% Zadowolenia\",
+    \"hero-eye\":\"Kolekcja '26 — Agencja Cyfrowa\",\"hl1\":\"Budujemy\",\"hl2\":\"Cyfrową\",\"hl3\":\"Przyszłość\",
+    \"hero-desc\":\"Platformy e-commerce, wydajne strony i precyzyjny marketing dla marek, które wymagają wyników.\",
+    \"cta1\":\"ZOBACZ USŁUGI\",\"cta2\":\"KONTAKT\",\"stat-projects\":\"Projekty\",\"stat-sat\":\"Zadowolenie\",\"stat-rev\":\"Śr. przychód\",
+    \"mq1\":\"E-Commerce\",\"mq2\":\"Projektowanie Stron\",\"mq3\":\"Marketing Wydajnościowy\",\"mq4\":\"Identyfikacja Marki\",\"mq5\":\"Optymalizacja Konwersji\",\"mq6\":\"Aplikacje Web\",
+    \"sol-eye\":\"Nasze Usługi\",\"sol-head1\":\"Inżynieria\",\"sol-head2\":\"Precyzji\",\"sol-sub\":\"Każdy pakiet zbudowany jest wokół mierzalnych rezultatów. Tylko działające systemy.\",
+    \"s1-title1\":\"Sklep\",\"s1-title2\":\"Internetowy\",\"s1-desc\":\"Pełny e-commerce na Shopify, WooCommerce lub custom. Optymalizacja konwersji i skalowania od pierwszego dnia.\",
+    \"s1-f1\":\"Indywidualny design sklepu\",\"s1-f2\":\"Integracja płatności i logistyki\",\"s1-f3\":\"Architektura SEO\",\"s1-f4\":\"Analityka i konwersje\",
+    \"s2-title1\":\"Strona WWW\",\"s2-title2\":\"Design & Dev\",\"s2-desc\":\"Strony marketingowe, landing page i aplikacje z elitarnym UX i wizualizacją zatrzymującą wzrok.\",
+    \"s2-f1\":\"Mobile-first responsywność\",\"s2-f2\":\"Integracja CMS (headless)\",\"s2-f3\":\"Core Web Vitals\",\"s2-f4\":\"Motion & interakcje\",
+    \"s3-title1\":\"Growth\",\"s3-title2\":\"Marketing\",\"s3-desc\":\"Reklama oparta na danych, SEO i social media jako jeden system wzrostu. Każde euro mierzone.\",
+    \"s3-f1\":\"Zarządzanie Google & Meta Ads\",\"s3-f2\":\"Strategia SEO i content\",\"s3-f3\":\"Cotygodniowe raporty\",\"s3-f4\":\"CRO i testy A/B\",
+    \"starting-from\":\"OD\",\"most-pop\":\"NAJPOPULARNIEJSZY\",\"get-started\":\"ZACZNIJ\",
+    \"t3d-eye\":\"Technologia\",\"t3d-head1\":\"Zbudowane z\",\"t3d-head2\":\"Precyzją\",\"t3d-sub\":\"Każdy projekt na najwyższym poziomie technicznym — od architektury po wdrożenie.\",
+    \"tl1\":\"Architektura\",\"tl2\":\"Wydajność\",\"tl3\":\"Przetwarzanie Danych\",\"tl4\":\"Protokół Bezpieczeństwa\",
+    \"proc-eye\":\"Jak Pracujemy\",\"proc-head1\":\"Nasz\",\"proc-head2\":\"Protokół\",\"proc-sub\":\"Precyzyjny czterofazowy system — od briefu do uruchomienia bez niejasności.\",
+    \"ph1\":\"Faza Pierwsza\",\"ph2\":\"Faza Druga\",\"ph3\":\"Faza Trzecia\",\"ph4\":\"Faza Czwarta\",
+    \"proc-t1\":\"Odkrywanie\",\"proc-d1\":\"Mapujemy cele, odbiorców i konkurencję zanim napiszemy linijkę kodu.\",
+    \"proc-t2\":\"Strategia\",\"proc-d2\":\"Niestandardowa architektura wzrostu — treść, UX, kanały — zgodnie z KPI.\",
+    \"proc-t3\":\"Realizacja\",\"proc-d3\":\"Design, rozwój i uruchomienie w sprintach z cotygodniowymi aktualizacjami.\",
+    \"proc-t4\":\"Skalowanie\",\"proc-d4\":\"Stała optymalizacja, testy A/B i iteracja na żywych danych.\",
+    \"st1\":\"Lat Doświadczenia\",\"st2\":\"Ukończonych Projektów\",\"st3\":\"Zadowolonych Klientów\",
+    \"contact-label\":\"Kontakt\",\"contact-title-1\":\"ZACZNIJ SWÓJ\",\"contact-title-2\":\" PROJEKT\",\"contact-sub\":\"Powiedz nam o swoich celach. Odpowiemy w ciągu 24 godzin z planem na miarę — bez zobowiązań.\",
+    \"field-name\":\"Imię i Nazwisko\",\"field-email\":\"E-mail\",\"field-website\":\"Strona WWW\",\"field-budget\":\"Budżet\",\"field-message\":\"Twój Cel\",
+    \"ph-name\":\"Twoje imię i nazwisko\",\"ph-email\":\"witaj@twojamarka.pl\",\"ph-company\":\"Nazwa firmy lub strona\",\"ph-message\":\"Opisz swoją wizję i jak wygląda sukces…\",
+    \"budget-select\":\"Wybierz zakres\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"Twoje dane traktujemy z pełną dyskrecją.\",\"form-submit\":\"WYŚLIJ WIADOMOŚĆ\",\"form-error-msg\":\"Coś poszło nie tak. Spróbuj ponownie lub napisz bezpośrednio.\",
+    \"success-h\":\"TRANSMISJA ODEBRANA\",\"success-p\":\"Skontaktujemy się w ciągu 24 godzin z planem dla Twojej marki.\",
+    \"avail\":\"Dostępni dla nowych projektów\",\"rights\":\"Wszelkie prawa zastrzeżone\",\"k-plus\":\"k+\"
   },
   es:{
-    'nav-home':'INICIO','nav-solutions':'SERVICIOS','nav-process':'PROCESO','nav-contact':'CONTACTO','nav-cta':'EMPEZAR',
-    'lang-select':'Seleccionar idioma',
-    'badge1':'Sistema en línea — v2.4.1','badge2':'UE — Alcance global','badge3':'98% de satisfacción',
-    'hero-eye':"Colección '26 — Agencia Digital",
-    'hl1':'Construimos','hl2':'Futuros','hl3':'Digitales',
-    'hero-desc':'Plataformas e-commerce, sitios web de alto rendimiento y marketing de precisión para marcas que exigen resultados.',
-    'cta1':'VER SOLUCIONES','cta2':'CONTÁCTANOS',
-    'stat-projects':'Proyectos','stat-sat':'Satisfacción','stat-rev':'Ingr. promedio',
-    'sol-eye':'Nuestras soluciones','sol-head1':'Servicios','sol-head2':'de precisión',
-    'sol-sub':'Cada paquete está construido en torno a resultados medibles. Sin relleno — solo sistemas que rinden.',
-    's1-title1':'Tienda online','s1-title2':'Desarrollo','s1-desc':'E-commerce full-stack en Shopify, WooCommerce o stack propio.','s1-f1':'Diseño personalizado','s1-f2':'Pagos & logística','s1-f3':'Arquitectura SEO','s1-f4':'Analítica & conversión',
-    's2-title1':'Sitio web','s2-title2':'Diseño & Dev','s2-desc':'Sitios de marketing y apps web con UX de élite.','s2-f1':'Mobile-first responsivo','s2-f2':'Integración CMS','s2-f3':'Core Web Vitals','s2-f4':'Motion & interacción',
-    's3-title1':'Growth','s3-title2':'Marketing','s3-desc':'Publicidad data-driven, SEO y estrategia social como sistema unificado.','s3-f1':'Google & Meta Ads','s3-f2':'SEO & contenido','s3-f3':'Reportes semanales','s3-f4':'CRO & A/B testing',
-    'starting-from':'DESDE','get-started':'EMPEZAR','most-pop':'MÁS POPULAR',
-    't3d-eye':'Tecnología','t3d-head1':'Construido con','t3d-head2':'Precisión','t3d-sub':'Cada proyecto diseñado con los más altos estándares técnicos.',
-    'tl1':'Arquitectura','tl2':'Capa de rendimiento','tl3':'Procesamiento de datos','tl4':'Protocolo de seguridad',
-    'proc-eye':'Cómo trabajamos','proc-head1':'El','proc-head2':'Protocolo','proc-sub':'Un sistema de cuatro fases desde el brief hasta el lanzamiento.',
-    'ph1':'Fase uno','ph2':'Fase dos','ph3':'Fase tres','ph4':'Fase cuatro',
-    'proc-t1':'Descubrimiento','proc-d1':'Mapeamos tus objetivos, audiencia y competencia antes de escribir código.',
-    'proc-t2':'Estrategia','proc-d2':'Arquitectura de crecimiento personalizada alineada con tus KPIs.',
-    'proc-t3':'Ejecución','proc-d3':'Diseño, desarrollo y lanzamiento en sprints ágiles con actualizaciones semanales.',
-    'proc-t4':'Escalar','proc-d4':'Optimización continua, A/B testing e iteración con datos en vivo.',
-    'st1':'Años de experiencia','st2':'Proyectos realizados','st3':'Clientes satisfechos',
-    'contact-label':'Contacto','contact-title-1':'INICIA TU','contact-title-2':' PROYECTO',
-    'contact-sub':'Cuéntanos tus objetivos. Respondemos en 24 horas con un plan personalizado.',
-    'field-name':'Nombre completo','field-email':'Correo electrónico','field-website':'URL del sitio','field-budget':'Presupuesto','field-message':'Tu objetivo',
-    'budget-select':'Seleccionar rango','budget-1':'Starter','budget-2':'Growth','budget-3':'Enterprise',
-    'form-note':'Tus datos son tratados con total discreción.','form-submit':'ENVIAR MENSAJE',
-    'success-h':'RECIBIDO','success-p':'Nos pondremos en contacto en 24 horas con un plan personalizado.',
-    'avail':'Disponibles para proyectos',
-    'ph-name':'Tu nombre completo','ph-email':'hola@tumarca.com','ph-message':'Describe tu visión y cómo se ve el éxito…',
-    'mq1':'E-Commerce','mq2':'Diseño web','mq3':'Marketing de rendimiento','mq4':'Identidad de marca','mq5':'Optimización de conversión','mq6':'Apps web',
+    \"nav-home\":\"INICIO\",\"nav-solutions\":\"SERVICIOS\",\"nav-process\":\"PROCESO\",\"nav-contact\":\"CONTACTO\",\"nav-cta\":\"COMENZAR\",\"lang-select\":\"Seleccionar idioma\",
+    \"badge1\":\"Sistema Online — v2.4.1\",\"badge2\":\"Base UE — Alcance Global\",\"badge3\":\"98% de Satisfacción\",
+    \"hero-eye\":\"Colección '26 — Agencia Digital\",\"hl1\":\"Construimos\",\"hl2\":\"Futuros\",\"hl3\":\"Digitales\",
+    \"hero-desc\":\"Plataformas e-commerce, sitios de alto rendimiento y marketing de precisión para marcas que exigen resultados.\",
+    \"cta1\":\"VER SERVICIOS\",\"cta2\":\"CONTÁCTANOS\",\"stat-projects\":\"Proyectos\",\"stat-sat\":\"Satisfacción\",\"stat-rev\":\"Ingreso Medio\",
+    \"mq1\":\"E-Commerce\",\"mq2\":\"Diseño Web\",\"mq3\":\"Marketing de Rendimiento\",\"mq4\":\"Identidad de Marca\",\"mq5\":\"Optimización Conversión\",\"mq6\":\"Apps Web\",
+    \"sol-eye\":\"Nuestros Servicios\",\"sol-head1\":\"Ingeniería de\",\"sol-head2\":\"Precisión\",\"sol-sub\":\"Cada paquete está diseñado en torno a resultados medibles. Sin relleno, solo sistemas que funcionan.\",
+    \"s1-title1\":\"Tienda\",\"s1-title2\":\"Online\",\"s1-desc\":\"E-commerce completo en Shopify, WooCommerce o stack personalizado. Optimizado para conversión y escala.\",
+    \"s1-f1\":\"Diseño personalizado\",\"s1-f2\":\"Integración pagos y logística\",\"s1-f3\":\"Arquitectura SEO\",\"s1-f4\":\"Analítica y conversiones\",
+    \"s2-title1\":\"Sitio Web\",\"s2-title2\":\"Diseño y Dev\",\"s2-desc\":\"Sitios de marketing, landing pages y apps con UX de élite y diseño visual impactante.\",
+    \"s2-f1\":\"Mobile-first responsive\",\"s2-f2\":\"Integración CMS (headless)\",\"s2-f3\":\"Core Web Vitals\",\"s2-f4\":\"Motion e interacciones\",
+    \"s3-title1\":\"Marketing\",\"s3-title2\":\"de Crecimiento\",\"s3-desc\":\"Publicidad basada en datos, SEO y social como un sistema unificado de crecimiento.\",
+    \"s3-f1\":\"Gestión Google y Meta Ads\",\"s3-f2\":\"Estrategia SEO y contenido\",\"s3-f3\":\"Reportes semanales\",\"s3-f4\":\"CRO y tests A/B\",
+    \"starting-from\":\"DESDE\",\"most-pop\":\"MÁS POPULAR\",\"get-started\":\"COMENZAR\",
+    \"t3d-eye\":\"Tecnología\",\"t3d-head1\":\"Construido con\",\"t3d-head2\":\"Precisión\",\"t3d-sub\":\"Cada proyecto al más alto estándar técnico — desde la arquitectura hasta el despliegue.\",
+    \"tl1\":\"Arquitectura Core\",\"tl2\":\"Capa de Rendimiento\",\"tl3\":\"Procesamiento de Datos\",\"tl4\":\"Protocolo de Seguridad\",
+    \"proc-eye\":\"Cómo Trabajamos\",\"proc-head1\":\"El\",\"proc-head2\":\"Protocolo\",\"proc-sub\":\"Un sistema preciso de cuatro fases para llevar tu proyecto del brief al lanzamiento.\",
+    \"ph1\":\"Fase Uno\",\"ph2\":\"Fase Dos\",\"ph3\":\"Fase Tres\",\"ph4\":\"Fase Cuatro\",
+    \"proc-t1\":\"Descubrimiento\",\"proc-d1\":\"Mapeamos tus objetivos, audiencia y competencia antes de escribir código.\",
+    \"proc-t2\":\"Estrategia\",\"proc-d2\":\"Arquitectura de crecimiento personalizada alineada a tus KPIs.\",
+    \"proc-t3\":\"Ejecución\",\"proc-d3\":\"Diseño, desarrollo y lanzamiento en sprints ágiles con actualizaciones semanales.\",
+    \"proc-t4\":\"Escala\",\"proc-d4\":\"Optimización continua, tests A/B e iteración basada en datos.\",
+    \"st1\":\"Años de Experiencia\",\"st2\":\"Proyectos Completados\",\"st3\":\"Clientes Satisfechos\",
+    \"contact-label\":\"Contacto\",\"contact-title-1\":\"INICIA TU\",\"contact-title-2\":\" PROYECTO\",\"contact-sub\":\"Cuéntanos tus objetivos. Respondemos en 24 horas con un plan a medida — sin compromiso.\",
+    \"field-name\":\"Nombre Completo\",\"field-email\":\"Email\",\"field-website\":\"Sitio Web\",\"field-budget\":\"Presupuesto\",\"field-message\":\"Tu Objetivo\",
+    \"ph-name\":\"Tu nombre completo\",\"ph-email\":\"hola@tumarca.com\",\"ph-company\":\"Empresa o sitio web\",\"ph-message\":\"Describe tu visión y cómo se ve el éxito…\",
+    \"budget-select\":\"Selecciona rango\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"Tus datos se manejan con total discreción.\",\"form-submit\":\"ENVIAR MENSAJE\",\"form-error-msg\":\"Algo salió mal. Inténtalo de nuevo o escríbenos directamente.\",
+    \"success-h\":\"TRANSMISIÓN RECIBIDA\",\"success-p\":\"Te contactaremos en 24 horas con un plan personalizado para tu marca.\",
+    \"avail\":\"Disponibles para nuevos proyectos\",\"rights\":\"Todos los derechos reservados\",\"k-plus\":\"k+\"
   },
   de:{
-    'nav-home':'START','nav-solutions':'LEISTUNGEN','nav-process':'PROZESS','nav-contact':'KONTAKT','nav-cta':'LOSLEGEN',
-    'lang-select':'Sprache wählen',
-    'badge1':'System online — v2.4.1','badge2':'EU — Globale Reichweite','badge3':'98% Zufriedenheit',
-    'hero-eye':"Kollektion '26 — Digitalagentur",
-    'hl1':'Wir bauen','hl2':'Digitale','hl3':'Zukunft',
-    'hero-desc':'E-Commerce-Plattformen, leistungsstarke Websites und Präzisionsmarketing für anspruchsvolle Marken.',
-    'cta1':'LEISTUNGEN','cta2':'KONTAKT',
-    'stat-projects':'Projekte','stat-sat':'Zufriedenheit','stat-rev':'Ø Umsatz',
-    'sol-eye':'Unsere Lösungen','sol-head1':'Präzisionsgefertigte','sol-head2':'Leistungen',
-    'sol-sub':'Jedes Paket ist auf messbare Ergebnisse ausgerichtet. Kein Ballast — nur Systeme, die performen.',
-    's1-title1':'Online-Shop','s1-title2':'Entwicklung','s1-desc':'Full-Stack E-Commerce auf Shopify, WooCommerce oder eigenem Stack.','s1-f1':'Individuelles Shop-Design','s1-f2':'Zahlungen & Logistik','s1-f3':'SEO-Produktarchitektur','s1-f4':'Analytics & Conversion-Tracking',
-    's2-title1':'Website','s2-title2':'Design & Entwicklung','s2-desc':'Individuelle Marketing-Websites und Web-Apps mit erstklassigem UX.','s2-f1':'Responsiv, mobile-first','s2-f2':'CMS-Integration','s2-f3':'Core Web Vitals optimiert','s2-f4':'Motion & Interaction Design',
-    's3-title1':'Wachstums-','s3-title2':'Marketing','s3-desc':'Datengetriebene Werbung, SEO und Social-Strategie als einheitliches Wachstumssystem.','s3-f1':'Google & Meta Ads','s3-f2':'SEO & Content-Strategie','s3-f3':'Wöchentliche Berichte','s3-f4':'CRO & A/B-Tests',
-    'starting-from':'AB','get-started':'LOSLEGEN','most-pop':'BELIEBTESTE',
-    't3d-eye':'Technologie','t3d-head1':'Gebaut mit','t3d-head2':'Präzision','t3d-sub':'Jedes Projekt nach höchsten technischen Standards entwickelt.',
-    'tl1':'Kernarchitektur','tl2':'Performance-Schicht','tl3':'Datenverarbeitung','tl4':'Sicherheitsprotokoll',
-    'proc-eye':'Wie wir arbeiten','proc-head1':'Das','proc-head2':'Protokoll','proc-sub':'Ein präzises Vier-Phasen-System vom Briefing bis zum Launch.',
-    'ph1':'Phase eins','ph2':'Phase zwei','ph3':'Phase drei','ph4':'Phase vier',
-    'proc-t1':'Entdeckung','proc-d1':'Wir kartieren Ihre Ziele, Zielgruppe und Wettbewerb, bevor wir Code schreiben.',
-    'proc-t2':'Strategie','proc-d2':'Individuelle Wachstumsarchitektur ausgerichtet auf Ihre KPIs.',
-    'proc-t3':'Umsetzung','proc-d3':'Design, Entwicklung und Kampagnenstart in agilen Sprints.',
-    'proc-t4':'Skalierung','proc-d4':'Laufende Optimierung, A/B-Tests und Iteration auf Basis von Live-Daten.',
-    'st1':'Jahre Erfahrung','st2':'Abgeschlossene Projekte','st3':'Zufriedene Kunden',
-    'contact-label':'Kontakt','contact-title-1':'STARTEN SIE IHR','contact-title-2':' PROJEKT',
-    'contact-sub':'Erzählen Sie uns von Ihren Zielen. Wir antworten innerhalb von 24 Stunden.',
-    'field-name':'Vollständiger Name','field-email':'E-Mail-Adresse','field-website':'Website-URL','field-budget':'Budget','field-message':'Ihr Ziel',
-    'budget-select':'Bereich auswählen','budget-1':'Starter','budget-2':'Wachstum','budget-3':'Enterprise',
-    'form-note':'Ihre Daten werden mit vollständiger Diskretion behandelt.','form-submit':'NACHRICHT SENDEN',
-    'success-h':'EMPFANGEN','success-p':'Wir melden uns innerhalb von 24 Stunden mit einem personalisierten Plan.',
-    'avail':'Verfügbar für Projekte',
-    'ph-name':'Ihr vollständiger Name','ph-email':'hallo@ihremarke.de','ph-message':'Beschreiben Sie Ihre Vision und wie Erfolg aussieht…',
-    'mq1':'E-Commerce','mq2':'Webdesign','mq3':'Performance-Marketing','mq4':'Markenidentität','mq5':'Conversion-Optimierung','mq6':'Web-Apps',
+    \"nav-home\":\"START\",\"nav-solutions\":\"LÖSUNGEN\",\"nav-process\":\"PROZESS\",\"nav-contact\":\"KONTAKT\",\"nav-cta\":\"LOSLEGEN\",\"lang-select\":\"Sprache wählen\",
+    \"badge1\":\"System Online — v2.4.1\",\"badge2\":\"EU-basiert — Globale Reichweite\",\"badge3\":\"98% Zufriedenheit\",
+    \"hero-eye\":\"Kollektion '26 — Digitalagentur\",\"hl1\":\"Wir bauen\",\"hl2\":\"Digitale\",\"hl3\":\"Zukunft\",
+    \"hero-desc\":\"E-Commerce-Plattformen, leistungsstarke Websites und präzises Marketing für Marken mit Anspruch auf Ergebnisse.\",
+    \"cta1\":\"LÖSUNGEN ANSEHEN\",\"cta2\":\"KONTAKT\",\"stat-projects\":\"Projekte\",\"stat-sat\":\"Zufriedenheit\",\"stat-rev\":\"Ø Umsatz\",
+    \"mq1\":\"E-Commerce\",\"mq2\":\"Webdesign\",\"mq3\":\"Performance Marketing\",\"mq4\":\"Markenidentität\",\"mq5\":\"Conversion-Optimierung\",\"mq6\":\"Web-Apps\",
+    \"sol-eye\":\"Unsere Lösungen\",\"sol-head1\":\"Präzisions-\",\"sol-head2\":\"Services\",\"sol-sub\":\"Jedes Paket basiert auf messbaren Ergebnissen. Kein Ballast — nur Systeme, die liefern.\",
+    \"s1-title1\":\"Online-Shop\",\"s1-title2\":\"Entwicklung\",\"s1-desc\":\"Full-Stack E-Commerce auf Shopify, WooCommerce oder Custom-Stack. Optimiert für Conversion und Skalierung.\",
+    \"s1-f1\":\"Individuelles Shop-Design\",\"s1-f2\":\"Zahlung & Logistik\",\"s1-f3\":\"SEO-Produktarchitektur\",\"s1-f4\":\"Analytics & Conversion-Tracking\",
+    \"s2-title1\":\"Website\",\"s2-title2\":\"Design & Dev\",\"s2-desc\":\"Maßgeschneiderte Marketing-Sites, Landing Pages und Web-Apps mit Elite-UX.\",
+    \"s2-f1\":\"Responsive Mobile-First\",\"s2-f2\":\"CMS-Integration (headless)\",\"s2-f3\":\"Core Web Vitals optimiert\",\"s2-f4\":\"Motion & Interaktion\",
+    \"s3-title1\":\"Growth\",\"s3-title2\":\"Marketing\",\"s3-desc\":\"Datengetriebene Paid Media, SEO und Social Strategy als einheitliches Wachstumssystem.\",
+    \"s3-f1\":\"Google & Meta Ads Management\",\"s3-f2\":\"SEO & Content-Strategie\",\"s3-f3\":\"Wöchentliche Reports\",\"s3-f4\":\"CRO & A/B-Tests\",
+    \"starting-from\":\"AB\",\"most-pop\":\"BELIEBTESTE\",\"get-started\":\"LOSLEGEN\",
+    \"t3d-eye\":\"Technologie\",\"t3d-head1\":\"Gebaut mit\",\"t3d-head2\":\"Präzision\",\"t3d-sub\":\"Jedes Projekt auf höchstem technischem Niveau — von Architektur bis Deployment.\",
+    \"tl1\":\"Kernarchitektur\",\"tl2\":\"Performance-Layer\",\"tl3\":\"Datenverarbeitung\",\"tl4\":\"Sicherheitsprotokoll\",
+    \"proc-eye\":\"Wie wir arbeiten\",\"proc-head1\":\"Das\",\"proc-head2\":\"Protokoll\",\"proc-sub\":\"Ein präzises vierstufiges System — vom Brief bis zum Launch ohne Mehrdeutigkeit.\",
+    \"ph1\":\"Phase Eins\",\"ph2\":\"Phase Zwei\",\"ph3\":\"Phase Drei\",\"ph4\":\"Phase Vier\",
+    \"proc-t1\":\"Discovery\",\"proc-d1\":\"Wir mappen Ziele, Zielgruppe und Wettbewerb bevor eine Zeile Code geschrieben wird.\",
+    \"proc-t2\":\"Strategie\",\"proc-d2\":\"Maßgeschneiderte Wachstumsarchitektur — Content, UX und Kanäle — an Ihren KPIs ausgerichtet.\",
+    \"proc-t3\":\"Umsetzung\",\"proc-d3\":\"Design, Entwicklung und Launch in agilen Sprints mit wöchentlichen Updates.\",
+    \"proc-t4\":\"Skalierung\",\"proc-d4\":\"Laufende Optimierung, A/B-Tests und Iteration auf Live-Daten.\",
+    \"st1\":\"Jahre Erfahrung\",\"st2\":\"Projekte abgeschlossen\",\"st3\":\"Zufriedene Kunden\",
+    \"contact-label\":\"Kontakt\",\"contact-title-1\":\"STARTE DEIN\",\"contact-title-2\":\" PROJEKT\",\"contact-sub\":\"Erzählen Sie uns von Ihren Zielen. Wir antworten innerhalb von 24 Stunden mit einem maßgeschneiderten Plan.\",
+    \"field-name\":\"Vollständiger Name\",\"field-email\":\"E-Mail\",\"field-website\":\"Website\",\"field-budget\":\"Budget\",\"field-message\":\"Ihr Ziel\",
+    \"ph-name\":\"Ihr vollständiger Name\",\"ph-email\":\"hallo@ihremarke.de\",\"ph-company\":\"Firma oder Website\",\"ph-message\":\"Beschreiben Sie Ihre Vision und wie Erfolg aussieht…\",
+    \"budget-select\":\"Bereich wählen\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"Ihre Daten werden mit voller Diskretion behandelt.\",\"form-submit\":\"NACHRICHT SENDEN\",\"form-error-msg\":\"Etwas ist schiefgelaufen. Bitte erneut versuchen oder direkt E-Mail senden.\",
+    \"success-h\":\"ÜBERTRAGUNG ERHALTEN\",\"success-p\":\"Wir melden uns innerhalb von 24 Stunden mit einem persönlichen Plan für Ihre Marke.\",
+    \"avail\":\"Verfügbar für neue Projekte\",\"rights\":\"Alle Rechte vorbehalten\",\"k-plus\":\"k+\"
   },
   fr:{
-    'nav-home':'ACCUEIL','nav-solutions':'SERVICES','nav-process':'PROCESSUS','nav-contact':'CONTACT','nav-cta':'COMMENCER',
-    'lang-select':'Choisir la langue',
-    'badge1':'Système en ligne — v2.4.1','badge2':'UE — Portée mondiale','badge3':'98% de satisfaction',
-    'hero-eye':"Collection '26 — Agence Digitale",
-    'hl1':'Nous construisons','hl2':'Des futurs','hl3':'Numériques',
-    'hero-desc':'Plateformes e-commerce, sites haute performance et marketing de précision pour les marques qui exigent des résultats.',
-    'cta1':'VOIR LES SERVICES','cta2':'NOUS CONTACTER',
-    'stat-projects':'Projets','stat-sat':'Satisfaction','stat-rev':'Rev. moyen',
-    'sol-eye':'Nos solutions','sol-head1':'Services','sol-head2':'de précision',
-    'sol-sub':'Chaque package est construit autour de résultats mesurables. Pas de superflu — uniquement des systèmes performants.',
-    's1-title1':'Boutique en ligne','s1-title2':'Développement','s1-desc':'E-commerce full-stack sur Shopify, WooCommerce ou stack sur mesure.','s1-f1':'Design personnalisé','s1-f2':'Paiements & logistique','s1-f3':'Architecture SEO produit','s1-f4':'Analytique & conversion',
-    's2-title1':'Site web','s2-title2':'Design & Dev','s2-desc':'Sites marketing et applications web avec un UX de haut niveau.','s2-f1':'Responsive, mobile-first','s2-f2':'Intégration CMS','s2-f3':'Core Web Vitals optimisés','s2-f4':'Motion & interaction design',
-    's3-title1':'Growth','s3-title2':'Marketing','s3-desc':'Publicité data-driven, SEO et stratégie sociale comme système de croissance unifié.','s3-f1':'Google & Meta Ads','s3-f2':'SEO & stratégie contenu','s3-f3':'Rapports hebdomadaires','s3-f4':'CRO & A/B testing',
-    'starting-from':'À PARTIR DE','get-started':'COMMENCER','most-pop':'LE PLUS POPULAIRE',
-    't3d-eye':'Technologie','t3d-head1':'Construit avec','t3d-head2':'Précision','t3d-sub':'Chaque projet conçu selon les plus hauts standards techniques.',
-    'tl1':'Architecture principale','tl2':'Couche de performance','tl3':'Traitement des données','tl4':'Protocole de sécurité',
-    'proc-eye':'Comment nous travaillons','proc-head1':'Le','proc-head2':'Protocole','proc-sub':'Un système précis en quatre phases du brief au lancement.',
-    'ph1':'Phase une','ph2':'Phase deux','ph3':'Phase trois','ph4':'Phase quatre',
-    'proc-t1':'Découverte','proc-d1':'Nous cartographions vos objectifs, audience et concurrence avant d\'écrire une ligne de code.',
-    'proc-t2':'Stratégie','proc-d2':'Architecture de croissance sur mesure alignée sur vos KPI.',
-    'proc-t3':'Exécution','proc-d3':'Design, développement et lancement en sprints agiles avec mises à jour hebdomadaires.',
-    'proc-t4':'Mise à l\'échelle','proc-d4':'Optimisation continue, A/B testing et itération basée sur des données en direct.',
-    'st1':'Années d\'expérience','st2':'Projets réalisés','st3':'Clients satisfaits',
-    'contact-label':'Contact','contact-title-1':'DÉMARREZ VOTRE','contact-title-2':' PROJET',
-    'contact-sub':'Parlez-nous de vos objectifs. Nous répondons sous 24 heures avec un plan sur mesure.',
-    'field-name':'Nom complet','field-email':'Adresse e-mail','field-website':'URL du site','field-budget':'Budget','field-message':'Votre objectif',
-    'budget-select':'Sélectionner la plage','budget-1':'Starter','budget-2':'Croissance','budget-3':'Enterprise',
-    'form-note':'Vos données sont traitées avec une discrétion totale.','form-submit':'ENVOYER LE MESSAGE',
-    'success-h':'REÇU','success-p':'Nous vous contacterons dans les 24 heures avec un plan personnalisé.',
-    'avail':'Disponibles pour des projets',
-    'ph-name':'Votre nom complet','ph-email':'bonjour@votremarque.fr','ph-message':'Décrivez votre vision et à quoi ressemble le succès…',
-    'mq1':'E-Commerce','mq2':'Web Design','mq3':'Marketing de performance','mq4':'Identité de marque','mq5':'Optimisation conversion','mq6':'Applications web',
+    \"nav-home\":\"ACCUEIL\",\"nav-solutions\":\"SERVICES\",\"nav-process\":\"PROCESSUS\",\"nav-contact\":\"CONTACT\",\"nav-cta\":\"COMMENCER\",\"lang-select\":\"Choisir la langue\",
+    \"badge1\":\"Système en ligne — v2.4.1\",\"badge2\":\"Basé UE — Portée mondiale\",\"badge3\":\"98% de satisfaction\",
+    \"hero-eye\":\"Collection '26 — Agence Digitale\",\"hl1\":\"Nous bâtissons\",\"hl2\":\"L'avenir\",\"hl3\":\"Numérique\",
+    \"hero-desc\":\"Plateformes e-commerce, sites haute performance et marketing de précision pour les marques exigeantes.\",
+    \"cta1\":\"VOIR LES SERVICES\",\"cta2\":\"NOUS CONTACTER\",\"stat-projects\":\"Projets\",\"stat-sat\":\"Satisfaction\",\"stat-rev\":\"Revenu Moyen\",
+    \"mq1\":\"E-Commerce\",\"mq2\":\"Web Design\",\"mq3\":\"Marketing Performance\",\"mq4\":\"Identité de Marque\",\"mq5\":\"Optimisation Conversion\",\"mq6\":\"Apps Web\",
+    \"sol-eye\":\"Nos Services\",\"sol-head1\":\"Ingénierie de\",\"sol-head2\":\"Précision\",\"sol-sub\":\"Chaque offre est conçue autour de résultats mesurables. Que des systèmes qui performent.\",
+    \"s1-title1\":\"Boutique\",\"s1-title2\":\"en Ligne\",\"s1-desc\":\"E-commerce complet sur Shopify, WooCommerce ou stack sur mesure. Optimisé pour la conversion et l'échelle.\",
+    \"s1-f1\":\"Design de boutique sur mesure\",\"s1-f2\":\"Intégration paiement & logistique\",\"s1-f3\":\"Architecture SEO\",\"s1-f4\":\"Analytique et conversions\",
+    \"s2-title1\":\"Site Web\",\"s2-title2\":\"Design & Dev\",\"s2-desc\":\"Sites marketing, landing pages et apps web avec UX élite et design visuel saisissant.\",
+    \"s2-f1\":\"Mobile-first responsive\",\"s2-f2\":\"Intégration CMS (headless)\",\"s2-f3\":\"Core Web Vitals\",\"s2-f4\":\"Motion & interactions\",
+    \"s3-title1\":\"Marketing\",\"s3-title2\":\"de Croissance\",\"s3-desc\":\"Publicité data-driven, SEO et social en système unifié. Chaque euro tracé jusqu'au ROI.\",
+    \"s3-f1\":\"Gestion Google & Meta Ads\",\"s3-f2\":\"Stratégie SEO et contenu\",\"s3-f3\":\"Rapports hebdomadaires\",\"s3-f4\":\"CRO et tests A/B\",
+    \"starting-from\":\"À PARTIR DE\",\"most-pop\":\"PLUS POPULAIRE\",\"get-started\":\"COMMENCER\",
+    \"t3d-eye\":\"Technologie\",\"t3d-head1\":\"Construit avec\",\"t3d-head2\":\"précision\",\"t3d-sub\":\"Chaque projet au plus haut standard technique — de l'architecture au déploiement.\",
+    \"tl1\":\"Architecture Core\",\"tl2\":\"Couche Performance\",\"tl3\":\"Traitement des Données\",\"tl4\":\"Protocole de Sécurité\",
+    \"proc-eye\":\"Comment nous travaillons\",\"proc-head1\":\"Le\",\"proc-head2\":\"Protocole\",\"proc-sub\":\"Un système précis en quatre phases — du brief au live, sans ambiguïté.\",
+    \"ph1\":\"Phase Un\",\"ph2\":\"Phase Deux\",\"ph3\":\"Phase Trois\",\"ph4\":\"Phase Quatre\",
+    \"proc-t1\":\"Découverte\",\"proc-d1\":\"Nous cartographions vos objectifs, audience et concurrence avant d'écrire la moindre ligne de code.\",
+    \"proc-t2\":\"Stratégie\",\"proc-d2\":\"Architecture de croissance sur mesure alignée à vos KPIs.\",
+    \"proc-t3\":\"Exécution\",\"proc-d3\":\"Design, dev et lancement en sprints agiles avec updates hebdomadaires.\",
+    \"proc-t4\":\"Échelle\",\"proc-d4\":\"Optimisation continue, tests A/B et itération sur données live.\",
+    \"st1\":\"Années d'Expérience\",\"st2\":\"Projets Réalisés\",\"st3\":\"Clients Satisfaits\",
+    \"contact-label\":\"Contact\",\"contact-title-1\":\"LANCEZ VOTRE\",\"contact-title-2\":\" PROJET\",\"contact-sub\":\"Parlez-nous de vos objectifs. Nous répondons sous 24 heures avec un plan sur mesure — sans engagement.\",
+    \"field-name\":\"Nom Complet\",\"field-email\":\"Email\",\"field-website\":\"Site Web\",\"field-budget\":\"Budget\",\"field-message\":\"Votre Objectif\",
+    \"ph-name\":\"Votre nom complet\",\"ph-email\":\"bonjour@votremarque.fr\",\"ph-company\":\"Entreprise ou site\",\"ph-message\":\"Décrivez votre vision et à quoi ressemble le succès…\",
+    \"budget-select\":\"Choisir la fourchette\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"Vos données sont traitées en toute discrétion.\",\"form-submit\":\"ENVOYER\",\"form-error-msg\":\"Une erreur est survenue. Réessayez ou écrivez-nous directement.\",
+    \"success-h\":\"TRANSMISSION REÇUE\",\"success-p\":\"Nous reviendrons vers vous sous 24 heures avec un plan personnalisé.\",
+    \"avail\":\"Disponibles pour de nouveaux projets\",\"rights\":\"Tous droits réservés\",\"k-plus\":\"k+\"
   },
   ar:{
-    'nav-home':'الرئيسية','nav-solutions':'الخدمات','nav-process':'العملية','nav-contact':'اتصل','nav-cta':'ابدأ الآن',
-    'lang-select':'اختر اللغة',
-    'badge1':'النظام متصل — v2.4.1','badge2':'الاتحاد الأوروبي — وصول عالمي','badge3':'98% رضا العملاء',
-    'hero-eye':"مجموعة '٢٦ — وكالة رقمية",
-    'hl1':'نبني','hl2':'مستقبلاً','hl3':'رقمياً',
-    'hero-desc':'منصات التجارة الإلكترونية ومواقع الويب عالية الأداء والتسويق الدقيق للعلامات التجارية.',
-    'cta1':'عرض الخدمات','cta2':'تواصل معنا',
-    'stat-projects':'مشروع','stat-sat':'الرضا','stat-rev':'متوسط العائد',
-    'sol-eye':'حلولنا','sol-head1':'خدمات','sol-head2':'مصممة بدقة',
-    'sol-sub':'كل حزمة مبنية حول نتائج قابلة للقياس. لا حشو — فقط أنظمة تؤدي.',
-    's1-title1':'متجر إلكتروني','s1-title2':'تطوير','s1-desc':'تجارة إلكترونية متكاملة على Shopify أو WooCommerce أو حل مخصص.','s1-f1':'تصميم متجر مخصص','s1-f2':'المدفوعات والخدمات اللوجستية','s1-f3':'بنية SEO للمنتجات','s1-f4':'التحليلات وتتبع التحويل',
-    's2-title1':'موقع إلكتروني','s2-title2':'تصميم وتطوير','s2-desc':'مواقع تسويقية وتطبيقات ويب بتجربة مستخدم احترافية.','s2-f1':'تصميم متجاوب، mobile-first','s2-f2':'تكامل CMS','s2-f3':'تحسين Core Web Vitals','s2-f4':'تصميم التحريك والتفاعل',
-    's3-title1':'تسويق','s3-title2':'للنمو','s3-desc':'إعلانات مبنية على البيانات وSEO واستراتيجية اجتماعية كنظام نمو موحد.','s3-f1':'إدارة Google وMeta Ads','s3-f2':'SEO واستراتيجية المحتوى','s3-f3':'تقارير أسبوعية','s3-f4':'CRO واختبار A/B',
-    'starting-from':'يبدأ من','get-started':'ابدأ الآن','most-pop':'الأكثر شيوعاً',
-    't3d-eye':'التكنولوجيا','t3d-head1':'مبني بـ','t3d-head2':'دقة','t3d-sub':'كل مشروع مُصمَّم وفق أعلى المعايير التقنية.',
-    'tl1':'البنية الأساسية','tl2':'طبقة الأداء','tl3':'معالجة البيانات','tl4':'بروتوكول الأمان',
-    'proc-eye':'طريقة عملنا','proc-head1':'','proc-head2':'البروتوكول','proc-sub':'نظام دقيق من أربع مراحل من الإحاطة حتى الإطلاق.',
-    'ph1':'المرحلة الأولى','ph2':'المرحلة الثانية','ph3':'المرحلة الثالثة','ph4':'المرحلة الرابعة',
-    'proc-t1':'الاستكشاف','proc-d1':'نرسم خريطة أهدافك وجمهورك والمنافسة قبل كتابة سطر كود.',
-    'proc-t2':'الاستراتيجية','proc-d2':'بنية نمو مخصصة — محتوى وتجربة مستخدم ومزيج قنوات — متوافقة مع KPI.',
-    'proc-t3':'التنفيذ','proc-d3':'التصميم والتطوير وإطلاق الحملة في سبرينتات رشيقة مع تحديثات أسبوعية.',
-    'proc-t4':'التوسع','proc-d4':'تحسين مستمر واختبار A/B وتكرار بناءً على بيانات حية.',
-    'st1':'سنوات خبرة','st2':'مشروع منجز','st3':'عملاء راضون',
-    'contact-label':'اتصل','contact-title-1':'ابدأ','contact-title-2':' مشروعك',
-    'contact-sub':'أخبرنا عن أهدافك. نرد خلال 24 ساعة بخطة مصممة خصيصاً.',
-    'field-name':'الاسم الكامل','field-email':'البريد الإلكتروني','field-website':'رابط الموقع','field-budget':'الميزانية','field-message':'هدفك',
-    'budget-select':'اختر النطاق','budget-1':'Starter','budget-2':'نمو','budget-3':'Enterprise',
-    'form-note':'يتم التعامل مع بياناتك بسرية تامة.','form-submit':'إرسال الرسالة',
-    'success-h':'تم الاستلام','success-p':'سنتواصل معك خلال 24 ساعة بخطة مخصصة لعلامتك التجارية.',
-    'avail':'متاحون للمشاريع',
-    'ph-name':'اسمك الكامل','ph-email':'مرحبا@علامتك.com','ph-message':'صف رؤيتك وكيف يبدو النجاح…',
-    'mq1':'التجارة الإلكترونية','mq2':'تصميم مواقع','mq3':'التسويق الرقمي','mq4':'هوية العلامة','mq5':'تحسين التحويل','mq6':'تطبيقات الويب',
+    \"nav-home\":\"الرئيسية\",\"nav-solutions\":\"الحلول\",\"nav-process\":\"العملية\",\"nav-contact\":\"اتصال\",\"nav-cta\":\"ابدأ الآن\",\"lang-select\":\"اختر اللغة\",
+    \"badge1\":\"النظام متصل — v2.4.1\",\"badge2\":\"مقرنا الاتحاد الأوروبي — وصول عالمي\",\"badge3\":\"98٪ نسبة الرضا\",
+    \"hero-eye\":\"مجموعة '26 — وكالة رقمية\",\"hl1\":\"نبني\",\"hl2\":\"المستقبل\",\"hl3\":\"الرقمي\",
+    \"hero-desc\":\"منصات تجارة إلكترونية ومواقع عالية الأداء وتسويق دقيق للعلامات التي تطلب نتائج.\",
+    \"cta1\":\"عرض الحلول\",\"cta2\":\"تواصل معنا\",\"stat-projects\":\"المشاريع\",\"stat-sat\":\"الرضا\",\"stat-rev\":\"متوسط الإيرادات\",
+    \"mq1\":\"التجارة الإلكترونية\",\"mq2\":\"تصميم الويب\",\"mq3\":\"تسويق الأداء\",\"mq4\":\"هوية العلامة\",\"mq5\":\"تحسين التحويل\",\"mq6\":\"تطبيقات الويب\",
+    \"sol-eye\":\"حلولنا\",\"sol-head1\":\"هندسة\",\"sol-head2\":\"دقيقة\",\"sol-sub\":\"كل باقة مبنية على نتائج قابلة للقياس — فقط أنظمة تعمل.\",
+    \"s1-title1\":\"متجر\",\"s1-title2\":\"إلكتروني\",\"s1-desc\":\"تجارة إلكترونية كاملة على Shopify أو WooCommerce أو مخصصة. مُحسّنة للتحويل والسرعة.\",
+    \"s1-f1\":\"تصميم متجر مخصص\",\"s1-f2\":\"دمج الدفع واللوجستيات\",\"s1-f3\":\"هيكلية SEO\",\"s1-f4\":\"تحليلات وتتبع التحويلات\",
+    \"s2-title1\":\"موقع\",\"s2-title2\":\"تصميم وتطوير\",\"s2-desc\":\"مواقع تسويقية وصفحات هبوط وتطبيقات بتجربة استخدام نخبوية وتصميم آسر.\",
+    \"s2-f1\":\"تصميم متجاوب أولاً للجوال\",\"s2-f2\":\"دمج CMS (headless)\",\"s2-f3\":\"Core Web Vitals\",\"s2-f4\":\"حركة وتفاعل\",
+    \"s3-title1\":\"تسويق\",\"s3-title2\":\"النمو\",\"s3-desc\":\"إعلانات مدفوعة قائمة على البيانات وSEO وتسويق اجتماعي كنظام نمو موحد.\",
+    \"s3-f1\":\"إدارة إعلانات Google و Meta\",\"s3-f2\":\"استراتيجية SEO ومحتوى\",\"s3-f3\":\"تقارير أسبوعية\",\"s3-f4\":\"CRO واختبار A/B\",
+    \"starting-from\":\"يبدأ من\",\"most-pop\":\"الأكثر شعبية\",\"get-started\":\"ابدأ الآن\",
+    \"t3d-eye\":\"التكنولوجيا\",\"t3d-head1\":\"مبني بـ\",\"t3d-head2\":\"دقة\",\"t3d-sub\":\"كل مشروع بأعلى معيار تقني — من الهندسة إلى النشر.\",
+    \"tl1\":\"الهيكلية الأساسية\",\"tl2\":\"طبقة الأداء\",\"tl3\":\"معالجة البيانات\",\"tl4\":\"بروتوكول الأمان\",
+    \"proc-eye\":\"كيف نعمل\",\"proc-head1\":\"\",\"proc-head2\":\"البروتوكول\",\"proc-sub\":\"نظام دقيق من أربع مراحل — من الفكرة إلى الإطلاق دون أي غموض.\",
+    \"ph1\":\"المرحلة الأولى\",\"ph2\":\"المرحلة الثانية\",\"ph3\":\"المرحلة الثالثة\",\"ph4\":\"المرحلة الرابعة\",
+    \"proc-t1\":\"الاكتشاف\",\"proc-d1\":\"نرسم خريطة الأهداف والجمهور والمنافسة قبل كتابة سطر برمجي واحد.\",
+    \"proc-t2\":\"الاستراتيجية\",\"proc-d2\":\"هندسة نمو مخصصة — محتوى وUX وقنوات — متوافقة مع مؤشرات الأداء.\",
+    \"proc-t3\":\"التنفيذ\",\"proc-d3\":\"تصميم وتطوير وإطلاق في sprints رشيقة مع تحديثات أسبوعية.\",
+    \"proc-t4\":\"التوسع\",\"proc-d4\":\"تحسين مستمر واختبار A/B وتكرار على البيانات الحية.\",
+    \"st1\":\"سنوات الخبرة\",\"st2\":\"مشاريع منجزة\",\"st3\":\"عملاء راضون\",
+    \"contact-label\":\"اتصال\",\"contact-title-1\":\"ابدأ\",\"contact-title-2\":\" مشروعك\",\"contact-sub\":\"أخبرنا عن أهدافك. نرد خلال 24 ساعة بخطة مخصصة — دون أي التزام.\",
+    \"field-name\":\"الاسم الكامل\",\"field-email\":\"البريد الإلكتروني\",\"field-website\":\"الموقع\",\"field-budget\":\"الميزانية\",\"field-message\":\"هدفك\",
+    \"ph-name\":\"اسمك الكامل\",\"ph-email\":\"hello@yourbrand.com\",\"ph-company\":\"اسم الشركة أو الموقع\",\"ph-message\":\"صف رؤيتك وكيف يبدو النجاح…\",
+    \"budget-select\":\"اختر النطاق\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"بياناتك تُعالج بسرية تامة.\",\"form-submit\":\"إرسال الرسالة\",\"form-error-msg\":\"حدث خطأ. حاول مرة أخرى أو راسلنا مباشرة.\",
+    \"success-h\":\"تم استلام الرسالة\",\"success-p\":\"سنتواصل معك خلال 24 ساعة بخطة مخصصة لعلامتك.\",
+    \"avail\":\"متاحون لمشاريع جديدة\",\"rights\":\"جميع الحقوق محفوظة\",\"k-plus\":\"ألف+\"
   },
   zh:{
-    'nav-home':'首页','nav-solutions':'服务','nav-process':'流程','nav-contact':'联系','nav-cta':'立即开始',
-    'lang-select':'选择语言',
-    'badge1':'系统在线 — v2.4.1','badge2':'欧盟 — 全球覆盖','badge3':'98% 满意度',
-    'hero-eye':"26系列 — 数字代理机构",
-    'hl1':'我们构建','hl2':'数字化','hl3':'未来',
-    'hero-desc':'为追求卓越成果的品牌提供电商平台、高性能网站和精准营销服务。',
-    'cta1':'查看服务','cta2':'联系我们',
-    'stat-projects':'项目','stat-sat':'满意度','stat-rev':'平均收入',
-    'sol-eye':'我们的解决方案','sol-head1':'精准设计的','sol-head2':'服务',
-    'sol-sub':'每个套餐都围绕可衡量的成果构建。没有冗余——只有高效运转的系统。',
-    's1-title1':'网上商店','s1-title2':'开发','s1-desc':'基于Shopify、WooCommerce或自定义技术栈的全栈电商开发。','s1-f1':'定制店面设计','s1-f2':'支付与物流集成','s1-f3':'SEO产品架构','s1-f4':'分析与转化追踪',
-    's2-title1':'网站','s2-title2':'设计与开发','s2-desc':'具有卓越用户体验的定制营销网站和网络应用。','s2-f1':'响应式移动端优先','s2-f2':'CMS集成','s2-f3':'Core Web Vitals优化','s2-f4':'动效与交互设计',
-    's3-title1':'增长','s3-title2':'营销','s3-desc':'数据驱动的付费媒体、SEO和社交策略作为统一增长系统。','s3-f1':'Google和Meta广告管理','s3-f2':'SEO与内容策略','s3-f3':'每周绩效报告','s3-f4':'CRO与A/B测试',
-    'starting-from':'起价','get-started':'立即开始','most-pop':'最受欢迎',
-    't3d-eye':'技术','t3d-head1':'精准','t3d-head2':'构建','t3d-sub':'每个项目都按照最高技术标准进行工程设计。',
-    'tl1':'核心架构','tl2':'性能层','tl3':'数据处理','tl4':'安全协议',
-    'proc-eye':'工作方式','proc-head1':'','proc-head2':'协议','proc-sub':'精确的四阶段系统，从项目简介到上线，每一步都清晰明确。',
-    'ph1':'第一阶段','ph2':'第二阶段','ph3':'第三阶段','ph4':'第四阶段',
-    'proc-t1':'发现','proc-d1':'在写一行代码之前，我们先梳理您的目标、受众和竞争格局。',
-    'proc-t2':'策略','proc-d2':'定制增长架构——内容、用户体验和渠道组合——与您的KPI对齐。',
-    'proc-t3':'执行','proc-d3':'设计、开发和活动启动在敏捷冲刺中进行，每周更新进度。',
-    'proc-t4':'扩展','proc-d4':'持续优化、A/B测试和基于实时数据的迭代增长。',
-    'st1':'年经验','st2':'完成项目','st3':'满意客户',
-    'contact-label':'联系','contact-title-1':'开始您的','contact-title-2':'项目',
-    'contact-sub':'告诉我们您的目标。我们将在24小时内回复并提供量身定制的计划。',
-    'field-name':'全名','field-email':'电子邮件地址','field-website':'网站URL','field-budget':'预算','field-message':'您的目标',
-    'budget-select':'选择范围','budget-1':'入门级','budget-2':'成长级','budget-3':'企业级',
-    'form-note':'您的数据将得到完全保密处理。','form-submit':'发送消息',
-    'success-h':'已收到','success-p':'我们将在24小时内与您联系，提供品牌专属计划。',
-    'avail':'开放项目合作',
-    'ph-name':'您的全名','ph-email':'hello@yourcompany.cn','ph-message':'描述您的愿景以及成功的样子…',
-    'mq1':'电子商务','mq2':'网页设计','mq3':'效果营销','mq4':'品牌标识','mq5':'转化率优化','mq6':'网络应用',
+    \"nav-home\":\"首页\",\"nav-solutions\":\"解决方案\",\"nav-process\":\"流程\",\"nav-contact\":\"联系\",\"nav-cta\":\"立即开始\",\"lang-select\":\"选择语言\",
+    \"badge1\":\"系统在线 — v2.4.1\",\"badge2\":\"欧盟总部 — 全球覆盖\",\"badge3\":\"98% 满意度\",
+    \"hero-eye\":\"'26 系列 — 数字代理\",\"hl1\":\"我们构建\",\"hl2\":\"数字\",\"hl3\":\"未来\",
+    \"hero-desc\":\"为追求成果的品牌打造电商平台、高性能网站与精准营销。\",
+    \"cta1\":\"查看方案\",\"cta2\":\"联系我们\",\"stat-projects\":\"项目\",\"stat-sat\":\"满意度\",\"stat-rev\":\"平均收入\",
+    \"mq1\":\"电子商务\",\"mq2\":\"网页设计\",\"mq3\":\"效果营销\",\"mq4\":\"品牌识别\",\"mq5\":\"转化优化\",\"mq6\":\"Web 应用\",
+    \"sol-eye\":\"我们的服务\",\"sol-head1\":\"精密工程\",\"sol-head2\":\"服务\",\"sol-sub\":\"每个套餐都围绕可衡量的成果构建 — 只交付能带来结果的系统。\",
+    \"s1-title1\":\"在线商店\",\"s1-title2\":\"开发\",\"s1-desc\":\"基于 Shopify、WooCommerce 或定制技术栈的全栈电商,从第一天起就为转化、速度和规模优化。\",
+    \"s1-f1\":\"定制店面设计\",\"s1-f2\":\"支付与物流集成\",\"s1-f3\":\"SEO 产品架构\",\"s1-f4\":\"分析与转化追踪\",
+    \"s2-title1\":\"网站\",\"s2-title2\":\"设计与开发\",\"s2-desc\":\"定制营销网站、落地页与 Web 应用,顶级 UX 和震撼视觉。\",
+    \"s2-f1\":\"移动优先响应式\",\"s2-f2\":\"CMS 集成 (headless)\",\"s2-f3\":\"Core Web Vitals 优化\",\"s2-f4\":\"动效与交互设计\",
+    \"s3-title1\":\"增长\",\"s3-title2\":\"营销\",\"s3-desc\":\"数据驱动付费媒体、SEO 与社交策略,作为统一的增长系统。\",
+    \"s3-f1\":\"Google 与 Meta 广告管理\",\"s3-f2\":\"SEO 与内容策略\",\"s3-f3\":\"每周绩效报告\",\"s3-f4\":\"CRO 与 A/B 测试\",
+    \"starting-from\":\"起价\",\"most-pop\":\"最受欢迎\",\"get-started\":\"立即开始\",
+    \"t3d-eye\":\"技术\",\"t3d-head1\":\"以\",\"t3d-head2\":\"精度构建\",\"t3d-sub\":\"每个项目都达到最高技术标准 — 从架构到部署。\",
+    \"tl1\":\"核心架构\",\"tl2\":\"性能层\",\"tl3\":\"数据处理\",\"tl4\":\"安全协议\",
+    \"proc-eye\":\"我们如何工作\",\"proc-head1\":\"\",\"proc-head2\":\"协议\",\"proc-sub\":\"精准的四阶段系统 — 从简报到上线,毫无歧义。\",
+    \"ph1\":\"第一阶段\",\"ph2\":\"第二阶段\",\"ph3\":\"第三阶段\",\"ph4\":\"第四阶段\",
+    \"proc-t1\":\"发现\",\"proc-d1\":\"在写下一行代码前,我们先梳理你的目标、受众和竞争格局。\",
+    \"proc-t2\":\"策略\",\"proc-d2\":\"定制化增长架构 — 内容、UX 与渠道 — 紧扣你的 KPI。\",
+    \"proc-t3\":\"执行\",\"proc-d3\":\"设计、开发与发布以敏捷冲刺进行,每周更新进度。\",
+    \"proc-t4\":\"扩展\",\"proc-d4\":\"基于实时数据的持续优化、A/B 测试与迭代。\",
+    \"st1\":\"年经验\",\"st2\":\"已完成项目\",\"st3\":\"满意客户\",
+    \"contact-label\":\"联系\",\"contact-title-1\":\"开启你的\",\"contact-title-2\":\"项目\",\"contact-sub\":\"告诉我们你的目标。24 小时内我们会回复一份量身定制的方案 — 无需任何承诺。\",
+    \"field-name\":\"全名\",\"field-email\":\"电子邮件\",\"field-website\":\"网址\",\"field-budget\":\"预算\",\"field-message\":\"你的目标\",
+    \"ph-name\":\"你的全名\",\"ph-email\":\"hello@yourbrand.com\",\"ph-company\":\"公司或网站\",\"ph-message\":\"描述你的愿景以及成功是什么样子…\",
+    \"budget-select\":\"选择范围\",\"budget-1\":\"Starter\",\"budget-2\":\"Growth\",\"budget-3\":\"Enterprise\",
+    \"form-note\":\"我们将以完全保密的方式处理你的数据。\",\"form-submit\":\"发送消息\",\"form-error-msg\":\"出错了。请重试或直接发邮件给我们。\",
+    \"success-h\":\"信息已收到\",\"success-p\":\"我们将在 24 小时内联系你,提供为你品牌定制的方案。\",
+    \"avail\":\"接受新项目\",\"rights\":\"版权所有\",\"k-plus\":\"千+\"
   }
 };
 
-// Currency map
-const CURRENCY = {
-  US:'$', GB:'£', CA:'CA$', AU:'A$', JP:'¥', CN:'¥',
-  CH:'CHF', NO:'kr', SE:'kr', DK:'kr',
-  default:'€'
+/* =================================================
+   CURRENCY DETECTION
+================================================= */
+// Base prices in EUR (matches data-price attr)
+const FX = { EUR:1, CZK:25.2, PLN:4.3, USD:1.08, GBP:0.85, AED:3.96, CNY:7.85, JPY:163 };
+const CUR_SYMBOL = { EUR:'€', CZK:'Kč', PLN:'zł', USD:'$', GBP:'£', AED:'د.إ', CNY:'¥', JPY:'¥' };
+const COUNTRY_CUR = {
+  CZ:'CZK', PL:'PLN', GB:'GBP', UK:'GBP', US:'USD', CA:'USD',
+  AE:'AED', SA:'AED', QA:'AED', KW:'AED', BH:'AED', OM:'AED',
+  CN:'CNY', HK:'CNY', TW:'CNY', JP:'JPY'
 };
-// Approx exchange rates to EUR
-const RATES = { '$':1.09, '£':1.28, 'CA$':0.80, 'A$':0.70, '¥':0.0066, 'CHF':1.12, 'kr':0.089, '€':1 };
-let userCurrency = '€';
+const LANG_DEFAULT_CUR = { en:'EUR', cs:'CZK', pl:'PLN', es:'EUR', de:'EUR', fr:'EUR', ar:'AED', zh:'CNY' };
 
-async function detectCurrency(){
+function detectCurrency(){
   try{
-    const r = await fetch('https://ipapi.co/json/');
-    const d = await r.json();
-    const code = d.country_code || 'default';
-    userCurrency = CURRENCY[code] || '€';
-  } catch(e){ userCurrency = '€'; }
-  updatePrices();
+    const stored = localStorage.getItem('donda_cur');
+    if(stored && FX[stored]) return stored;
+    // Try locale based detection
+    const locale = (navigator.language || 'en').toUpperCase();
+    const region = locale.split('-')[1] || locale.split('_')[1];
+    if(region && COUNTRY_CUR[region]) return COUNTRY_CUR[region];
+    // Timezone fallback
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    if(tz.includes('Prague')) return 'CZK';
+    if(tz.includes('Warsaw')) return 'PLN';
+    if(tz.includes('London')) return 'GBP';
+    if(tz.includes('New_York')||tz.includes('Los_Angeles')||tz.includes('Chicago')||tz.includes('Denver')) return 'USD';
+    if(tz.includes('Dubai')||tz.includes('Riyadh')) return 'AED';
+    if(tz.includes('Shanghai')||tz.includes('Hong_Kong')||tz.includes('Beijing')) return 'CNY';
+    if(tz.includes('Tokyo')) return 'JPY';
+  }catch(e){}
+  return 'EUR';
 }
-function formatPrice(eur, suffix){
-  const rate = RATES[userCurrency] || 1;
-  const val = Math.round(eur * rate);
-  const fmt = val >= 1000 ? (Math.round(val/100)/10).toFixed(0) + ' ' + userCurrency + (val>=1000?'000':'') : val + ' ' + userCurrency;
-  // simpler
-  const simple = new Intl.NumberFormat('en', {maximumFractionDigits:0}).format(Math.round(eur*rate));
-  return simple + ' ' + userCurrency + (suffix||'');
+
+function formatPrice(amountEUR, cur){
+  const v = Math.round(amountEUR * (FX[cur] || 1));
+  // Round to nice number
+  let rounded;
+  if(v >= 10000) rounded = Math.round(v/100)*100;
+  else if(v >= 1000) rounded = Math.round(v/10)*10;
+  else rounded = v;
+  const sym = CUR_SYMBOL[cur] || '€';
+  const formatted = rounded.toLocaleString('en-US').replace(/,/g,' ');
+  // Currency placement: AED/CZK/PLN after, others before
+  if(cur==='CZK' || cur==='PLN' || cur==='AED') return formatted + ' ' + sym;
+  return sym + formatted;
 }
-function updatePrices(){
-  $$('[data-i18n-price]').forEach(el=>{
-    const eur = +el.dataset.price;
-    const sfx = el.dataset.priceSuffix || '';
-    el.textContent = formatPrice(eur, sfx);
+
+let CURRENT_CUR = detectCurrency();
+let CURRENT_LANG = localStorage.getItem('donda_lang') || (function(){
+  const code = (navigator.language || 'en').slice(0,2).toLowerCase();
+  return I18N[code] ? code : 'en';
+})();
+
+function applyPrices(){
+  const t = I18N[CURRENT_LANG] || I18N.en;
+  document.querySelectorAll('[data-price]').forEach(el=>{
+    const base = parseFloat(el.getAttribute('data-price'));
+    let suffix = el.getAttribute('data-price-suffix') || '';
+    const suffixKey = el.getAttribute('data-price-suffix-key');
+    if(suffixKey && t[suffixKey]){
+      // For \"k+\" style
+      const v = Math.round(base * (FX[CURRENT_CUR]||1) / 1000);
+      const sym = CUR_SYMBOL[CURRENT_CUR] || '€';
+      const order = (CURRENT_CUR==='CZK'||CURRENT_CUR==='PLN'||CURRENT_CUR==='AED');
+      el.textContent = order ? (v + t[suffixKey] + ' ' + sym) : (sym + v + t[suffixKey]);
+      return;
+    }
+    // Translate /mo suffix
+    if(suffix === '/mo'){
+      const moMap = {en:'/mo', cs:'/měs', pl:'/mc', es:'/mes', de:'/Mon', fr:'/mois', ar:'/شهر', zh:'/月'};
+      suffix = moMap[CURRENT_LANG] || '/mo';
+    }
+    el.textContent = formatPrice(base, CURRENT_CUR) + suffix;
   });
 }
-detectCurrency();
 
-let currentLang = 'en';
+/* =================================================
+   APPLY LANGUAGE
+================================================= */
 function applyLang(lang){
-  const t = I18N[lang] || I18N.en;
-  currentLang = lang;
-  // textContent
-  $$('[data-i18n]').forEach(el=>{
+  if(!I18N[lang]) lang = 'en';
+  CURRENT_LANG = lang;
+  localStorage.setItem('donda_lang', lang);
+  const t = I18N[lang];
+  const html = document.documentElement;
+  html.setAttribute('lang', lang);
+  html.setAttribute('dir', lang==='ar' ? 'rtl' : 'ltr');
+
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
     const k = el.getAttribute('data-i18n');
     if(t[k] !== undefined) el.textContent = t[k];
   });
-  // placeholders
-  $$('[data-i18n-placeholder]').forEach(el=>{
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
     const k = el.getAttribute('data-i18n-placeholder');
-    if(t[k] !== undefined) el.placeholder = t[k];
+    if(t[k] !== undefined) el.setAttribute('placeholder', t[k]);
   });
-  // lang button display
-  $('#lang-cur').textContent = lang.toUpperCase();
-  // mark active
-  $$('.lang-opt').forEach(o=>o.classList.toggle('active', o.dataset.lang===lang));
-  // RTL
-  document.documentElement.setAttribute('dir', lang==='ar'?'rtl':'ltr');
-  document.documentElement.setAttribute('lang', lang);
-  // close drawer
-  closeDrawer();
-  // update prices again in case labels changed
-  updatePrices();
+
+  // Update lang button label
+  const langCur = document.getElementById('lang-cur');
+  if(langCur) langCur.textContent = lang.toUpperCase();
+
+  // Update active option
+  document.querySelectorAll('.lang-opt').forEach(o=>{
+    o.classList.toggle('active', o.getAttribute('data-lang')===lang);
+  });
+
+  // Auto-switch currency to language default if user has not explicitly set
+  if(!localStorage.getItem('donda_cur')){
+    const def = LANG_DEFAULT_CUR[lang];
+    if(def) CURRENT_CUR = def;
+  }
+  applyPrices();
 }
 
-function closeDrawer(){
-  $('#lang-drawer').classList.remove('open');
-  $('#lang-btn').classList.remove('open');
-}
+/* =================================================
+   DOM READY
+================================================= */
+document.addEventListener('DOMContentLoaded', ()=>{
+  /* -------- LOADER -------- */
+  const words = ['Build','Create','Design','Launch'];
+  const loaderWord = document.getElementById('l-word');
+  const loaderCount = document.getElementById('l-count');
+  const loaderBar = document.getElementById('l-bar');
+  const loaderEl = document.getElementById('loader');
+  const statuses = ['ls0','ls1','ls2'];
+  let progress = 0;
+  let wordIdx = 0;
+  const loaderInt = setInterval(()=>{
+    progress += 100/40;
+    if(progress>=100){progress=100}
+    loaderBar.style.width = progress + '%';
+    loaderCount.textContent = String(Math.floor(progress)).padStart(3,'0');
+    const si = Math.min(2, Math.floor(progress/35));
+    statuses.forEach((id,i)=>document.getElementById(id).classList.toggle('on', i<=si));
+    if(progress>=100){
+      clearInterval(loaderInt);
+      setTimeout(()=>{
+        loaderEl.style.transition='opacity .6s,transform .6s';
+        loaderEl.style.opacity='0';
+        loaderEl.style.transform='translateY(-3%)';
+        setTimeout(()=>loaderEl.style.display='none', 650);
+      }, 250);
+    }
+  }, 50);
+  const wordInt = setInterval(()=>{
+    loaderWord.style.opacity='0';loaderWord.style.transform='translate(-50%,-60%)';
+    setTimeout(()=>{
+      wordIdx=(wordIdx+1)%words.length;
+      loaderWord.textContent=words[wordIdx];
+      loaderWord.style.opacity='.9';loaderWord.style.transform='translate(-50%,-50%)';
+    }, 280);
+  }, 500);
+  setTimeout(()=>clearInterval(wordInt), 2200);
 
-$('#lang-btn').addEventListener('click', e=>{
-  e.stopPropagation();
-  const open = $('#lang-drawer').classList.toggle('open');
-  $('#lang-btn').classList.toggle('open', open);
-});
-document.addEventListener('click', e=>{
-  if(!$('#lang-btn').contains(e.target) && !$('#lang-drawer').contains(e.target)) closeDrawer();
-});
-$$('.lang-opt').forEach(o=>o.addEventListener('click', ()=>applyLang(o.dataset.lang)));
-
-// ================================================================
-//  MAGNETIC BUTTONS
-// ================================================================
-$$('.btn, .nav-cta').forEach(b=>{
-  b.addEventListener('mousemove',e=>{
-    const r=b.getBoundingClientRect();
-    b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.1}px,${(e.clientY-r.top-r.height/2)*.1}px)`;
+  /* -------- CURSOR -------- */
+  const cur=document.getElementById('cur'), curR=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px'});
+  (function loop(){
+    rx+=(mx-rx)*.18; ry+=(my-ry)*.18;
+    curR.style.left=rx+'px'; curR.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button,.sol-card,input,select,textarea,.lang-opt').forEach(el=>{
+    el.addEventListener('mouseenter', ()=>document.body.classList.add('cursor-big'));
+    el.addEventListener('mouseleave', ()=>document.body.classList.remove('cursor-big'));
   });
-  b.addEventListener('mouseleave',()=>b.style.transform='');
-});
 
-// ================================================================
-//  HERO PARTICLE BACKGROUND
-// ================================================================
-(function(){
-  const cv=$('#hero-particles'), ctx=cv.getContext('2d');
-  let W,H,pts=[];
-  function resize(){ W=cv.width=cv.offsetWidth; H=cv.height=cv.offsetHeight; rebuild(); }
-  function rebuild(){
-    pts=[];
-    const n=Math.floor(W*H/7500);
-    for(let i=0;i<n;i++) pts.push({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.25,vy:(Math.random()-.5)*.25,r:Math.random()*1.2+.3,o:Math.random()*.4+.1});
-  }
-  window.addEventListener('resize',resize); resize();
-  let hmx=W/2,hmy=H/2;
-  document.addEventListener('mousemove',e=>{ const r=cv.getBoundingClientRect(); hmx=e.clientX-r.left; hmy=e.clientY-r.top; });
-  function draw(){
-    ctx.clearRect(0,0,W,H);
-    pts.forEach(p=>{
-      p.x+=p.vx; p.y+=p.vy;
-      if(p.x<0)p.x=W; if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H; if(p.y>H)p.y=0;
-      ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle=`rgba(0,212,232,${p.o})`; ctx.fill();
-    });
-    for(let i=0;i<pts.length;i++) for(let j=i+1;j<pts.length;j++){
-      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
-      if(d<90){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.strokeStyle=`rgba(0,212,232,${.07*(1-d/90)})`; ctx.lineWidth=.5; ctx.stroke(); }
-    }
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
-
-// ================================================================
-//  THREE.JS LAPTOP (HERO) — smooth, fully visible
-// ================================================================
-window.addEventListener('load', function(){
-  if(typeof THREE==='undefined') return;
-
-  // ── LAPTOP ──
-  (function(){
-    const cv=$('#laptop-cv');
-    if(!cv) return;
-    const renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-    renderer.setClearColor(0,0);
-    renderer.shadowMap.enabled=false;
-    const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(38,1,.1,50);
-    // Camera positioned so entire laptop fits
-    camera.position.set(0,1.2,7);
-    camera.lookAt(0,.2,0);
-
-    function resize(){
-      const W=cv.offsetWidth, H=cv.offsetHeight||520;
-      renderer.setSize(W,H,false);
-      camera.aspect=W/H; camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize',resize); resize();
-
-    // Lights
-    scene.add(new THREE.AmbientLight(0x102030,1));
-    const kl=new THREE.DirectionalLight(0x00d4e8,2.5); kl.position.set(2,4,4); scene.add(kl);
-    const rl=new THREE.PointLight(0x00ff88,1.5,15); rl.position.set(-3,1,3); scene.add(rl);
-    const bl=new THREE.PointLight(0x0044aa,1,12); bl.position.set(0,-3,2); scene.add(bl);
-
-    const M = {
-      body:new THREE.MeshStandardMaterial({color:0x0a141f,metalness:.92,roughness:.15}),
-      screen:new THREE.MeshStandardMaterial({color:0x000810}),
-      edge:new THREE.MeshStandardMaterial({color:0x001525,metalness:.96,roughness:.04,emissive:0x002233,emissiveIntensity:.3}),
-      glow:new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:1.8,transparent:true,opacity:.85}),
-      key:new THREE.MeshStandardMaterial({color:0x0c1c2c,metalness:.8,roughness:.35,emissive:0x001020,emissiveIntensity:.25}),
-      tp:new THREE.MeshStandardMaterial({color:0x081420,metalness:.65,roughness:.4}),
-    };
-
-    const group=new THREE.Group();
-    scene.add(group);
-
-    // BASE CHASSIS
-    const baseW=3, baseD=2, baseH=.1;
-    const base=new THREE.Mesh(new THREE.BoxGeometry(baseW,baseH,baseD),M.body);
-    base.position.y=0; group.add(base);
-    // base glow strip (front edge)
-    const bglow=new THREE.Mesh(new THREE.BoxGeometry(baseW,.012,baseD+.01),M.glow);
-    bglow.position.y=baseH/2+.001; group.add(bglow);
-
-    // KEYBOARD SURFACE
-    const kbSurf=new THREE.Mesh(new THREE.PlaneGeometry(2.75,1.65),new THREE.MeshStandardMaterial({color:0x060d18,metalness:.7,roughness:.55}));
-    kbSurf.rotation.x=-Math.PI/2; kbSurf.position.set(0,baseH/2+.001,.07); group.add(kbSurf);
-
-    // KEYS — simple flat rectangles for performance
-    const kMesh=new THREE.InstancedMesh(new THREE.BoxGeometry(.18,.015,.14),M.key,60);
-    kMesh.instanceMatrix.setUsage(THREE.StaticDrawUsage);
-    const dummy=new THREE.Object3D();
-    let ki=0;
-    const cols=12, rows=4;
-    for(let r=0;r<rows;r++) for(let c=0;c<cols;c++){
-      if(ki>=60) break;
-      dummy.position.set(-1.2+c*.22, baseH/2+.009, -.5+r*.19);
-      dummy.updateMatrix(); kMesh.setMatrixAt(ki++,dummy.matrix);
-    }
-    kMesh.count=ki; group.add(kMesh);
-    // Spacebar
-    const sp=new THREE.Mesh(new THREE.BoxGeometry(1.1,.012,.13),M.key);
-    sp.position.set(-.05,baseH/2+.009,.65); group.add(sp);
-    // Trackpad
-    const tp=new THREE.Mesh(new THREE.BoxGeometry(.9,.008,.55),M.tp);
-    tp.position.set(0,baseH/2+.005,.82); group.add(tp);
-    // Trackpad glow border
-    const tpg=new THREE.Mesh(new THREE.BoxGeometry(.92,.004,.57),new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:.6,transparent:true,opacity:.3}));
-    tpg.position.set(0,baseH/2+.002,.82); group.add(tpg);
-
-    // LID GROUP — pivot at hinge (back of base)
-    const lidGroup=new THREE.Group();
-    const hingeZ = baseD/2; // back edge of base
-    lidGroup.position.set(0, baseH/2, hingeZ);
-    group.add(lidGroup);
-
-    const lidW=baseW, lidD=baseD+.1, lidThick=.09;
-    const lid=new THREE.Mesh(new THREE.BoxGeometry(lidW,lidThick,lidD),M.body);
-    lid.position.set(0,0,-lidD/2); lidGroup.add(lid);
-    // Lid glow strip (bottom edge of lid)
-    const lglow=new THREE.Mesh(new THREE.BoxGeometry(lidW,.012,lidD),M.glow);
-    lglow.position.set(0,-lidThick/2-.001,-lidD/2); lidGroup.add(lglow);
-    // Logo on back
-    const logoCyl=new THREE.Mesh(new THREE.CylinderGeometry(.18,.18,.006,6),new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:2.5,transparent:true,opacity:.88}));
-    logoCyl.position.set(0,lidThick/2+.004,-lidD/2); lidGroup.add(logoCyl);
-
-    // SCREEN
-    const scrW=lidW-.25, scrH=lidD-.2;
-    const scrCanvas=document.createElement('canvas'); scrCanvas.width=640; scrCanvas.height=420;
-    const scrCtx=scrCanvas.getContext('2d');
-    function drawScreen(t){
-      const c=scrCtx, w=640, h=420;
-      c.fillStyle='#010a14'; c.fillRect(0,0,w,h);
-      // grid
-      c.strokeStyle='rgba(0,212,232,0.055)'; c.lineWidth=1;
-      for(let x=0;x<w;x+=32){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke();}
-      for(let y=0;y<h;y+=32){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke();}
-      // scan
-      const sl=(t*.055)%h;
-      const sg=c.createLinearGradient(0,sl-22,0,sl+22);
-      sg.addColorStop(0,'transparent'); sg.addColorStop(.5,'rgba(0,212,232,0.07)'); sg.addColorStop(1,'transparent');
-      c.fillStyle=sg; c.fillRect(0,sl-22,w,44);
-      // UI bars
-      c.fillStyle='rgba(0,212,232,0.14)'; c.fillRect(28,28,220,3);
-      c.fillStyle='rgba(0,212,232,0.07)'; c.fillRect(28,42,160,2); c.fillRect(28,54,180,2);
-      // progress bars
-      [[28,90],[28,108],[28,126]].forEach(([x,y],i)=>{
-        const w2=150+Math.sin(t*.002+i*.7)*50;
-        c.fillStyle='rgba(0,212,232,0.08)'; c.fillRect(x,y,200,9);
-        c.fillStyle='rgba(0,212,232,0.5)'; c.fillRect(x,y,w2,9);
+  /* -------- PROGRESS BAR + NAV scroll -------- */
+  const nav = document.getElementById('nav');
+  const prog = document.getElementById('prog');
+  const procFill = document.getElementById('proc-fill');
+  const procSteps = document.querySelectorAll('.proc-step');
+  function onScroll(){
+    const sc = window.scrollY;
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    prog.style.width = (sc/total*100) + '%';
+    nav.classList.toggle('scrolled', sc>30);
+    // Process spine fill
+    const procEl = document.querySelector('.proc-steps');
+    if(procEl && procFill){
+      const r = procEl.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const start = vh*0.7;
+      const end = -r.height + vh*0.3;
+      const p = Math.max(0, Math.min(1, (start - r.top)/(start - end)));
+      procFill.style.height = (p*100) + '%';
+      procSteps.forEach((st,i)=>{
+        const sr = st.getBoundingClientRect();
+        st.classList.toggle('reached', sr.top < vh*0.6);
       });
-      // hex logo
-      c.save(); c.translate(580,60); c.strokeStyle='rgba(0,212,232,0.65)'; c.lineWidth=1.5;
-      c.beginPath();
-      for(let i=0;i<6;i++){const a=Math.PI/3*i-Math.PI/6; c.lineTo(Math.cos(a)*22,Math.sin(a)*22);}
-      c.closePath(); c.stroke();
-      c.fillStyle='rgba(0,212,232,0.85)'; c.font='bold 10px monospace'; c.textAlign='center'; c.fillText('DD',0,4);
-      c.restore();
-      // code lines
-      const code=['> npm run build','> Compiling...','> ✓ Built in 0.38s','> Deploy OK'];
-      code.forEach((l,i)=>{
-        const fade=Math.min(1,Math.max(0,(t-(i*900+1800))/400));
-        if(fade>0){ c.fillStyle=`rgba(0,212,232,${fade*.55})`; c.font='11px monospace'; c.textAlign='left'; c.fillText(l,28,290+i*16);}
-      });
-      // cursor blink
-      if(Math.floor(t/600)%2===0){ c.fillStyle='rgba(0,212,232,0.75)'; c.fillRect(28,356,7,14); }
-      // bottom status
-      c.fillStyle='rgba(0,212,232,0.3)'; c.fillRect(28,390,70,2);
-      c.fillStyle='rgba(0,255,136,0.3)'; c.fillRect(108,390,45,2);
     }
-    const scrTex=new THREE.CanvasTexture(scrCanvas);
-    const scrMat=new THREE.MeshStandardMaterial({map:scrTex,emissiveMap:scrTex,emissive:new THREE.Color(1,1,1),emissiveIntensity:.45});
-    const scrMesh=new THREE.Mesh(new THREE.PlaneGeometry(scrW,scrH),scrMat);
-    scrMesh.position.set(0,0,-lidD/2);
-    scrMesh.rotation.y=Math.PI;
-    lidGroup.add(scrMesh);
-    // Screen frame
-    const sfr=new THREE.Mesh(new THREE.BoxGeometry(scrW+.15,lidThick+.02,scrH+.12),M.edge);
-    sfr.position.set(0,0,-lidD/2); lidGroup.add(sfr);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+  onScroll();
 
-    // LID ANGLE: open ~105 degrees backwards
-    lidGroup.rotation.x = -Math.PI * .58;
-
-    // Floating orbital rings around laptop
-    const rings=[];
-    for(let i=0;i<3;i++){
-      const rg=new THREE.Mesh(new THREE.TorusGeometry(.35+i*.3,.005,6,60),new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:1,transparent:true,opacity:.12+i*.04}));
-      rg.position.set(0,2.2+i*.5,0); rg.rotation.x=Math.PI/2; scene.add(rg); rings.push(rg);
-    }
-
-    // Explode particles
-    const PC=180;
-    const pPos=new Float32Array(PC*3), pVel=[];
-    for(let i=0;i<PC;i++){ pPos[i*3]=pPos[i*3+1]=pPos[i*3+2]=0; pVel.push({x:(Math.random()-.5)*5,y:(Math.random()-.5)*5,z:(Math.random()-.5)*5,l:Math.random()}); }
-    const pGeo=new THREE.BufferGeometry(); pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
-    const pMat=new THREE.PointsMaterial({color:0x00d4e8,size:.05,transparent:true,opacity:.65,blending:THREE.AdditiveBlending,depthWrite:false});
-    const points=new THREE.Points(pGeo,pMat); points.visible=false; group.add(points);
-
-    let trx=0,try_=0, expProg=0;
-    document.addEventListener('mousemove',e=>{
-      const r=cv.getBoundingClientRect();
-      if(r.width){ trx=(e.clientX-r.left)/r.width-.5; try_=(e.clientY-r.top)/r.height-.5; }
-    });
-    window.addEventListener('scroll',()=>{
-      const sec=$('#hero').getBoundingClientRect();
-      expProg=Math.max(0,Math.min(1,-sec.top/(sec.height*.65)));
-    },{passive:true});
-
-    let prevT=0;
-    function anim(now){
-      requestAnimationFrame(anim);
-      const dt=Math.min(now-prevT,50); prevT=now;
-
-      drawScreen(now); scrTex.needsUpdate=true;
-
-      // Smooth rotation — damped spring
-      group.rotation.y += (trx*.6 - group.rotation.y)*.055;
-      group.rotation.x += (-try_*.3 - group.rotation.x)*.055;
-      // Keep lid in sync
-      lidGroup.rotation.y = group.rotation.y;
-
-      // Bob
-      group.position.y = Math.sin(now*.001)*.06;
-
-      // Explode on scroll
-      if(expProg>0){
-        points.visible=true;
-        for(let i=0;i<PC;i++){
-          pVel[i].l=Math.min(1,pVel[i].l+.015);
-          pPos[i*3]  =pVel[i].x*pVel[i].l*expProg*1.8;
-          pPos[i*3+1]=pVel[i].y*pVel[i].l*expProg*1.8;
-          pPos[i*3+2]=pVel[i].z*pVel[i].l*expProg*1.8;
+  /* -------- REVEAL OBSERVER -------- */
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+        // Stat counters
+        if(e.target.classList.contains('stat-item')){
+          const numEl = e.target.querySelector('[data-target]');
+          if(numEl && !numEl.dataset.done){
+            numEl.dataset.done='1';
+            const target = parseInt(numEl.dataset.target);
+            const suf = numEl.dataset.suffix || '';
+            let cur = 0;
+            const step = Math.max(1, Math.floor(target/40));
+            const ci = setInterval(()=>{
+              cur += step;
+              if(cur>=target){cur=target;clearInterval(ci)}
+              numEl.textContent = cur + suf;
+            }, 35);
+          }
         }
-        pGeo.attributes.position.needsUpdate=true;
-        pMat.opacity=.65*(1-expProg*.6);
-        // Parts drift apart
-        base.scale.y=1+expProg*2; base.position.y=-expProg;
-        lid.position.y=expProg*2.5;
-      } else {
-        points.visible=false;
-        base.scale.y=1; base.position.y=0; lid.position.y=0;
       }
+    });
+  }, {threshold:.18});
+  document.querySelectorAll('.reveal, .stat-item').forEach(el=>io.observe(el));
 
-      // Rings
-      rings.forEach((r,i)=>{
-        r.rotation.z=now*.00025*(i+1);
-        r.position.y=2+i*.45+Math.sin(now*.0008+i)*.18;
-        r.material.opacity=.1+Math.sin(now*.0015+i)*.07;
+  /* -------- SOL CARDS glow follow -------- */
+  document.querySelectorAll('.sol-card').forEach(c=>{
+    c.addEventListener('mousemove', e=>{
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', ((e.clientX-r.left)/r.width*100)+'%');
+      c.style.setProperty('--my', ((e.clientY-r.top)/r.height*100)+'%');
+    });
+  });
+
+  /* -------- LANG DRAWER -------- */
+  const langBtn = document.getElementById('lang-btn');
+  const langDrawer = document.getElementById('lang-drawer');
+  langBtn.addEventListener('click', e=>{
+    e.stopPropagation();
+    langBtn.classList.toggle('open');
+    langDrawer.classList.toggle('open');
+  });
+  document.addEventListener('click', e=>{
+    if(!langBtn.contains(e.target) && !langDrawer.contains(e.target)){
+      langBtn.classList.remove('open');
+      langDrawer.classList.remove('open');
+    }
+  });
+  document.querySelectorAll('.lang-opt').forEach(o=>{
+    o.addEventListener('click', ()=>{
+      applyLang(o.getAttribute('data-lang'));
+      langBtn.classList.remove('open');
+      langDrawer.classList.remove('open');
+    });
+  });
+
+  // Initial apply
+  applyLang(CURRENT_LANG);
+
+  /* -------- HERO PARTICLES -------- */
+  const hp = document.getElementById('hero-particles');
+  if(hp){
+    const ctx = hp.getContext('2d');
+    let w,h,parts=[];
+    function resize(){w=hp.width=hp.offsetWidth*devicePixelRatio;h=hp.height=hp.offsetHeight*devicePixelRatio}
+    resize();window.addEventListener('resize',resize);
+    for(let i=0;i<55;i++){parts.push({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.3})}
+    function pdraw(){
+      ctx.clearRect(0,0,w,h);
+      parts.forEach(p=>{
+        p.x+=p.vx;p.y+=p.vy;
+        if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+        ctx.fillStyle='rgba(0,212,232,'+(Math.random()*.5+.2)+')';
+        ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
       });
-
-      // Glow pulse
-      M.glow.emissiveIntensity=1.6+Math.sin(now*.003)*.6;
-      logoCyl.material.emissiveIntensity=2.3+Math.sin(now*.004)*.9;
-      kl.intensity=2.3+Math.sin(now*.002)*.4;
-
-      renderer.render(scene,camera);
+      requestAnimationFrame(pdraw);
     }
-    requestAnimationFrame(anim);
-  })();
+    pdraw();
+  }
 
-  // ── PLANET / SPHERE SECTION ──
-  (function(){
-    const cv=$('#t3d-cv'), wrap=$('#t3d-wrap');
-    if(!cv) return;
-    const renderer=new THREE.WebGLRenderer({canvas:cv,alpha:true,antialias:true});
-    renderer.setPixelRatio(Math.min(devicePixelRatio,2)); renderer.setClearColor(0,0);
-    const scene=new THREE.Scene();
-    const camera=new THREE.PerspectiveCamera(50,1,.1,100);
-    camera.position.set(0,0,7.5); camera.lookAt(0,0,0);
-    function resize(){ const W=wrap.offsetWidth,H=wrap.offsetHeight||480; renderer.setSize(W,H,false); camera.aspect=W/H; camera.updateProjectionMatrix(); }
-    window.addEventListener('resize',resize); resize();
+  /* -------- HERO 3D LAPTOP (improved) -------- */
+  if(window.THREE){
+    initLaptop();
+    initPlanet();
+  } else {
+    // wait
+    const wt = setInterval(()=>{
+      if(window.THREE){clearInterval(wt);initLaptop();initPlanet();}
+    },100);
+  }
 
-    scene.add(new THREE.AmbientLight(0x102030,.6));
-    const l1=new THREE.PointLight(0x00d4e8,4,20); l1.position.set(3,3,5); scene.add(l1);
-    const l2=new THREE.PointLight(0x00ff88,2,15); l2.position.set(-3,-2,4); scene.add(l2);
-
-    const icoGeo=new THREE.IcosahedronGeometry(2,2);
-    const sphere=new THREE.Mesh(icoGeo,new THREE.MeshBasicMaterial({color:0x00d4e8,wireframe:true,transparent:true,opacity:.11}));
-    scene.add(sphere);
-    const inner=new THREE.Mesh(new THREE.IcosahedronGeometry(1.3,1),new THREE.MeshStandardMaterial({color:0x001a2a,metalness:.9,roughness:.1,emissive:0x003344,emissiveIntensity:.9,transparent:true,opacity:.92}));
-    scene.add(inner);
-
-    const toruses=[];
-    for(let i=0;i<3;i++){
-      const t=new THREE.Mesh(new THREE.TorusGeometry(1.9+i*.65,.005,4,80),new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:.8,transparent:true,opacity:.13+i*.04}));
-      t.rotation.x=i*Math.PI/3; t.rotation.y=i*Math.PI/4;
-      t.userData={ax:new THREE.Vector3(Math.random(),Math.random(),Math.random()).normalize(),sp:.0025+i*.0018};
-      scene.add(t); toruses.push(t);
-    }
-
-    // nodes on sphere vertices
-    const nodeGeo=new THREE.SphereGeometry(.075,6,6);
-    const nodeMat=new THREE.MeshStandardMaterial({color:0x00d4e8,emissive:0x00d4e8,emissiveIntensity:2});
-    const verts=icoGeo.attributes.position, nodes=[];
-    const step2=Math.floor(verts.count/18);
-    for(let i=0;i<verts.count;i+=step2){
-      const n=new THREE.Mesh(nodeGeo,nodeMat.clone());
-      n.userData.oi=i; scene.add(n); nodes.push(n);
-    }
-
-    // particle cloud
-    const PC=180; const pp=new Float32Array(PC*3);
-    for(let i=0;i<PC;i++){const t2=Math.random()*Math.PI*2,p2=Math.random()*Math.PI,r2=2.6+Math.random()*1.6;pp[i*3]=r2*Math.sin(p2)*Math.cos(t2);pp[i*3+1]=r2*Math.sin(p2)*Math.sin(t2);pp[i*3+2]=r2*Math.cos(p2);}
-    const pGeo2=new THREE.BufferGeometry(); pGeo2.setAttribute('position',new THREE.BufferAttribute(pp,3));
-    scene.add(new THREE.Points(pGeo2,new THREE.PointsMaterial({color:0x00d4e8,size:.033,transparent:true,opacity:.45,blending:THREE.AdditiveBlending,depthWrite:false})));
-
-    let mx=0,my=0,vis=false;
-    document.addEventListener('mousemove',e=>{mx=(e.clientX/window.innerWidth-.5)*1.8;my=(e.clientY/window.innerHeight-.5)*1.5});
-    new IntersectionObserver(es=>es.forEach(e=>vis=e.isIntersecting),{threshold:.1}).observe($('#tech3d'));
-
-    let prev=0;
-    function anim(now){ requestAnimationFrame(anim); if(!vis)return;
-      const t=now*.001;
-      sphere.rotation.y=t*.2; sphere.rotation.x=t*.09;
-      inner.rotation.y=-t*.25; inner.rotation.x=t*.14;
-      camera.position.x+=(mx*.6-camera.position.x)*.045;
-      camera.position.y+=(-my*.4-camera.position.y)*.045;
-      camera.lookAt(0,0,0);
-      toruses.forEach(t2=>t2.rotateOnAxis(t2.userData.ax,t2.userData.sp));
-      nodes.forEach((n,i)=>{
-        const v=new THREE.Vector3(verts.getX(n.userData.oi),verts.getY(n.userData.oi),verts.getZ(n.userData.oi));
-        v.applyEuler(sphere.rotation); n.position.copy(v);
-        const s=1+Math.sin(t*2.2+i)*.28; n.scale.setScalar(s);
-        n.material.emissiveIntensity=1.5+Math.sin(t*2+i)*.8;
-      });
-      l1.intensity=3.5+Math.sin(t*.9)*.6;
-      renderer.render(scene,camera);
-    }
-    requestAnimationFrame(anim);
-  })();
+  /* -------- FORM SUBMIT (Formspree) -------- */
+  const form = document.getElementById('contactForm');
+  const formSuccess = document.getElementById('form-success');
+  const formError = document.getElementById('form-error');
+  const submitBtn = document.getElementById('form-submit-btn');
+  if(form){
+    form.addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      formError.classList.remove('show');
+      submitBtn.setAttribute('disabled','');
+      const originalText = submitBtn.textContent;
+      submitBtn.textContent = '...';
+      const data = new FormData(form);
+      try{
+        const res = await fetch(form.action, {
+          method:'POST',
+          body: data,
+          headers:{'Accept':'application/json'}
+        });
+        if(res.ok){
+          form.style.display='none';
+          formSuccess.classList.add('show');
+        } else {
+          throw new Error('Bad response');
+        }
+      }catch(err){
+        formError.classList.add('show');
+        submitBtn.removeAttribute('disabled');
+        submitBtn.textContent = originalText;
+      }
+    });
+  }
 });
+
+/* =================================================
+   THREE.JS — HERO LAPTOP
+================================================= */
+function initLaptop(){
+  const canvas = document.getElementById('laptop-cv');
+  if(!canvas) return;
+  const w = ()=>canvas.parentElement.clientWidth;
+  const h = ()=>canvas.parentElement.clientHeight;
+
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(35, w()/h(), 0.1, 100);
+  cam.position.set(0, 1.8, 7.8); // pulled back more for full visibility
+  cam.lookAt(0, 0.2, 0);
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setSize(w(), h(), false);
+
+  // Lighting
+  scene.add(new THREE.AmbientLight(0x223344, 0.7));
+  const key = new THREE.DirectionalLight(0x00d4e8, 1.4);
+  key.position.set(3,4,5); scene.add(key);
+  const rim = new THREE.DirectionalLight(0xffffff, 0.4);
+  rim.position.set(-4,2,-3); scene.add(rim);
+
+  // Laptop group
+  const laptop = new THREE.Group();
+
+  // Base
+  const baseGeo = new THREE.BoxGeometry(3.2, 0.12, 2.2);
+  const baseMat = new THREE.MeshStandardMaterial({color:0x0a1420, metalness:.85, roughness:.25, emissive:0x001a22, emissiveIntensity:.15});
+  const base = new THREE.Mesh(baseGeo, baseMat);
+  base.position.y = -0.06;
+  laptop.add(base);
+
+  // Keyboard area (slight inset)
+  const kbGeo = new THREE.BoxGeometry(2.9, 0.02, 1.9);
+  const kbMat = new THREE.MeshStandardMaterial({color:0x05090f, metalness:.5, roughness:.6});
+  const kb = new THREE.Mesh(kbGeo, kbMat);
+  kb.position.y = 0.01;
+  laptop.add(kb);
+
+  // Key dots (faux keys)
+  const keyMat = new THREE.MeshStandardMaterial({color:0x0d1e2e, metalness:.6, roughness:.4, emissive:0x00d4e8, emissiveIntensity:.05});
+  for(let i=0;i<8;i++){
+    for(let j=0;j<14;j++){
+      const k = new THREE.Mesh(new THREE.BoxGeometry(.14,.025,.14), keyMat);
+      k.position.set(-1.3 + j*0.2, 0.025, -.6 + i*0.18);
+      laptop.add(k);
+    }
+  }
+
+  // Trackpad
+  const tp = new THREE.Mesh(new THREE.BoxGeometry(1, 0.01, .7), new THREE.MeshStandardMaterial({color:0x0c1822, metalness:.7, roughness:.35}));
+  tp.position.set(0, 0.025, .85);
+  laptop.add(tp);
+
+  // Screen (lid)
+  const lidGroup = new THREE.Group();
+  const lidGeo = new THREE.BoxGeometry(3.2, 2.0, 0.09);
+  const lidMat = new THREE.MeshStandardMaterial({color:0x0a1420, metalness:.85, roughness:.3});
+  const lid = new THREE.Mesh(lidGeo, lidMat);
+  lidGroup.add(lid);
+
+  // Screen display
+  const screenGeo = new THREE.PlaneGeometry(2.96, 1.78);
+  const screenCanvas = document.createElement('canvas');
+  screenCanvas.width = 1024; screenCanvas.height = 600;
+  const sctx = screenCanvas.getContext('2d');
+  function drawScreen(t){
+    sctx.fillStyle='#05090f'; sctx.fillRect(0,0,1024,600);
+    // grid
+    sctx.strokeStyle='rgba(0,212,232,.08)'; sctx.lineWidth=1;
+    for(let x=0;x<1024;x+=40){sctx.beginPath();sctx.moveTo(x,0);sctx.lineTo(x,600);sctx.stroke()}
+    for(let y=0;y<600;y+=40){sctx.beginPath();sctx.moveTo(0,y);sctx.lineTo(1024,y);sctx.stroke()}
+    // title
+    sctx.fillStyle='#e4eff5'; sctx.font='italic 88px \"DM Serif Display\", serif';
+    sctx.fillText('DONDA', 70, 220);
+    sctx.fillStyle='#00d4e8';
+    sctx.fillText('.digital', 360, 220);
+    // status bar
+    sctx.fillStyle='#4a7285'; sctx.font='18px \"Space Mono\", monospace';
+    sctx.fillText('SYSTEM ONLINE  ·  v2.4.1', 70, 60);
+    sctx.fillStyle='#00ff88';
+    sctx.fillRect(1024-100, 50, 8, 8);
+    // scan line
+    const sy = (t*0.15) % 600;
+    const grad = sctx.createLinearGradient(0, sy-20, 0, sy+20);
+    grad.addColorStop(0,'rgba(0,212,232,0)');
+    grad.addColorStop(.5,'rgba(0,212,232,.25)');
+    grad.addColorStop(1,'rgba(0,212,232,0)');
+    sctx.fillStyle=grad; sctx.fillRect(0, sy-20, 1024, 40);
+    // bars
+    sctx.fillStyle='rgba(0,212,232,.7)';
+    const bars=12;
+    for(let i=0;i<bars;i++){
+      const bh = 30 + Math.abs(Math.sin(t*0.003 + i*0.6))*60;
+      sctx.fillRect(70 + i*42, 480 - bh, 28, bh);
+    }
+    // bottom text
+    sctx.fillStyle='#4a7285'; sctx.font='16px \"Space Mono\", monospace';
+    sctx.fillText('> BUILDING DIGITAL FUTURES_', 70, 560);
+  }
+  drawScreen(0);
+  const screenTex = new THREE.CanvasTexture(screenCanvas);
+  const screenMat = new THREE.MeshBasicMaterial({map:screenTex});
+  const screen = new THREE.Mesh(screenGeo, screenMat);
+  screen.position.z = 0.046;
+  lidGroup.add(screen);
+
+  // Glow plane behind
+  const glow = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 2.4), new THREE.MeshBasicMaterial({color:0x00d4e8, transparent:true, opacity:.08}));
+  glow.position.z = -0.06;
+  lidGroup.add(glow);
+
+  // Pivot so hinge is at bottom edge
+  lidGroup.position.set(0, 1.0, -1.0);
+  lidGroup.rotation.x = -0.18; // slight tilt back, fully open
+  laptop.add(lidGroup);
+
+  laptop.position.y = -0.5; // shift down to ensure top is visible
+  scene.add(laptop);
+
+  // Mouse parallax
+  let tx = 0, ty = 0, cx = 0, cy = 0;
+  canvas.parentElement.addEventListener('mousemove', e=>{
+    const r = canvas.getBoundingClientRect();
+    tx = ((e.clientX - r.left)/r.width - 0.5) * 0.6;
+    ty = ((e.clientY - r.top)/r.height - 0.5) * 0.4;
+  });
+  canvas.parentElement.addEventListener('mouseleave', ()=>{tx=0;ty=0});
+
+  function onResize(){
+    cam.aspect = w()/h();
+    cam.updateProjectionMatrix();
+    renderer.setSize(w(), h(), false);
+  }
+  window.addEventListener('resize', onResize);
+  onResize();
+
+  let t = 0;
+  function anim(){
+    t += 16;
+    drawScreen(t);
+    screenTex.needsUpdate = true;
+    // smooth damping for parallax (fast & smooth)
+    cx += (tx - cx) * 0.08;
+    cy += (ty - cy) * 0.08;
+    laptop.rotation.y = cx + Math.sin(t*0.0006)*0.12;
+    laptop.rotation.x = cy*0.5 + Math.sin(t*0.0004)*0.04;
+    requestAnimationFrame(anim);
+    renderer.render(scene, cam);
+  }
+  anim();
+}
+
+/* =================================================
+   THREE.JS — PLANET (UNCHANGED look)
+================================================= */
+function initPlanet(){
+  const canvas = document.getElementById('t3d-cv');
+  if(!canvas) return;
+  const wrap = canvas.parentElement;
+  const w = ()=>wrap.clientWidth, h = ()=>wrap.clientHeight;
+  const scene = new THREE.Scene();
+  const cam = new THREE.PerspectiveCamera(40, w()/h(), 0.1, 100);
+  cam.position.z = 5.5;
+
+  const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  renderer.setSize(w(), h(), false);
+
+  scene.add(new THREE.AmbientLight(0x223344, 0.5));
+  const dl = new THREE.DirectionalLight(0x00d4e8, 1.2);
+  dl.position.set(3,2,4); scene.add(dl);
+
+  const grp = new THREE.Group();
+
+  // wireframe sphere
+  const sg = new THREE.SphereGeometry(1.6, 32, 32);
+  const sm = new THREE.MeshBasicMaterial({color:0x00d4e8, wireframe:true, transparent:true, opacity:.35});
+  grp.add(new THREE.Mesh(sg, sm));
+
+  // inner solid sphere with subtle glow
+  const inner = new THREE.Mesh(new THREE.SphereGeometry(1.55, 64, 64), new THREE.MeshStandardMaterial({color:0x05090f, emissive:0x002b33, emissiveIntensity:.5, roughness:.4}));
+  grp.add(inner);
+
+  // outer ring
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(2.2, 0.01, 8, 64), new THREE.MeshBasicMaterial({color:0x00d4e8, transparent:true, opacity:.4}));
+  ring1.rotation.x = Math.PI/2.2;
+  grp.add(ring1);
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.005, 8, 64), new THREE.MeshBasicMaterial({color:0x00ff88, transparent:true, opacity:.3}));
+  ring2.rotation.x = Math.PI/3;
+  ring2.rotation.y = Math.PI/4;
+  grp.add(ring2);
+
+  // floating nodes
+  const nodes = [];
+  for(let i=0;i<14;i++){
+    const node = new THREE.Mesh(new THREE.SphereGeometry(0.04,8,8), new THREE.MeshBasicMaterial({color:0x00d4e8}));
+    const ang = (i/14)*Math.PI*2;
+    const rad = 1.85 + Math.sin(i)*0.15;
+    node.position.set(Math.cos(ang)*rad, Math.sin(i*1.3)*0.4, Math.sin(ang)*rad);
+    nodes.push(node);
+    grp.add(node);
+  }
+
+  scene.add(grp);
+
+  function onR(){
+    cam.aspect = w()/h(); cam.updateProjectionMatrix();
+    renderer.setSize(w(), h(), false);
+  }
+  window.addEventListener('resize', onR); onR();
+
+  let t = 0;
+  function anim(){
+    t += 0.006;
+    grp.rotation.y = t;
+    grp.rotation.x = Math.sin(t*0.5)*0.15;
+    ring1.rotation.z = t*1.5;
+    ring2.rotation.z = -t*1.2;
+    nodes.forEach((n,i)=>{
+      const ang = (i/nodes.length)*Math.PI*2 + t;
+      const rad = 1.85 + Math.sin(t+i)*0.12;
+      n.position.x = Math.cos(ang)*rad;
+      n.position.z = Math.sin(ang)*rad;
+    });
+    renderer.render(scene, cam);
+    requestAnimationFrame(anim);
+  }
+  anim();
+}
 </script>
 </body>
 </html>
-HTMLEOF
-echo "Done: $(wc -c < /mnt/user-data/outputs/donda-digital-final.html) bytes"
-
-Sortie
-Command argument is 101_025 bytes, exceeding the 100_000-byte per-argument limit. For large content, pipe via stdin or use a file-write API instead of embedding the content inline in the command. Argument preview: 'cat > /mnt/user-data/outputs/donda-digital-final.html << \'HTMLEOF\'\n<!DOCTYPE html>\n<html lang="en" dir="ltr">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width, initial-s'
-Terminé
-Vous n’avez plus de messages gratuits jusqu’à 23:10.
-
-a
+"
+Observation: Create successful: /app/output/index.html
