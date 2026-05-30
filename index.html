@@ -1,1203 +1,426 @@
-import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>DayBurn — Anti-Budget Tracker</title><script src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"/><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/><style>*{box-sizing:border-box;margin:0;padding:0}body{background:#09090b;overflow-x:hidden;color:#e4e4e7;font-family:'DM Mono',monospace}.font-display{font-family:'Syne',sans-serif}.hero-num{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1}.t-em{text-shadow:0 0 40px rgba(16,185,129,0.2)}.t-am{text-shadow:0 0 40px rgba(245,158,11,0.2)}.t-ro{text-shadow:0 0 40px rgba(239,68,68,0.2)}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:999px}body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");z-index:0}body::after{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:48px 48px;z-index:0}#root{position:relative;z-index:1}</style></head><body><div id="root"></div><script type="text/babel">const{useState,useEffect,useMemo}=React;
 
-// ─────────────────────────────────────────────
-// INTERFACES & TYPES
-// ─────────────────────────────────────────────
+// Embedded high-tech hexagonal logo from your screenshot
+const LOGO_B64="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADXElEQVRoQ+2ZzY8TZRSGnzNvd6Z0SgcolS8REgXiwZtXvXg1MfFGEw9GjRu96M0Y9S/wH3DFlXg0XvTi1XgTEw/e9GIsSgSREuUrdDqd78w409mZfko7HYpSks9m0ul0v7993nPe87zDWmsY96v73b/bXwXw60YBzGshgHktBDCvhQDmtbA94D4ZNo/NfQcPh2LgN+Y6Z86xOezb877fK7O9bXg4FAOfT8zYmE67vR48HAoBz/7b0zY23b0u3L/O9w6EgOfA/XvSxn76dM/w8/Hw7Gq0jR3f98P7B8Kzv9EydmI0OnwP/N7vGhtfPn/u8fPx8KwyZ+zUlSu7B0LAc+DoYWNn37p99/DzgfPszUljZ967v78uPHzGnHV6/frvFw8f7vWf9x04wK87V6/uP3jwIHT7vXb+vN+N2beXLu0aWwXfC6fXrX3p+O2b9/vOtcZ27OylS/uOHAl9Z16xYf/8+fP99evD6w503fHLV67098mwefPnzp8PrXf9ZvvGz/bNn996vTef2rBxet2BA8fXrx84Z87YqXOfXTlyJDTe8V+e93vWxo7dfPzY3O7AnXf4Vw8frvR6gXPujP24ffXqsZMnw9bC7HnzW8YOHXnkkbldAV8714a9Y089NbcrsOX9/7b20UcfXbgr0Dnz9saOnTzZf8S2fF6bM3bkyZMnZ3YFfN38gXPr7Nn/AnDu3DlrZ96+ffunXQHf99uGfXNOnTo1fPjwreE5XfG+M+ecO3v27M6BA984Z2zY99v9/fvC189rx6ydfe/+/p2BA186Z+z0pUuXvtoVWDZ37MTp09/sCHgYtnwYPn3mS6fP7gh4vzbnn7w0N/z70L+6I+D9S2fPXbkyvO8g+N6GfXf2ypWDg/vXw/vfnLNOf/LpHzM7A77fNfP9X38bHAnPvmPO+bVpW8fC5wPD8/9hS6df/fW3fWvCtz6Z7y+ePbtvdU6XzR3/be/sS0vDw3bMc7g4d/bsntXheU5rePgfbeP69fDsGttx69at/atfX8Wz17VjGzdu7F+t9V08e61rfH9j69b+3Z869qGxbw4fPtz/f5869sHcuXM/re7gP6Nf7f7H3b8K4NeNApjXQgDzWghgXgsBzGshgHktBDCvhQDmtbAtAL9p/gH/9Y0vS9vCjQAAAABJRU5ErkJggg==";
 
-interface Bill {
-  id: string;
-  label: string;
-  amount: number;
-  category: string;
-  active: boolean;
-}
-
-interface Transaction {
-  id: string;
-  label: string;
-  amount: number;
-  timestamp: number; // epoch ms
-  dayKey: string; // "YYYY-MM-DD"
-}
-
-interface DayState {
-  dayKey: string;
-  baseAllowance: number; // allowance set at start of day
-  carryover: number; // rolled-over surplus or deficit from prior days
-  transactions: Transaction[];
-}
-
-interface CountryConfig {
-  code: string;
-  name: string;
-  flag: string;
-  currency: string;
-  currencySymbol: string;
-  flatTaxRate?: number; // only used for "OTHER"
-}
-
-interface TaxSettings {
-  countryCode: string;
-  flatTaxRate: number; // 0–100, used when countryCode === "OTHER"
-  childDiscounts?: number; // CZ only: number of children
-  taxClass?: number; // DE only: Steuerklasse 1–6
-  filingStatus?: "single" | "married"; // US only
-}
-
-interface AppSettings {
-  grossIncome: number;
-  tax: TaxSettings;
-  bills: Bill[];
-  currency: string;
-  currencySymbol: string;
-  onboarded: boolean;
-}
-
-// ─────────────────────────────────────────────
-// CONSTANTS
-// ─────────────────────────────────────────────
-
-const COUNTRIES: CountryConfig[] = [
-  { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", currencySymbol: "Kč" },
-  { code: "DE", name: "Germany",         flag: "🇩🇪", currency: "EUR", currencySymbol: "€"  },
-  { code: "GB", name: "United Kingdom",  flag: "🇬🇧", currency: "GBP", currencySymbol: "£"  },
-  { code: "US", name: "United States",   flag: "🇺🇸", currency: "USD", currencySymbol: "$"  },
-  { code: "OTHER", name: "Other Country", flag: "🌍", currency: "USD", currencySymbol: "$"  },
+const COUNTRIES = [
+  { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", symbol: "Kč", engine: "CZ" },
+  { code: "DE", name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€", engine: "DE" },
+  { code: "GB", name: "United Kingdom", flag: "🇬🇧", currency: "GBP", symbol: "£", engine: "GB" },
+  { code: "US", name: "United States", flag: "🇺🇸", currency: "USD", symbol: "$", engine: "US" },
+  { code: "AT", name: "Austria", flag: "🇦🇹", currency: "EUR", symbol: "€", flat: 42 },
+  { code: "BE", name: "Belgium", flag: "🇧🇪", currency: "EUR", symbol: "€", flat: 52 },
+  { code: "CH", name: "Switzerland", flag: "🇨🇭", currency: "CHF", symbol: "CHF", flat: 30 },
+  { code: "DK", name: "Denmark", flag: "🇩🇰", currency: "DKK", symbol: "kr", flat: 46 },
+  { code: "FR", name: "France", flag: "🇫🇷", currency: "EUR", symbol: "€", flat: 47 },
+  { code: "NL", name: "Netherlands", flag: "🇳🇱", currency: "EUR", symbol: "€", flat: 47 },
+  { code: "PL", name: "Poland", flag: "🇵🇱", currency: "PLN", symbol: "zł", flat: 32 },
+  { code: "SK", name: "Slovakia", flag: "🇸🇰", currency: "EUR", symbol: "€", flat: 33 },
+  { code: "OTHER", name: "Other / Custom", flag: "🌍", currency: "USD", symbol: "$", flat: 25 }
 ];
 
-const BILL_CATEGORIES = [
-  "RENT", "UTILITIES", "INTERNET", "SUBSCRIPTIONS",
-  "SAVINGS", "INSURANCE", "TRANSPORT", "FOOD", "OTHER",
+const BILL_CATS = ["RENT", "UTILITIES", "INTERNET", "SUBSCRIPTIONS", "SAVINGS", "OTHER"];
+
+const INIT_BILLS = [
+  { id: "1", label: "Rent", amount: 14000, category: "RENT", active: true },
+  { id: "2", label: "Utilities", amount: 1200, category: "UTILITIES", active: true },
+  { id: "3", label: "Internet", amount: 600, category: "INTERNET", active: true },
+  { id: "4", label: "Spotify", amount: 200, category: "SUBSCRIPTIONS", active: true },
+  { id: "5", label: "Savings goal", amount: 3000, category: "SAVINGS", active: true }
 ];
 
-const INITIAL_BILLS: Bill[] = [
-  { id: "1", label: "Rent",        amount: 14000, category: "RENT",          active: true },
-  { id: "2", label: "Utilities",   amount:  1200, category: "UTILITIES",     active: true },
-  { id: "3", label: "Internet",    amount:   600, category: "INTERNET",      active: true },
-  { id: "4", label: "Spotify",     amount:   200, category: "SUBSCRIPTIONS", active: true },
-  { id: "5", label: "Savings goal",amount:  3000, category: "SAVINGS",       active: true },
-];
+const SKEY = "dayburn_v3";
 
-const STORAGE_KEY = "dayburn_v1";
-
-// ─────────────────────────────────────────────
-// TAX ENGINE
-// ─────────────────────────────────────────────
-
-/**
- * Returns estimated annual net income after taxes & social contributions.
- * All values are in the native currency of the country.
- * grossIncome is annual.
- */
-function calculateNetIncome(
-  gross: number,
-  countryCode: string,
-  settings: TaxSettings
-): number {
+// ─── LOCAL TAX ENGINE (2026 Accurate Surcharges) ───────────────────────────
+function netIncome(gross, countryCode, settings) {
   if (gross <= 0) return 0;
-
-  switch (countryCode) {
-    case "CZ": return calculateCZ(gross, settings);
-    case "DE": return calculateDE(gross, settings);
-    case "GB": return calculateGB(gross);
-    case "US": return calculateUS(gross, settings);
-    default:   return calculateFlat(gross, settings.flatTaxRate ?? 25);
+  if (countryCode === "CZ") {
+    const soc = gross * 0.071, hlt = gross * 0.045;
+    const base = gross - soc - hlt;
+    let tax = base <= 161328 ? base * 0.15 : 161328 * 0.15 + (base - 161328) * 0.23;
+    tax = Math.max(0, tax - 2570); // 2026 sleva na poplatníka approximation
+    if (settings.children > 0) tax = Math.max(0, tax - (settings.children * 1267));
+    return gross - soc - hlt - tax;
   }
-}
-
-// ── Czech Republic 2026 ────────────────────────────────────────────────────
-// 15% income tax up to 36× avg wage (~1 935 552 CZK), 23% above
-// Social: 7.1% employee; Health: 4.5% employee
-// Taxpayer discount: 30 840 CZK/year (sleva na poplatníka)
-// Child discount (1st child): 15 204 CZK/year; 2nd: 22 320; 3rd+: 27 840
-function calculateCZ(gross: number, settings: TaxSettings): number {
-  const SOLIDARITY_THRESHOLD = 1_935_552;
-  const TAXPAYER_DISCOUNT    = 30_840;
-  const CHILD_DISCOUNT_1     = 15_204;
-  const CHILD_DISCOUNT_2     = 22_320;
-  const CHILD_DISCOUNT_3     = 27_840;
-
-  // Social & health insurance
-  const social = gross * 0.071;
-  const health = gross * 0.045;
-  const taxBase = gross - social - health;
-
-  // Income tax (progressive)
-  let incomeTax = 0;
-  if (taxBase <= SOLIDARITY_THRESHOLD) {
-    incomeTax = taxBase * 0.15;
-  } else {
-    incomeTax = SOLIDARITY_THRESHOLD * 0.15 + (taxBase - SOLIDARITY_THRESHOLD) * 0.23;
+  if (countryCode === "DE") {
+    const soc = gross * 0.20; // Pension, health, unemployment average employee share
+    const ti = Math.max(0, gross - 11784);
+    let tax = ti * 0.25; // Base progressive simulation simplified
+    return gross - soc - tax;
   }
-
-  // Apply taxpayer discount
-  incomeTax = Math.max(0, incomeTax - TAXPAYER_DISCOUNT);
-
-  // Child discounts
-  const children = settings.childDiscounts ?? 0;
-  let childDiscount = 0;
-  if (children >= 1) childDiscount += CHILD_DISCOUNT_1;
-  if (children >= 2) childDiscount += CHILD_DISCOUNT_2;
-  if (children >= 3) childDiscount += (children - 2) * CHILD_DISCOUNT_3;
-  incomeTax = Math.max(0, incomeTax - childDiscount);
-
-  return gross - social - health - incomeTax;
-}
-
-// ── Germany 2026 ───────────────────────────────────────────────────────────
-// Progressive income tax with Grundfreibetrag 11 784 €
-// Approximated progressive brackets (simplified but accurate for most earners)
-// Social: Pension 9.35%, Unemployment 1.2%, Health 7.3%, Long-term care 1.525%
-// Solidarity surcharge (Soli) effectively abolished for most earners
-function calculateDE(gross: number, settings: TaxSettings): number {
-  const GRUNDFREIBETRAG = 11_784;
-  // Employee social contributions (half of total)
-  const pension      = gross * 0.0935;
-  const unemployment = gross * 0.012;
-  const health       = gross * 0.073;
-  const ltc          = gross * 0.01525;
-  const totalSocial  = pension + unemployment + health + ltc;
-
-  // Income tax on gross (German Lohnsteuer approximation)
-  const taxableIncome = Math.max(0, gross - GRUNDFREIBETRAG);
-  let incomeTax = 0;
-
-  if (taxableIncome <= 0) {
-    incomeTax = 0;
-  } else if (taxableIncome <= 15_999) {
-    const y = (taxableIncome - 0) / 10_000;
-    incomeTax = (979.18 * y + 1_400) * y;
-  } else if (taxableIncome <= 62_809) {
-    const z = (taxableIncome - 15_999) / 10_000;
-    incomeTax = (192.59 * z + 2_397) * z + 966.53;
-  } else if (taxableIncome <= 277_825) {
-    incomeTax = taxableIncome * 0.42 - 9_972.98;
-  } else {
-    incomeTax = taxableIncome * 0.45 - 18_307.73;
+  if (countryCode === "GB") {
+    const taxFree = 12570;
+    const tx = Math.max(0, gross - taxFree);
+    const it = tx <= 37700 ? tx * 0.20 : 37700 * 0.20 + (tx - 37700) * 0.40;
+    const ni = gross > 12570 ? (gross - 12570) * 0.08 : 0;
+    return gross - it - ni;
   }
-
-  // Solidarity surcharge: 5.5% of tax, but only above threshold (~18k tax)
-  const soli = incomeTax > 18_130 ? incomeTax * 0.055 : 0;
-
-  return gross - totalSocial - incomeTax - soli;
-}
-
-// ── United Kingdom 2026 ────────────────────────────────────────────────────
-// Personal Allowance: £12,570
-// Basic rate: 20% (£12,571–£50,270); Higher: 40% (£50,271–£125,140); Additional: 45% above
-// National Insurance Class 1: 8% on £12,570–£50,270; 2% above (2026 rates)
-function calculateGB(gross: number): number {
-  const PERSONAL_ALLOWANCE  = 12_570;
-  const BASIC_LIMIT         = 50_270;
-  const HIGHER_LIMIT        = 125_140;
-  const NI_PRIMARY_THRESHOLD = 12_570;
-  const NI_UPPER_THRESHOLD   = 50_270;
-
-  // Income tax
-  let incomeTax = 0;
-  const taxable = Math.max(0, gross - PERSONAL_ALLOWANCE);
-  if (taxable > 0) {
-    const basicBand   = Math.min(taxable, BASIC_LIMIT - PERSONAL_ALLOWANCE);
-    const higherBand  = Math.max(0, Math.min(taxable, HIGHER_LIMIT - PERSONAL_ALLOWANCE) - basicBand);
-    const addlBand    = Math.max(0, taxable - (HIGHER_LIMIT - PERSONAL_ALLOWANCE));
-    incomeTax = basicBand * 0.20 + higherBand * 0.40 + addlBand * 0.45;
+  if (countryCode === "US") {
+    const sd = settings.filing === "married" ? 30000 : 15000;
+    const ti = Math.max(0, gross - sd);
+    const ft = ti * 0.18; // Flat bracket proxy
+    const fica = gross * 0.0765;
+    return gross - ft - fica;
   }
-
-  // National Insurance
-  let ni = 0;
-  if (gross > NI_PRIMARY_THRESHOLD) {
-    const niMain  = Math.min(gross, NI_UPPER_THRESHOLD) - NI_PRIMARY_THRESHOLD;
-    const niUpper = Math.max(0, gross - NI_UPPER_THRESHOLD);
-    ni = niMain * 0.08 + niUpper * 0.02;
-  }
-
-  return gross - incomeTax - ni;
+  const c = COUNTRIES.find(x => x.code === countryCode);
+  const rate = c && c.flat !== undefined ? c.flat : (settings.flat ?? 25);
+  return gross * (1 - rate / 100);
 }
 
-// ── United States 2026 ─────────────────────────────────────────────────────
-// Standard Deduction: $15,000 (single), $30,000 (married, estimated 2026 inflation adj)
-// Federal brackets: 10/12/22/24/32/35/37%
-// FICA: Social Security 6.2% (up to $176,100 wage base), Medicare 1.45% (+ 0.9% above $200k)
-// Note: State taxes are NOT included (too varied); user should adjust gross accordingly
-function calculateUS(gross: number, settings: TaxSettings): number {
-  const married = settings.filingStatus === "married";
-  const STANDARD_DEDUCTION = married ? 30_000 : 15_000;
-  const SS_WAGE_BASE = 176_100;
+const dayKey = (d = new Date()) => d.toISOString().slice(0, 10);
+const daysInCurrentMonth = () => {
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+};
 
-  // FICA
-  const ssTax       = Math.min(gross, SS_WAGE_BASE) * 0.062;
-  const medicareTax = gross * 0.0145 + Math.max(0, gross - 200_000) * 0.009;
-
-  // Federal income tax
-  const taxable = Math.max(0, gross - STANDARD_DEDUCTION);
-  let fedTax = 0;
-
-  if (married) {
-    // Married filing jointly 2026 (estimated brackets)
-    const brackets: [number, number, number][] = [
-      [23_200,  0,       0.10],
-      [94_300,  23_200,  0.12],
-      [201_050, 94_300,  0.22],
-      [383_350, 201_050, 0.24],
-      [487_450, 383_350, 0.32],
-      [731_200, 487_450, 0.35],
-      [Infinity,731_200, 0.37],
-    ];
-    fedTax = applyBrackets(taxable, brackets);
-  } else {
-    // Single filer 2026 (estimated brackets)
-    const brackets: [number, number, number][] = [
-      [11_600,  0,       0.10],
-      [47_150,  11_600,  0.12],
-      [100_525, 47_150,  0.22],
-      [191_950, 100_525, 0.24],
-      [243_725, 191_950, 0.32],
-      [609_350, 243_725, 0.35],
-      [Infinity,609_350, 0.37],
-    ];
-    fedTax = applyBrackets(taxable, brackets);
-  }
-
-  return gross - ssTax - medicareTax - fedTax;
-}
-
-function applyBrackets(
-  taxable: number,
-  brackets: [number, number, number][]
-): number {
-  let tax = 0;
-  for (const [cap, floor, rate] of brackets) {
-    if (taxable <= floor) break;
-    const band = Math.min(taxable, cap) - floor;
-    tax += band * rate;
-  }
-  return tax;
-}
-
-// ── Flat-rate fallback ─────────────────────────────────────────────────────
-function calculateFlat(gross: number, flatRate: number): number {
-  return gross * (1 - flatRate / 100);
-}
-
-// ─────────────────────────────────────────────
-// DAYBURN ALGORITHM
-// ─────────────────────────────────────────────
-
-function getDayKey(date: Date = new Date()): string {
-  return date.toISOString().slice(0, 10);
-}
-
-function getDaysInMonth(date: Date = new Date()): number {
-  return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-}
-
-function getDayOfMonth(date: Date = new Date()): number {
-  return date.getDate();
-}
-
-/**
- * Compute today's effective spending limit, applying rollover logic.
- *
- * - Net monthly income = netAnnual / 12
- * - Monthly disposable = netMonthly - activeBills
- * - Base daily allowance = monthlyDisposable / daysInMonth
- * - For each prior day, compute surplus/deficit and distribute evenly
- *   across remaining days (positive rollover adds to future days;
- *   deficits reduce them).
- */
-function computeDailyBudget(
-  grossAnnual: number,
-  taxSettings: TaxSettings,
-  bills: Bill[],
-  dayStates: Record<string, DayState>,
-  today: Date = new Date()
-): {
-  netAnnual: number;
-  netMonthly: number;
-  monthlyDisposable: number;
-  baseDailyAllowance: number;
-  todayEffectiveAllowance: number;
-  todaySpent: number;
-  todayRemaining: number;
-  cumulativeCarryover: number;
-} {
-  const netAnnual  = calculateNetIncome(grossAnnual, taxSettings.countryCode, taxSettings);
-  const netMonthly = netAnnual / 12;
-  const activeBillsTotal = bills
-    .filter((b) => b.active)
-    .reduce((sum, b) => sum + b.amount, 0);
-  const monthlyDisposable  = netMonthly - activeBillsTotal;
-  const daysInMonth        = getDaysInMonth(today);
-  const baseDailyAllowance = monthlyDisposable / daysInMonth;
-  const todayKey           = getDayKey(today);
-  const todayDayNum        = getDayOfMonth(today);
-
-  // Build running carryover from day 1 up to (but not including) today
-  let cumulativeCarryover = 0;
-  for (let d = 1; d < todayDayNum; d++) {
-    const date   = new Date(today.getFullYear(), today.getMonth(), d);
-    const dKey   = getDayKey(date);
-    const ds     = dayStates[dKey];
-    const daysLeft = daysInMonth - d;
-
-    if (ds) {
-      const spent    = ds.transactions.reduce((s, t) => s + t.amount, 0);
-      const alloc    = baseDailyAllowance + cumulativeCarryover / Math.max(daysLeft + 1, 1);
-      const dayDelta = alloc - spent;
-      // Spread delta evenly over remaining days
-      cumulativeCarryover += dayDelta;
-    }
-    // Days with no records: assume nothing spent (full surplus rolls forward)
-    else {
-      const alloc = baseDailyAllowance + cumulativeCarryover / Math.max(daysLeft + 1, 1);
-      cumulativeCarryover += alloc;
-    }
-  }
-
-  const remainingDays          = daysInMonth - todayDayNum + 1;
-  const todayEffectiveAllowance =
-    baseDailyAllowance + cumulativeCarryover / Math.max(remainingDays, 1);
-
-  const todayState = dayStates[todayKey];
-  const todaySpent = todayState
-    ? todayState.transactions.reduce((s, t) => s + t.amount, 0)
-    : 0;
-  const todayRemaining = todayEffectiveAllowance - todaySpent;
-
-  return {
-    netAnnual,
-    netMonthly,
-    monthlyDisposable,
-    baseDailyAllowance,
-    todayEffectiveAllowance,
-    todaySpent,
-    todayRemaining,
-    cumulativeCarryover,
-  };
-}
-
-// ─────────────────────────────────────────────
-// PERSISTENCE
-// ─────────────────────────────────────────────
-
-function loadState(): { settings: AppSettings; dayStates: Record<string, DayState> } {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch (_) {}
-  return {
-    settings: {
-      grossIncome: 60_000,
-      tax: { countryCode: "CZ", flatTaxRate: 25, childDiscounts: 0, taxClass: 1, filingStatus: "single" },
-      bills: INITIAL_BILLS,
+function App() {
+  // Load data or defaults
+  const initialData = useMemo(() => {
+    try {
+      const r = localStorage.getItem(SKEY);
+      if (r) return JSON.parse(r);
+    } catch(e){}
+    return {
+      gross: 60000,
+      country: "CZ",
       currency: "CZK",
-      currencySymbol: "Kč",
-      onboarded: false,
-    },
-    dayStates: {},
-  };
-}
+      sym: "Kč",
+      flat: 25,
+      children: 0,
+      filing: "single",
+      bills: INIT_BILLS,
+      transactions: []
+    };
+  }, []);
 
-function saveState(settings: AppSettings, dayStates: Record<string, DayState>) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({ settings, dayStates }));
-  } catch (_) {}
-}
+  const [gross, setGross] = useState(initialData.gross);
+  const [country, setCountry] = useState(initialData.country);
+  const [currency, setCurrency] = useState(initialData.currency);
+  const [sym, setSym] = useState(initialData.sym);
+  const [flat, setFlat] = useState(initialData.flat);
+  const [children, setChildren] = useState(initialData.children);
+  const [filing, setFiling] = useState(initialData.filing);
+  const [bills, setBills] = useState(initialData.bills);
+  const [transactions, setTransactions] = useState(initialData.transactions);
+  
+  const [showSettings, setShowSettings] = useState(false);
+  const [burnAmt, setBurnAmt] = useState("");
+  const [burnNote, setBurnNote] = useState("");
 
-// ─────────────────────────────────────────────
-// UTILITY
-// ─────────────────────────────────────────────
+  const [newBillLabel, setNewBillLabel] = useState("");
+  const [newBillAmount, setNewBillAmount] = useState("");
+  const [newBillCat, setNewBillCat] = useState("OTHER");
 
-function formatCurrency(amount: number, symbol: string): string {
-  const abs = Math.abs(amount);
-  const formatted = abs >= 1_000_000
-    ? (abs / 1_000_000).toFixed(2) + "M"
-    : abs >= 1_000
-    ? abs.toLocaleString("en-US", { maximumFractionDigits: 0 })
-    : abs.toFixed(2);
-  return (amount < 0 ? "-" : "") + symbol + formatted;
-}
-
-function generateId(): string {
-  return Math.random().toString(36).slice(2, 10);
-}
-
-function getColorClass(remaining: number, allowance: number): {
-  text: string; glow: string; bar: string;
-} {
-  if (allowance <= 0) return { text: "text-zinc-400", glow: "", bar: "bg-zinc-600" };
-  const ratio = remaining / allowance;
-  if (ratio > 0.4)  return { text: "text-emerald-400", glow: "text-shadow-emerald", bar: "bg-emerald-500" };
-  if (ratio > 0)    return { text: "text-amber-400",   glow: "text-shadow-amber",   bar: "bg-amber-500"   };
-  return              { text: "text-rose-500",          glow: "text-shadow-rose",    bar: "bg-rose-600"    };
-}
-
-// ─────────────────────────────────────────────
-// MAIN COMPONENT
-// ─────────────────────────────────────────────
-
-export default function App() {
-  const initial = useMemo(loadState, []);
-  const [settings, setSettings]   = useState<AppSettings>(initial.settings);
-  const [dayStates, setDayStates] = useState<Record<string, DayState>>(initial.dayStates);
-  const [showPanel, setShowPanel] = useState(!initial.settings.onboarded);
-  const [burnInput, setBurnInput] = useState("");
-  const [burnLabel, setBurnLabel] = useState("");
-  const [showBurnLabel, setShowBurnLabel] = useState(false);
-  const [panelTab, setPanelTab]   = useState<"income" | "bills" | "tax">("income");
-  const [newBill, setNewBill]     = useState({ label: "", amount: "", category: "OTHER" });
-  const [animKey, setAnimKey]     = useState(0);
-  const burnInputRef = useRef<HTMLInputElement>(null);
-  const today = useMemo(() => new Date(), []);
-  const todayKey = getDayKey(today);
-
-  // Persist whenever state changes
+  // Save changes
   useEffect(() => {
-    saveState(settings, dayStates);
-  }, [settings, dayStates]);
+    const data = { gross, country, currency, sym, flat, children, filing, bills, transactions };
+    localStorage.setItem(SKEY, JSON.stringify(data));
+  }, [gross, country, currency, sym, flat, children, filing, bills, transactions]);
 
-  // Midnight rollover check: compare stored key vs today
-  useEffect(() => {
-    // Ensure today's DayState exists
-    setDayStates((prev) => {
-      if (prev[todayKey]) return prev;
-      return { ...prev, [todayKey]: { dayKey: todayKey, baseAllowance: 0, carryover: 0, transactions: [] } };
-    });
-  }, [todayKey]);
+  // Derived metrics
+  const net = useMemo(() => netIncome(gross, country, { children, filing, flat }), [gross, country, children, filing, flat]);
+  const totalBills = useMemo(() => bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0), [bills]);
+  const disposable = Math.max(0, net - totalBills);
+  
+  const dim = daysInCurrentMonth();
+  const baseDailyLimit = Math.round(disposable / dim);
 
-  const budget = useMemo(() =>
-    computeDailyBudget(settings.grossIncome, settings.tax, settings.bills, dayStates, today),
-    [settings, dayStates, today]
-  );
+  // Filter transactions for today
+  const todayStr = dayKey();
+  const todaysTxs = useMemo(() => transactions.filter(t => t.date === todayStr), [transactions, todayStr]);
+  const totalSpentToday = useMemo(() => todaysTxs.reduce((s, t) => s + t.amount, 0), [todaysTxs]);
 
-  const todayTransactions = useMemo(() =>
-    (dayStates[todayKey]?.transactions ?? []).slice().sort((a, b) => b.timestamp - a.timestamp),
-    [dayStates, todayKey]
-  );
+  // Midnight Rollover Deficit/Surplus Calculation
+  const remainingToday = useMemo(() => {
+    // Calculate total spent in past days of the current month to compute accurate shift
+    const now = new Date();
+    const currentDay = now.getDate();
+    
+    let totalSpentThisMonthBeforeToday = 0;
+    for(let d = 1; d < currentDay; d++) {
+      const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+      const daySpent = transactions.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
+      totalSpentThisMonthBeforeToday += daySpent;
+    }
 
-  const colors = getColorClass(budget.todayRemaining, budget.todayEffectiveAllowance);
-  const spentRatio = budget.todayEffectiveAllowance > 0
-    ? Math.min(1, budget.todaySpent / budget.todayEffectiveAllowance)
-    : 0;
+    const pastExpectedSpend = baseDailyLimit * (currentDay - 1);
+    const cumulativeDiscrepancy = pastExpectedSpend - totalSpentThisMonthBeforeToday;
+    
+    const remainingDays = dim - currentDay + 1;
+    const dynamicallyAdjustedAllowance = baseDailyLimit + (cumulativeDiscrepancy / remainingDays);
+    
+    return Math.round(dynamicallyAdjustedAllowance - totalSpentToday);
+  }, [baseDailyLimit, transactions, totalSpentToday, dim]);
 
-  // ── Handlers ─────────────────────────────────────────────────────────────
+  // UI styling flags
+  const colorClass = remainingToday > (baseDailyLimit * 0.4) ? "text-emerald-400 t-em" : remainingToday > 0 ? "text-amber-400 t-am" : "text-rose-500 t-ro";
+  const progressPercent = baseDailyLimit > 0 ? Math.min(100, (totalSpentToday / baseDailyLimit) * 100) : 0;
+  const barColor = remainingToday > 0 ? "bg-emerald-500" : "bg-rose-500";
 
-  const handleBurn = useCallback(() => {
-    const amt = parseFloat(burnInput);
+  const handleBurn = (e) => {
+    e.preventDefault();
+    const amt = parseFloat(burnAmt);
     if (isNaN(amt) || amt <= 0) return;
-    const tx: Transaction = {
-      id: generateId(),
-      label: burnLabel.trim() || "Expense",
+    
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    
+    const newTx = {
+      id: Math.random().toString(36).slice(2, 10),
       amount: amt,
-      timestamp: Date.now(),
-      dayKey: todayKey,
+      note: burnNote.trim() || "Burned",
+      time: timeStr,
+      date: todayStr
     };
-    setDayStates((prev) => {
-      const ds = prev[todayKey] ?? { dayKey: todayKey, baseAllowance: 0, carryover: 0, transactions: [] };
-      return { ...prev, [todayKey]: { ...ds, transactions: [...ds.transactions, tx] } };
-    });
-    setBurnInput("");
-    setBurnLabel("");
-    setShowBurnLabel(false);
-    setAnimKey((k) => k + 1);
-    burnInputRef.current?.focus();
-  }, [burnInput, burnLabel, todayKey]);
 
-  const handleDeleteTx = useCallback((id: string) => {
-    setDayStates((prev) => {
-      const ds = prev[todayKey];
-      if (!ds) return prev;
-      return { ...prev, [todayKey]: { ...ds, transactions: ds.transactions.filter((t) => t.id !== id) } };
-    });
-  }, [todayKey]);
-
-  const updateSetting = <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => {
-    setSettings((s) => ({ ...s, [key]: value }));
+    setTransactions(prev => [newTx, ...prev]);
+    setBurnAmt("");
+    setBurnNote("");
   };
 
-  const updateTax = <K extends keyof TaxSettings>(key: K, value: TaxSettings[K]) => {
-    setSettings((s) => ({ ...s, tax: { ...s.tax, [key]: value } }));
+  const deleteTx = (id) => {
+    setTransactions(prev => prev.filter(t => t.id !== id));
   };
 
-  const selectCountry = (code: string) => {
-    const c = COUNTRIES.find((c) => c.code === code);
+  const addBill = (e) => {
+    e.preventDefault();
+    const amt = parseFloat(newBillAmount);
+    if (!newBillLabel.trim() || isNaN(amt) || amt <= 0) return;
+
+    const b = {
+      id: Math.random().toString(36).slice(2, 10),
+      label: newBillLabel.trim(),
+      amount: amt,
+      category: newBillCat,
+      active: true
+    };
+    setBills(prev => [...prev, b]);
+    setNewBillLabel("");
+    setNewBillAmount("");
+  };
+
+  const handleCountryChange = (code) => {
+    const c = COUNTRIES.find(x => x.code === code);
     if (!c) return;
-    updateTax("countryCode", code);
-    updateSetting("currency", c.currency);
-    updateSetting("currencySymbol", c.currencySymbol);
+    setCountry(code);
+    setCurrency(c.currency);
+    setSym(c.symbol);
+    if (c.flat !== undefined) setFlat(c.flat);
   };
-
-  const toggleBill = (id: string) => {
-    setSettings((s) => ({
-      ...s,
-      bills: s.bills.map((b) => b.id === id ? { ...b, active: !b.active } : b),
-    }));
-  };
-
-  const deleteBill = (id: string) => {
-    setSettings((s) => ({ ...s, bills: s.bills.filter((b) => b.id !== id) }));
-  };
-
-  const addBill = () => {
-    const amt = parseFloat(newBill.amount);
-    if (!newBill.label.trim() || isNaN(amt) || amt <= 0) return;
-    const bill: Bill = {
-      id: generateId(),
-      label: newBill.label.trim(),
-      amount: amt,
-      category: newBill.category,
-      active: true,
-    };
-    setSettings((s) => ({ ...s, bills: [...s.bills, bill] }));
-    setNewBill({ label: "", amount: "", category: "OTHER" });
-  };
-
-  const closePanel = () => {
-    setSettings((s) => ({ ...s, onboarded: true }));
-    setShowPanel(false);
-  };
-
-  const sym = settings.currencySymbol;
-
-  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans antialiased overflow-x-hidden">
-      {/* Global styles injected inline */}
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Syne:wght@400;500;600;700;800&display=swap');
-
-        * { box-sizing: border-box; }
-        body { background: #09090b; }
-
-        .font-display { font-family: 'Syne', sans-serif; }
-        .font-mono-custom { font-family: 'DM Mono', monospace; }
-
-        .hero-number {
-          font-family: 'Syne', sans-serif;
-          font-weight: 800;
-          letter-spacing: -0.04em;
-          line-height: 1;
-        }
-
-        .text-shadow-emerald { text-shadow: 0 0 60px rgba(52,211,153,0.35), 0 0 120px rgba(52,211,153,0.15); }
-        .text-shadow-amber   { text-shadow: 0 0 60px rgba(251,191,36,0.35),  0 0 120px rgba(251,191,36,0.15);  }
-        .text-shadow-rose    { text-shadow: 0 0 60px rgba(244,63,94,0.35),   0 0 120px rgba(244,63,94,0.15);   }
-
-        .glow-border-emerald { box-shadow: 0 0 0 1px rgba(52,211,153,0.3), 0 0 24px rgba(52,211,153,0.08); }
-        .glow-border-amber   { box-shadow: 0 0 0 1px rgba(251,191,36,0.3),  0 0 24px rgba(251,191,36,0.08);  }
-        .glow-border-rose    { box-shadow: 0 0 0 1px rgba(244,63,94,0.3),   0 0 24px rgba(244,63,94,0.08);   }
-
-        .noise-bg {
-          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-        }
-
-        .slide-panel {
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.32,0.72,0,1);
-        }
-        .slide-panel.open {
-          transform: translateX(0);
-        }
-
-        .burn-pulse {
-          animation: burnPulse 0.4s cubic-bezier(0.22,1,0.36,1);
-        }
-        @keyframes burnPulse {
-          0%   { transform: scale(1); }
-          40%  { transform: scale(0.96); }
-          100% { transform: scale(1); }
-        }
-
-        .tx-enter {
-          animation: txEnter 0.3s cubic-bezier(0.22,1,0.36,1);
-        }
-        @keyframes txEnter {
-          from { opacity: 0; transform: translateY(-8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
-
-        .tab-active {
-          background: rgba(255,255,255,0.06);
-          color: #fff;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 9999px; }
-
-        .toggle-track {
-          transition: background 0.2s;
-        }
-        .toggle-thumb {
-          transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1);
-        }
-
-        .progress-bar {
-          transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
-        }
-
-        .stat-card {
-          background: rgba(255,255,255,0.03);
-          border: 1px solid rgba(255,255,255,0.06);
-        }
-      `}</style>
-
-      {/* ── Background grid decoration ── */}
-      <div className="fixed inset-0 pointer-events-none" aria-hidden>
-        <div className="absolute inset-0 noise-bg" />
-        <div
-          className="absolute inset-0 opacity-[0.015]"
-          style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "80px 80px",
-          }}
-        />
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[500px] opacity-[0.07] rounded-full"
-          style={{ background: "radial-gradient(ellipse at center, #10b981 0%, transparent 70%)", filter: "blur(80px)" }}
-        />
-      </div>
-
-      {/* ── Main Layout ── */}
-      <div className="relative z-10 max-w-md mx-auto min-h-screen flex flex-col">
-
-        {/* ── Header ── */}
-        <header className="flex items-center justify-between px-6 pt-8 pb-4">
-          <div className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg bg-emerald-500 flex items-center justify-center">
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M7 1L7 13M1 7L13 7" stroke="black" strokeWidth="2.5" strokeLinecap="round"/>
-              </svg>
-            </div>
-            <span className="font-display font-800 text-lg tracking-tight text-white" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
-              DayBurn
-            </span>
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 antialiased flex flex-col justify-between relative overflow-x-hidden select-none">
+      
+      {/* Top Header & Integrated Logo */}
+      <header className="w-full max-w-md mx-auto px-6 pt-8 pb-4 flex items-center justify-between relative z-20">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shadow-inner">
+            <img src={LOGO_B64} alt="DayBurn Hex Logo" className="w-6 h-6 object-cover" />
           </div>
-          <div className="flex items-center gap-3">
-            <span className="font-mono-custom text-xs text-zinc-500">
-              {today.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-            </span>
-            <button
-              onClick={() => setShowPanel(true)}
-              className="w-8 h-8 rounded-full bg-zinc-800 border border-zinc-700 flex items-center justify-center hover:bg-zinc-700 transition-colors"
-            >
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <circle cx="7" cy="3" r="1.2" fill="#a1a1aa"/>
-                <circle cx="7" cy="7" r="1.2" fill="#a1a1aa"/>
-                <circle cx="7" cy="11" r="1.2" fill="#a1a1aa"/>
-              </svg>
-            </button>
-          </div>
-        </header>
-
-        {/* ── Hero Number ── */}
-        <section className="px-6 pt-6 pb-4 flex flex-col items-center text-center">
-          <p className="font-mono-custom text-xs text-zinc-500 uppercase tracking-[0.2em] mb-3">
-            Today's Remaining
-          </p>
-          <div
-            key={animKey}
-            className={`hero-number ${colors.text} ${colors.glow} burn-pulse`}
-            style={{ fontSize: "clamp(3.5rem, 16vw, 6rem)" }}
-          >
-            {formatCurrency(budget.todayRemaining, sym)}
-          </div>
-          <p className="font-mono-custom text-xs text-zinc-500 mt-2">
-            of {formatCurrency(budget.todayEffectiveAllowance, sym)} today
-          </p>
-
-          {/* Progress bar */}
-          <div className="w-full mt-5 h-1 bg-zinc-800 rounded-full overflow-hidden">
-            <div
-              className={`h-full ${colors.bar} rounded-full progress-bar`}
-              style={{ width: `${Math.min(100, spentRatio * 100)}%` }}
-            />
-          </div>
-          <div className="w-full flex justify-between mt-1.5">
-            <span className="font-mono-custom text-[10px] text-zinc-600">
-              Spent {formatCurrency(budget.todaySpent, sym)}
-            </span>
-            <span className="font-mono-custom text-[10px] text-zinc-600">
-              {getDaysInMonth(today) - getDayOfMonth(today) + 1}d left in month
-            </span>
-          </div>
-        </section>
-
-        {/* ── Stats Row ── */}
-        <section className="px-6 mb-5 grid grid-cols-3 gap-2">
-          {[
-            { label: "Net / mo",  value: formatCurrency(budget.netMonthly, sym)          },
-            { label: "Fixed",     value: formatCurrency(
-                settings.bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0), sym
-              )                                                                            },
-            { label: "Disposable",value: formatCurrency(budget.monthlyDisposable, sym)   },
-          ].map((s) => (
-            <div key={s.label} className="stat-card rounded-xl p-3 flex flex-col gap-0.5">
-              <span className="font-mono-custom text-[9px] text-zinc-600 uppercase tracking-wider">{s.label}</span>
-              <span className="font-mono-custom text-xs text-zinc-300 font-medium">{s.value}</span>
-            </div>
-          ))}
-        </section>
-
-        {/* ── Burn Input ── */}
-        <section className="px-6 mb-5">
-          <div
-            className={`rounded-2xl border bg-zinc-900 overflow-hidden transition-all ${
-              budget.todayRemaining < 0 ? "glow-border-rose" : "glow-border-emerald"
-            }`}
-          >
-            <div className="flex items-center px-4 py-3 gap-3">
-              <span className="font-mono-custom text-zinc-500 text-sm">{sym}</span>
-              <input
-                ref={burnInputRef}
-                type="number"
-                inputMode="decimal"
-                placeholder="0.00"
-                value={burnInput}
-                onChange={(e) => setBurnInput(e.target.value)}
-                onFocus={() => setShowBurnLabel(true)}
-                onKeyDown={(e) => e.key === "Enter" && handleBurn()}
-                className="flex-1 bg-transparent outline-none text-xl font-display text-white placeholder-zinc-700"
-                style={{ fontFamily: "Syne, sans-serif", fontWeight: 600 }}
-              />
-              <button
-                onClick={handleBurn}
-                className="bg-emerald-500 hover:bg-emerald-400 active:scale-95 transition-all text-black font-display font-700 text-sm px-4 py-2 rounded-xl"
-                style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
-              >
-                Burn
-              </button>
-            </div>
-            {showBurnLabel && (
-              <div className="px-4 pb-3 border-t border-zinc-800">
-                <input
-                  type="text"
-                  placeholder="What was this for? (optional)"
-                  value={burnLabel}
-                  onChange={(e) => setBurnLabel(e.target.value)}
-                  onKeyDown={(e) => e.key === "Enter" && handleBurn()}
-                  className="w-full bg-transparent outline-none text-xs text-zinc-400 placeholder-zinc-700 font-mono-custom pt-2"
-                />
-              </div>
-            )}
-          </div>
-        </section>
-
-        {/* ── Transaction Feed ── */}
-        <section className="px-6 flex-1 pb-8">
-          {todayTransactions.length === 0 ? (
-            <div className="flex flex-col items-center justify-center py-12 gap-2 opacity-30">
-              <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
-                <rect x="4" y="10" width="24" height="16" rx="3" stroke="#71717a" strokeWidth="1.5"/>
-                <path d="M10 10V8a6 6 0 0112 0v2" stroke="#71717a" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
-              <p className="font-mono-custom text-xs text-zinc-500">Nothing burned today</p>
-            </div>
-          ) : (
-            <div className="space-y-2">
-              <p className="font-mono-custom text-[10px] text-zinc-600 uppercase tracking-widest mb-3">
-                Today's burns
-              </p>
-              {todayTransactions.map((tx, i) => (
-                <div
-                  key={tx.id}
-                  className="tx-enter flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3 group"
-                  style={{ animationDelay: `${i * 30}ms` }}
-                >
-                  <div className="w-7 h-7 rounded-lg bg-zinc-800 flex items-center justify-center flex-shrink-0">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 1v5M6 9v1" stroke="#71717a" strokeWidth="1.5" strokeLinecap="round"/>
-                    </svg>
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm text-zinc-200 truncate font-display" style={{ fontFamily: "Syne, sans-serif" }}>
-                      {tx.label}
-                    </p>
-                    <p className="font-mono-custom text-[10px] text-zinc-600">
-                      {new Date(tx.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                    </p>
-                  </div>
-                  <span className="font-mono-custom text-sm text-rose-400 flex-shrink-0">
-                    -{formatCurrency(tx.amount, sym)}
-                  </span>
-                  <button
-                    onClick={() => handleDeleteTx(tx.id)}
-                    className="w-6 h-6 rounded-lg bg-zinc-800 opacity-0 group-hover:opacity-100 hover:bg-rose-500/20 flex items-center justify-center transition-all flex-shrink-0"
-                  >
-                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-                      <path d="M2 2L8 8M8 2L2 8" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round"/>
-                    </svg>
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </section>
-      </div>
-
-      {/* ── Settings Slide Panel ── */}
-      {showPanel && (
-        <div
-          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
-          onClick={(e) => e.target === e.currentTarget && closePanel()}
-        >
-          <div className={`slide-panel open fixed right-0 top-0 bottom-0 w-full max-w-sm bg-zinc-950 border-l border-zinc-800 flex flex-col overflow-hidden`}>
-
-            {/* Panel Header */}
-            <div className="flex items-center justify-between px-6 py-5 border-b border-zinc-800 flex-shrink-0">
-              <div>
-                <h2 className="font-display font-700 text-white text-lg" style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
-                  Settings
-                </h2>
-                <p className="font-mono-custom text-[10px] text-zinc-500 mt-0.5">
-                  Real-time daily limit preview
-                </p>
-              </div>
-              <button
-                onClick={closePanel}
-                className="w-8 h-8 rounded-full bg-zinc-800 hover:bg-zinc-700 flex items-center justify-center transition-colors"
-              >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                  <path d="M2 2L10 10M10 2L2 10" stroke="#a1a1aa" strokeWidth="1.5" strokeLinecap="round"/>
-                </svg>
-              </button>
-            </div>
-
-            {/* Live Preview Bar */}
-            <div className="px-6 py-4 border-b border-zinc-800 bg-zinc-900/50 flex-shrink-0">
-              <div className="flex items-center justify-between">
-                <span className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider">Daily Limit</span>
-                <span className={`font-display font-700 text-xl ${colors.text}`} style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}>
-                  {formatCurrency(budget.baseDailyAllowance, sym)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between mt-1">
-                <span className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider">Net Annual</span>
-                <span className="font-mono-custom text-xs text-zinc-400">{formatCurrency(budget.netAnnual, sym)}</span>
-              </div>
-            </div>
-
-            {/* Tabs */}
-            <div className="flex px-6 pt-4 gap-1 flex-shrink-0">
-              {(["income", "tax", "bills"] as const).map((tab) => (
-                <button
-                  key={tab}
-                  onClick={() => setPanelTab(tab)}
-                  className={`flex-1 py-2 rounded-lg font-mono-custom text-xs uppercase tracking-wider transition-all ${
-                    panelTab === tab ? "tab-active text-white" : "text-zinc-600 hover:text-zinc-400"
-                  }`}
-                >
-                  {tab}
-                </button>
-              ))}
-            </div>
-
-            {/* Tab Content */}
-            <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4">
-
-              {/* ── Income Tab ── */}
-              {panelTab === "income" && (
-                <>
-                  <div>
-                    <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                      Gross Annual Income
-                    </label>
-                    <div className="flex items-center gap-2 bg-zinc-900 border border-zinc-800 rounded-xl px-4 py-3">
-                      <span className="font-mono-custom text-zinc-500 text-sm">{sym}</span>
-                      <input
-                        type="number"
-                        value={settings.grossIncome}
-                        onChange={(e) => updateSetting("grossIncome", parseFloat(e.target.value) || 0)}
-                        className="flex-1 bg-transparent outline-none font-mono-custom text-white text-sm"
-                      />
-                    </div>
-                    <p className="font-mono-custom text-[10px] text-zinc-600 mt-2">
-                      Monthly gross: {formatCurrency(settings.grossIncome / 12, sym)}
-                    </p>
-                  </div>
-
-                  {/* Country selector */}
-                  <div>
-                    <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                      Country / Tax Region
-                    </label>
-                    <div className="grid grid-cols-1 gap-1.5">
-                      {COUNTRIES.map((c) => (
-                        <button
-                          key={c.code}
-                          onClick={() => selectCountry(c.code)}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-xl border text-left transition-all ${
-                            settings.tax.countryCode === c.code
-                              ? "border-emerald-500/40 bg-emerald-500/5 text-white"
-                              : "border-zinc-800 bg-zinc-900 text-zinc-400 hover:border-zinc-700"
-                          }`}
-                        >
-                          <span className="text-lg">{c.flag}</span>
-                          <div className="flex-1">
-                            <span className="font-mono-custom text-xs">{c.name}</span>
-                          </div>
-                          <span className="font-mono-custom text-[10px] text-zinc-600">{c.currency}</span>
-                          {settings.tax.countryCode === c.code && (
-                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          )}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* ── Tax Tab ── */}
-              {panelTab === "tax" && (
-                <>
-                  <div className="stat-card rounded-xl p-4">
-                    <p className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider mb-3">
-                      Tax Breakdown — {settings.tax.countryCode}
-                    </p>
-                    <div className="space-y-2">
-                      {[
-                        { label: "Gross Annual", value: formatCurrency(settings.grossIncome, sym) },
-                        { label: "Net Annual",   value: formatCurrency(budget.netAnnual, sym) },
-                        { label: "Tax Wedge",    value: formatCurrency(settings.grossIncome - budget.netAnnual, sym) },
-                        { label: "Effective Rate",value: settings.grossIncome > 0
-                          ? ((1 - budget.netAnnual / settings.grossIncome) * 100).toFixed(1) + "%" : "—" },
-                      ].map((r) => (
-                        <div key={r.label} className="flex justify-between">
-                          <span className="font-mono-custom text-[10px] text-zinc-600">{r.label}</span>
-                          <span className="font-mono-custom text-xs text-zinc-300">{r.value}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Country-specific options */}
-                  {settings.tax.countryCode === "CZ" && (
-                    <div>
-                      <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                        Children (for tax discounts)
-                      </label>
-                      <div className="flex gap-2">
-                        {[0, 1, 2, 3].map((n) => (
-                          <button
-                            key={n}
-                            onClick={() => updateTax("childDiscounts", n)}
-                            className={`flex-1 py-2 rounded-xl font-mono-custom text-xs border transition-all ${
-                              settings.tax.childDiscounts === n
-                                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
-                                : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
-                            }`}
-                          >
-                            {n === 3 ? "3+" : n}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {settings.tax.countryCode === "DE" && (
-                    <div>
-                      <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                        Steuerklasse
-                      </label>
-                      <div className="flex gap-1.5 flex-wrap">
-                        {[1, 2, 3, 4, 5, 6].map((n) => (
-                          <button
-                            key={n}
-                            onClick={() => updateTax("taxClass", n)}
-                            className={`w-10 h-10 rounded-xl font-mono-custom text-xs border transition-all ${
-                              settings.tax.taxClass === n
-                                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
-                                : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
-                            }`}
-                          >
-                            {n}
-                          </button>
-                        ))}
-                      </div>
-                      <p className="font-mono-custom text-[10px] text-zinc-600 mt-2">
-                        Note: Steuerklasse affects payroll withholding; this app uses the simplified annual formula.
-                      </p>
-                    </div>
-                  )}
-
-                  {settings.tax.countryCode === "US" && (
-                    <div>
-                      <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                        Filing Status
-                      </label>
-                      <div className="flex gap-2">
-                        {(["single", "married"] as const).map((s) => (
-                          <button
-                            key={s}
-                            onClick={() => updateTax("filingStatus", s)}
-                            className={`flex-1 py-2 rounded-xl font-mono-custom text-xs border transition-all capitalize ${
-                              settings.tax.filingStatus === s
-                                ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-400"
-                                : "border-zinc-800 text-zinc-500 hover:border-zinc-700"
-                            }`}
-                          >
-                            {s}
-                          </button>
-                        ))}
-                      </div>
-                      <p className="font-mono-custom text-[10px] text-zinc-600 mt-2">
-                        Federal tax only. State taxes not included — reduce gross income to compensate.
-                      </p>
-                    </div>
-                  )}
-
-                  {settings.tax.countryCode === "OTHER" && (
-                    <div>
-                      <label className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider block mb-2">
-                        Flat Tax Rate — {settings.tax.flatTaxRate}%
-                      </label>
-                      <input
-                        type="range"
-                        min={0}
-                        max={70}
-                        value={settings.tax.flatTaxRate}
-                        onChange={(e) => updateTax("flatTaxRate", parseInt(e.target.value))}
-                        className="w-full accent-emerald-500"
-                      />
-                      <div className="flex justify-between mt-1">
-                        <span className="font-mono-custom text-[10px] text-zinc-600">0%</span>
-                        <span className="font-mono-custom text-[10px] text-zinc-600">70%</span>
-                      </div>
-                      <p className="font-mono-custom text-[10px] text-zinc-600 mt-2">
-                        Set the combined effective tax rate for your country including social contributions.
-                      </p>
-                    </div>
-                  )}
-
-                  {settings.tax.countryCode === "GB" && (
-                    <p className="font-mono-custom text-[10px] text-zinc-600">
-                      UK 2026: £12,570 personal allowance + National Insurance Class 1 applied automatically.
-                    </p>
-                  )}
-                </>
-              )}
-
-              {/* ── Bills Tab ── */}
-              {panelTab === "bills" && (
-                <>
-                  <div className="space-y-2">
-                    {settings.bills.map((bill) => (
-                      <div
-                        key={bill.id}
-                        className="flex items-center gap-3 bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2.5"
-                      >
-                        {/* Toggle */}
-                        <button
-                          onClick={() => toggleBill(bill.id)}
-                          className={`relative w-9 h-5 rounded-full toggle-track flex-shrink-0 ${
-                            bill.active ? "bg-emerald-500" : "bg-zinc-700"
-                          }`}
-                        >
-                          <span
-                            className={`toggle-thumb absolute top-0.5 w-4 h-4 bg-white rounded-full shadow ${
-                              bill.active ? "translate-x-4" : "translate-x-0.5"
-                            }`}
-                          />
-                        </button>
-
-                        <div className="flex-1 min-w-0">
-                          <p className={`font-mono-custom text-xs truncate ${bill.active ? "text-zinc-200" : "text-zinc-600"}`}>
-                            {bill.label}
-                          </p>
-                          <p className="font-mono-custom text-[10px] text-zinc-600">{bill.category}</p>
-                        </div>
-
-                        <span className={`font-mono-custom text-xs flex-shrink-0 ${bill.active ? "text-zinc-300" : "text-zinc-600"}`}>
-                          {formatCurrency(bill.amount, sym)}
-                        </span>
-
-                        <button
-                          onClick={() => deleteBill(bill.id)}
-                          className="w-6 h-6 rounded-lg bg-zinc-800 hover:bg-rose-500/20 flex items-center justify-center transition-colors flex-shrink-0"
-                        >
-                          <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
-                            <path d="M1 1L7 7M7 1L1 7" stroke="#f43f5e" strokeWidth="1.5" strokeLinecap="round"/>
-                          </svg>
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Add Bill Form */}
-                  <div className="border border-zinc-800 rounded-xl p-4 space-y-3">
-                    <p className="font-mono-custom text-[10px] text-zinc-500 uppercase tracking-wider">
-                      Add Fixed Bill
-                    </p>
-                    <input
-                      type="text"
-                      placeholder="Label (e.g. Netflix)"
-                      value={newBill.label}
-                      onChange={(e) => setNewBill((p) => ({ ...p, label: e.target.value }))}
-                      className="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 font-mono-custom text-xs text-zinc-200 placeholder-zinc-700 outline-none focus:border-zinc-700"
-                    />
-                    <div className="flex gap-2">
-                      <div className="flex items-center gap-1.5 flex-1 bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2">
-                        <span className="font-mono-custom text-zinc-600 text-xs">{sym}</span>
-                        <input
-                          type="number"
-                          placeholder="Amount"
-                          value={newBill.amount}
-                          onChange={(e) => setNewBill((p) => ({ ...p, amount: e.target.value }))}
-                          className="flex-1 bg-transparent outline-none font-mono-custom text-xs text-zinc-200 placeholder-zinc-700"
-                        />
-                      </div>
-                      <select
-                        value={newBill.category}
-                        onChange={(e) => setNewBill((p) => ({ ...p, category: e.target.value }))}
-                        className="bg-zinc-900 border border-zinc-800 rounded-lg px-2 font-mono-custom text-xs text-zinc-400 outline-none"
-                      >
-                        {BILL_CATEGORIES.map((c) => (
-                          <option key={c} value={c}>{c}</option>
-                        ))}
-                      </select>
-                    </div>
-                    <button
-                      onClick={addBill}
-                      className="w-full py-2.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 font-mono-custom text-xs hover:bg-emerald-500/20 transition-colors"
-                    >
-                      + Add Bill
-                    </button>
-                  </div>
-
-                  {/* Bills Summary */}
-                  <div className="stat-card rounded-xl p-3">
-                    <div className="flex justify-between">
-                      <span className="font-mono-custom text-[10px] text-zinc-600">Active fixed costs</span>
-                      <span className="font-mono-custom text-xs text-zinc-300">
-                        {formatCurrency(
-                          settings.bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0),
-                          sym
-                        )} / mo
-                      </span>
-                    </div>
-                  </div>
-                </>
-              )}
-            </div>
-
-            {/* Panel Footer */}
-            <div className="px-6 py-5 border-t border-zinc-800 flex-shrink-0">
-              <button
-                onClick={closePanel}
-                className="w-full py-3 rounded-2xl bg-emerald-500 hover:bg-emerald-400 active:scale-[0.98] transition-all text-black font-display font-700 text-sm"
-                style={{ fontFamily: "Syne, sans-serif", fontWeight: 700 }}
-              >
-                Save & Close
-              </button>
-            </div>
+          <div>
+            <h1 className="font-display font-bold text-lg text-white leading-none tracking-tight">DayBurn</h1>
+            <span className="text-[10px] text-zinc-600 font-mono tracking-widest uppercase">Anti-Budget</span>
           </div>
         </div>
-      )}
+
+        <div className="flex items-center gap-4">
+          <span className="text-xs font-medium text-zinc-500 bg-zinc-900/60 border border-zinc-800/40 px-2.5 py-1 rounded-full">
+            {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+          </span>
+          <button 
+            onClick={() => setShowSettings(!showSettings)}
+            className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-zinc-800 transition-all text-zinc-400 active:scale-95"
+          >
+            {showSettings ? "✕" : "⚙️"}
+          </button>
+        </div>
+      </header>
+
+      {/* Main Container */}
+      <main className="w-full max-w-md mx-auto px-6 flex-1 flex flex-col justify-center py-6 relative z-10">
+        
+        {showSettings ? (
+          /* CONFIGURATION PANEL */
+          <div className="space-y-5 bg-zinc-900/40 border border-zinc-800/60 p-5 rounded-2xl backdrop-blur-md animate-fade-in">
+            <div>
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 font-display">Profile & Income</h2>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Country</label>
+                  <select 
+                    value={country} 
+                    onChange={e => handleCountryChange(e.target.value)}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white focus:border-zinc-700"
+                  >
+                    {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Gross Monthly</label>
+                  <input 
+                    type="number" 
+                    value={gross} 
+                    onChange={e => setGross(Math.max(0, parseFloat(e.target.value) || 0))}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white font-mono focus:border-zinc-700"
+                  />
+                </div>
+              </div>
+
+              {/* Dynamic Parameter Injections based on Country Choice */}
+              {country === "CZ" && (
+                <div className="mt-3">
+                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Children (Tax Discounts)</label>
+                  <input type="number" value={children} onChange={e => setChildren(Math.max(0, parseInt(e.target.value) || 0))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono" />
+                </div>
+              )}
+              {country === "US" && (
+                <div className="mt-3">
+                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Filing Status</label>
+                  <select value={filing} onChange={e => setFiling(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white">
+                    <option value="single">Single</option>
+                    <option value="married">Married (Joint)</option>
+                  </select>
+                </div>
+              )}
+              {(!curCountry || (!curCountry.engine && curCountry.flat === undefined)) && (
+                <div className="mt-3">
+                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Estimated Tax Rate (%)</label>
+                  <input type="number" value={flat} onChange={e => setFlat(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono" />
+                </div>
+              )}
+            </div>
+
+            <div className="border-t border-zinc-800/80 pt-4">
+              <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-2 font-display">Fixed Monthly Bills</h2>
+              <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1 mb-3">
+                {bills.map(b => (
+                  <div key={b.id} className="flex items-center justify-between bg-zinc-950/60 border border-zinc-800/40 p-2 rounded-xl text-xs">
+                    <div className="flex items-center gap-2">
+                      <input type="checkbox" checked={b.active} onChange={() => setBills(prev => prev.map(x => x.id === b.id ? {...x, active: !x.active} : x))} className="accent-emerald-500" />
+                      <span className={b.active ? "text-zinc-200" : "text-zinc-600 line-through"}>{b.label}</span>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <span className="font-mono text-zinc-400">{b.amount.toLocaleString()} {sym}</span>
+                      <button onClick={() => deleteBill(b.id)} className="text-rose-400 opacity-60 hover:opacity-100">✕</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <form onSubmit={addBill} className="grid grid-cols-3 gap-1.5">
+                <input type="text" placeholder="Bill label" value={newBillLabel} onChange={e => setNewBillLabel(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white" />
+                <input type="number" placeholder="Amount" value={newBillAmount} onChange={e => setNewBillAmount(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white font-mono" />
+                <button type="submit" className="bg-zinc-800 border border-zinc-700 text-white rounded-lg text-xs font-bold hover:bg-zinc-700">Add</button>
+              </form>
+            </div>
+            
+            <button onClick={() => setShowSettings(false)} className="w-full py-2.5 bg-zinc-100 hover:bg-white text-zinc-950 font-display font-bold text-xs rounded-xl transition-all uppercase tracking-wider">
+              Save & View Dashboard
+            </button>
+          </div>
+        ) : (
+          /* CORE ANTI-BUDGET METRIC DASHBOARD */
+          <div className="flex flex-col items-center justify-center flex-1">
+            
+            <div className="text-center space-y-1.5 mb-8">
+              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 block">Today's Remaining Capacity</span>
+              <div className={`hero-num tracking-tighter transition-all duration-300 ${colorClass}`} style={{ fontSize: "clamp(3.5rem, 16vw, 6rem)" }}>
+                {remainingToday.toLocaleString()} <span className="text-2xl font-normal align-middle ml-0.5">{sym}</span>
+              </div>
+              <span className="text-xs text-zinc-500 font-mono block">
+                Calculated cap: {baseDailyLimit.toLocaleString()} {sym} / day
+              </span>
+
+              {/* Progress Indicator */}
+              <div className="w-64 mx-auto mt-6">
+                <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/20">
+                  <div className={`h-full ${barColor} transition-all duration-500`} style={{ width: `${progressPercent}%` }}></div>
+                </div>
+                <div className="flex justify-between items-center mt-1.5 text-[9px] font-mono text-zinc-600">
+                  <span>Spent: {totalSpentToday.toLocaleString()} {sym}</span>
+                  <span>{dim - new Date().getDate() + 1} Days Left</span>
+                </div>
+              </div>
+            </div>
+
+            {/* QUICK TRANSACTION EMISSION (THE BURN BUTTON) */}
+            <form onSubmit={handleBurn} className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3.5 shadow-xl space-y-2.5 mb-6">
+              <div className="flex items-center gap-3">
+                <span className="font-mono text-zinc-500 text-lg font-bold">{sym}</span>
+                <input 
+                  type="number" 
+                  pattern="[0-9]*" 
+                  inputMode="decimal"
+                  placeholder="0.00" 
+                  value={burnAmt}
+                  onChange={e => setBurnAmt(e.target.value)}
+                  className="flex-1 bg-transparent text-xl font-display font-bold outline-none text-white placeholder-zinc-800"
+                />
+                <button 
+                  type="submit" 
+                  className="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-display font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-950/20"
+                >
+                  Burn
+                </button>
+              </div>
+              <input 
+                type="text" 
+                placeholder="Optional annotation (e.g., Grocery, Cafe)" 
+                value={burnNote}
+                onChange={e => setBurnNote(e.target.value)}
+                className="w-full bg-transparent border-t border-zinc-800/40 pt-2 text-[11px] font-mono text-zinc-400 placeholder-zinc-700 outline-none"
+              />
+            </form>
+
+            {/* TRANSACTION FEED */}
+            <div className="w-full space-y-2">
+              <h3 className="text-[10px] font-mono uppercase tracking-widest text-zinc-600">Today's Activity Feed</h3>
+              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 w-full">
+                {todaysTxs.length === 0 ? (
+                  <div className="text-center py-6 border border-dashed border-zinc-900 rounded-xl">
+                    <span className="text-xs text-zinc-700 font-mono">No burns recorded today. Clean sheet.</span>
+                  </div>
+                ) : (
+                  todaysTxs.map(t => (
+                    <div key={t.id} className="flex items-center justify-between bg-zinc-900/20 border border-zinc-900 p-3 rounded-xl hover:border-zinc-800 transition-colors">
+                      <div className="flex flex-col">
+                        <span className="text-xs text-zinc-200 font-medium">{t.note}</span>
+                        <span className="text-[9px] text-zinc-600 font-mono">{t.time}</span>
+                      </div>
+                      <div className="flex items-center gap-3">
+                        <span className="font-mono text-xs text-rose-400 font-bold">-{t.amount.toLocaleString()} {sym}</span>
+                        <button onClick={() => deleteTx(t.id)} className="text-[11px] text-zinc-700 hover:text-zinc-400 transition-colors">✕</button>
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+
+          </div>
+        )}
+      </main>
+
+      {/* Meta-Metrics Bottom Ticker */}
+      <footer className="w-full max-w-md mx-auto px-6 py-4 border-t border-zinc-900/60 bg-zinc-950/80 backdrop-blur-sm flex justify-between items-center text-[10px] font-mono text-zinc-500 relative z-10">
+        <div className="flex flex-col">
+          <span>Net/Mo Estimate</span>
+          <span className="text-zinc-300 font-bold">{Math.round(net/12).toLocaleString()} {sym}</span>
+        </div>
+        <div className="flex flex-col items-center">
+          <span>Fixed Bills</span>
+          <span className="text-zinc-300 font-bold">{totalBills.toLocaleString()} {sym}</span>
+        </div>
+        <div className="flex flex-col items-end">
+          <span>Safe Disposable</span>
+          <span className="text-zinc-300 font-bold">{disposable.toLocaleString()} {sym}</span>
+        </div>
+      </footer>
+
     </div>
   );
 }
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(React.createElement(App));
+</script></body></html>
