@@ -43,37 +43,212 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo } = React;
 
-        // Logo base64 z tvého screenshotu
         const LOGO_B64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADXElEQVRoQ+2ZzY8TZRSGnzNvd6Z0SgcolS8REgXiwZtXvXg1MfFGEw9GjRu96M0Y9S/wH3DFlXg0XvTi1XgTEw/e9GIsSgSREuUrdDqd78w409mZfko7HYpSks9m0ul0v7993nPe87zDWmsY96v73b/bXwXw60YBzGshgHktBDCvhQDmtbA94D4ZNo/NfQcPh2LgN+Y6Z86xOezb877fK7O9bXg4FAOfT8zYmE67vR48HAoBz/7b0zY23b0u3L/O9w6EgOfA/XvSxn76dM/w8/Hw7Gq0jR3f98P7B8Kzv9EydmI0OnwP/N7vGhtfPn/u8fPx8KwyZ+zUlSu7B0LAc+DoYWNn37p99/DzgfPszUljZ967v78uPHzGnHV6/frvFw8f7vWf9x04wK87V6/uP3jwIHT7vXb+vN+N2beXLu0aWwXfC6fXrX3p+O2b9/vOtcZ27OylS/uOHAl9Z16xYf/8+fP99evD6w503fHLV67098mwefPnzp8PrXf9ZvvGz/bNn996vTef2rBxet2BA8fXrx84Z87YqXOfXTlyJDTe8V+e93vWxo7dfPzY3O7AnXf4Vw8frvR6gXPujP24ffXqsZMnw9bC7HnzW8YOHXnkkbldAV8714a9Y089NbcrsOX9/7b20UcfXbgr0Dnz9saOnTzZf8S2fF6bM3bkyZMnZ3YFfN38gXPr7Nn/AnDu3DlrZ96+ffunXQHf99uGfXNOnTo1fPjwreE5XfG+M+ecO3v27M6BA984Z2zY99v9/fvC189rx6ydfe/+/p2BA186Z+z0pUuXvtoVWDZ37MTp09/sCHgYtnwYPn3mS6fP7gh4vzbnn7w0N/z70L+6I+D9S2fPXbkyvO8g+N6GfXf2ypWDg/vXw/vfnLNOf/LpHzM7A77fNfP9X38bHAnPvmPO+bVpW8fC5wPD8/9hS6df/fW3fWvCtz6Z7y+ePbtvdU6XzR3/be/sS0vDw3bMc7g4d/bsntXheU5rePgfbeP69fDsGttx69at/atfX8Wz17VjGzdu7F+t9V08e61rfH9j69b+3Z869qGxbw4fPtz/f5869sHcuXM/re7gP6Nf7f7H3b8K4NeNApjXQgDzWghgXgsBzGshgHktBDCvhQDmtbAtAL9p/gH/9Y0vS9vCjQAAAABJRU5ErkJggg==";
 
+        // Kompletní globální seznam zemí světa (Všech ~200 zemí)
         const COUNTRIES = [
-            { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", symbol: "Kč", engine: "CZ" },
-            { code: "DE", name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€", engine: "DE" },
-            { code: "GB", name: "United Kingdom", flag: "🇬🇧", currency: "GBP", symbol: "£", engine: "GB" },
-            { code: "US", name: "United States", flag: "🇺🇸", currency: "USD", symbol: "$", engine: "US" },
-            { code: "AT", name: "Austria", flag: "🇦🇹", currency: "EUR", symbol: "€", flat: 42 },
-            { code: "BE", name: "Belgium", flag: "🇧🇪", currency: "EUR", symbol: "€", flat: 52 },
-            { code: "CH", name: "Switzerland", flag: "🇨🇭", currency: "CHF", symbol: "CHF", flat: 30 },
-            { code: "DK", name: "Denmark", flag: "🇩🇰", currency: "DKK", symbol: "kr", flat: 46 },
-            { code: "FR", name: "France", flag: "🇫🇷", currency: "EUR", symbol: "€", flat: 47 },
-            { code: "NL", name: "Netherlands", flag: "🇳🇱", currency: "EUR", symbol: "€", flat: 47 },
-            { code: "PL", name: "Poland", flag: "🇵🇱", currency: "PLN", symbol: "zł", flat: 32 },
-            { code: "SK", name: "Slovakia", flag: "🇸🇰", currency: "EUR", symbol: "€", flat: 33 },
-            { code: "OTHER", name: "Other / Custom", flag: "🌍", currency: "USD", symbol: "$", flat: 25 }
+            { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", symbol: "Kč" },
+            { code: "DE", name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€" },
+            { code: "GB", name: "United Kingdom", flag: "🇬🇧", currency: "GBP", symbol: "£" },
+            { code: "US", name: "United States", flag: "🇺🇸", currency: "USD", symbol: "$" },
+            { code: "AF", name: "Afghanistan", flag: "🇦🇫", currency: "AFN", symbol: "؋" },
+            { code: "AL", name: "Albania", flag: "🇦🇱", currency: "ALL", symbol: "L" },
+            { code: "DZ", name: "Algeria", flag: "🇩🇿", currency: "DZD", symbol: "د.ج" },
+            { code: "AD", name: "Andorra", flag: "🇦🇩", currency: "EUR", symbol: "€" },
+            { code: "AO", name: "Angola", flag: "🇦🇴", currency: "AOA", symbol: "Kz" },
+            { code: "AR", name: "Argentina", flag: "🇦🇷", currency: "ARS", symbol: "$" },
+            { code: "AM", name: "Armenia", flag: "🇦🇲", currency: "AMD", symbol: "֏" },
+            { code: "AU", name: "Australia", flag: "🇦🇺", currency: "AUD", symbol: "A$" },
+            { code: "AT", name: "Austria", flag: "🇦🇹", currency: "EUR", symbol: "€" },
+            { code: "AZ", name: "Azerbaijan", flag: "🇦🇿", currency: "AZN", symbol: "₼" },
+            { code: "BS", name: "Bahamas", flag: "🇧🇸", currency: "BSD", symbol: "$" },
+            { code: "BH", name: "Bahrain", flag: "🇧🇭", currency: "BHD", symbol: ".د.ب" },
+            { code: "BD", name: "Bangladesh", flag: "🇧🇩", currency: "BDT", symbol: "৳" },
+            { code: "BB", name: "Barbados", flag: "🇧🇧", currency: "BBD", symbol: "$" },
+            { code: "BY", name: "Belarus", flag: "🇧🇾", currency: "BYN", symbol: "Br" },
+            { code: "BE", name: "Belgium", flag: "🇧🇪", currency: "EUR", symbol: "€" },
+            { code: "BZ", name: "Belize", flag: "🇧🇿", currency: "BZD", symbol: "$" },
+            { code: "BJ", name: "Benin", flag: "🇧🇯", currency: "XOF", symbol: "CFA" },
+            { code: "BT", name: "Bhutan", flag: "🇧🇹", currency: "BTN", symbol: "Nu." },
+            { code: "BO", name: "Bolivia", flag: "🇧🇴", currency: "BOB", symbol: "Bs." },
+            { code: "BA", name: "Bosnia & Herzegovina", flag: "🇧🇦", currency: "BAM", symbol: "KM" },
+            { code: "BW", name: "Botswana", flag: "🇧导", currency: "BWP", symbol: "P" },
+            { code: "BR", name: "Brazil", flag: "🇧🇷", currency: "BRL", symbol: "R$" },
+            { code: "BN", name: "Brunei", flag: "🇧🇳", currency: "BND", symbol: "$" },
+            { code: "BG", name: "Bulgaria", flag: "🇧🇬", currency: "BGN", symbol: "лв" },
+            { code: "BF", name: "Burkina Faso", flag: "🇧🇫", currency: "XOF", symbol: "CFA" },
+            { code: "BI", name: "Burundi", flag: "🇧🇮", currency: "BIF", symbol: "FBu" },
+            { code: "KH", name: "Cambodia", flag: "🇰🇭", currency: "KHR", symbol: "៛" },
+            { code: "CM", name: "Cameroon", flag: "🇨🇲", currency: "XAF", symbol: "FCFA" },
+            { code: "CA", name: "Canada", flag: "🇨🇦", currency: "CAD", symbol: "C$" },
+            { code: "CV", name: "Cape Verde", flag: "🇨🇻", currency: "CVE", symbol: "Esc" },
+            { code: "CF", name: "Central African Rep.", flag: "🇨🇫", currency: "XAF", symbol: "FCFA" },
+            { code: "TD", name: "Chad", flag: "🇹🇩", currency: "XAF", symbol: "FCFA" },
+            { code: "CL", name: "Chile", flag: "🇨🇱", currency: "CLP", symbol: "$" },
+            { code: "CN", name: "China", flag: "🇨🇳", currency: "CNY", symbol: "¥" },
+            { code: "CO", name: "Colombia", flag: "🇨記", currency: "COP", symbol: "$" },
+            { code: "KM", name: "Comoros", flag: "🇰🇲", currency: "KMF", symbol: "CF" },
+            { code: "CG", name: "Congo", flag: "🇨🇬", currency: "XAF", symbol: "FCFA" },
+            { code: "CD", name: "DR Congo", flag: "🇨🇩", currency: "CDF", symbol: "FC" },
+            { code: "CR", name: "Costa Rica", flag: "🇨🇷", currency: "CRC", symbol: "₡" },
+            { code: "HR", name: "Croatia", flag: "🇭🇷", currency: "EUR", symbol: "€" },
+            { code: "CU", name: "Cuba", flag: "🇨🇺", currency: "CUP", symbol: "$" },
+            { code: "CY", name: "Cyprus", flag: "🇨🇾", currency: "EUR", symbol: "€" },
+            { code: "DK", name: "Denmark", flag: "🇩🇰", currency: "DKK", symbol: "kr" },
+            { code: "DJ", name: "Djibouti", flag: "🇩🇯", currency: "DJF", symbol: "Fdj" },
+            { code: "DM", name: "Dominica", flag: "🇩🇲", currency: "XCD", symbol: "$" },
+            { code: "DO", name: "Dominican Rep.", flag: "🇩🇴", currency: "DOP", symbol: "RD$" },
+            { code: "EC", name: "Ecuador", flag: "🇪🇨", currency: "USD", symbol: "$" },
+            { code: "EG", name: "Egypt", flag: "🇪🇬", currency: "EGP", symbol: "E£" },
+            { code: "SV", name: "El Salvador", flag: "🇸🇻", currency: "USD", symbol: "$" },
+            { code: "GQ", name: "Equatorial Guinea", flag: "🇬🇶", currency: "XAF", symbol: "FCFA" },
+            { code: "ER", name: "Eritrea", flag: "🇪🇷", currency: "ERN", symbol: "Nfk" },
+            { code: "EE", name: "Estonia", flag: "🇪🇪", currency: "EUR", symbol: "€" },
+            { code: "SZ", name: "Eswatini", flag: "🇸🇿", currency: "SZL", symbol: "L" },
+            { code: "ET", name: "Ethiopia", flag: "🇪🇹", currency: "ETB", symbol: "Br" },
+            { code: "FJ", name: "Fiji", flag: "🇫🇯", currency: "FJD", symbol: "$" },
+            { code: "FI", name: "Finland", flag: "🇫🇮", currency: "EUR", symbol: "€" },
+            { code: "FR", name: "France", flag: "🇫🇷", currency: "EUR", symbol: "€" },
+            { code: "GA", name: "Gabon", flag: "🇬🇦", currency: "XAF", symbol: "FCFA" },
+            { code: "GM", name: "Gambia", flag: "🇬🇲", currency: "GMD", symbol: "D" },
+            { code: "GE", name: "Georgia", flag: "🇬🇪", currency: "GEL", symbol: "₾" },
+            { code: "GH", name: "Ghana", flag: "🇬🇭", currency: "GHS", symbol: "₵" },
+            { code: "GR", name: "Greece", flag: "🇬🇷", currency: "EUR", symbol: "€" },
+            { code: "GD", name: "Grenada", flag: "🇬🇩", currency: "XCD", symbol: "$" },
+            { code: "GT", name: "Guatemala", flag: "🇬🇹", currency: "GTQ", symbol: "Q" },
+            { code: "GN", name: "Guinea", flag: "🇬🇳", currency: "GNF", symbol: "FG" },
+            { code: "GW", name: "Guinea-Bissau", flag: "🇬🇼", currency: "XOF", symbol: "CFA" },
+            { code: "GY", name: "Guyana", flag: "🇬🇾", currency: "GYD", symbol: "$" },
+            { code: "HT", name: "Haiti", flag: "🇭🇹", currency: "HTG", symbol: "G" },
+            { code: "HN", name: "Honduras", flag: "🇭🇳", currency: "HNL", symbol: "L" },
+            { code: "HK", name: "Hong Kong", flag: "🇭🇰", currency: "HKD", symbol: "HK$" },
+            { code: "HU", name: "Hungary", flag: "🇭🇺", currency: "HUF", symbol: "Ft" },
+            { code: "IS", name: "Iceland", flag: "🇮🇸", currency: "ISK", symbol: "kr" },
+            { code: "IN", name: "India", flag: "🇮🇳", currency: "INR", symbol: "₹" },
+            { code: "ID", name: "Indonesia", flag: "🇮🇩", currency: "IDR", symbol: "Rp" },
+            { code: "IR", name: "Iran", flag: "🇮🇷", currency: "IRR", symbol: "﷼" },
+            { code: "IQ", name: "Iraq", flag: "🇮🇶", currency: "IQD", symbol: "ع.د" },
+            { code: "IE", name: "Ireland", flag: "🇮🇪", currency: "EUR", symbol: "€" },
+            { code: "IL", name: "Israel", flag: "🇮🇱", currency: "ILS", symbol: "₪" },
+            { code: "IT", name: "Italy", flag: "🇮🇹", currency: "EUR", symbol: "€" },
+            { code: "JM", name: "Jamaica", flag: "🇯🇲", currency: "JMD", symbol: "$" },
+            { code: "JP", name: "Japan", flag: "🇯🇵", currency: "JPY", symbol: "¥" },
+            { code: "JO", name: "Jordan", flag: "🇯🇴", currency: "JOD", symbol: "د.ا" },
+            { code: "KZ", name: "Kazakhstan", flag: "🇰🇿", currency: "KZT", symbol: "₸" },
+            { code: "KE", name: "Kenya", flag: "🇰🇪", currency: "KES", symbol: "KSh" },
+            { code: "KI", name: "Kiribati", flag: "🇰🇮", currency: "AUD", symbol: "$" },
+            { code: "KP", name: "North Korea", flag: "🇰🇵", currency: "KPW", symbol: "₩" },
+            { code: "KR", name: "South Korea", flag: "🇰🇷", currency: "KRW", symbol: "₩" },
+            { code: "KW", name: "Kuwait", flag: "🇰🇼", currency: "KWD", symbol: "د.ك" },
+            { code: "KG", name: "Kyrgyzstan", flag: "🇰🇬", currency: "KGS", symbol: "с" },
+            { code: "LA", name: "Laos", flag: "🇱🇦", currency: "LAK", symbol: "₭" },
+            { code: "LV", name: "Latvia", flag: "🇱🇻", currency: "EUR", symbol: "€" },
+            { code: "LB", name: "Lebanon", flag: "🇱🇧", currency: "LBP", symbol: "ل.ل" },
+            { code: "LS", name: "Lesotho", flag: "🇱🇸", currency: "LSL", symbol: "L" },
+            { code: "LR", name: "Liberia", flag: "🇱🇷", currency: "LRD", symbol: "$" },
+            { code: "LY", name: "Libya", flag: "🇱🇾", currency: "LYD", symbol: "ل.د" },
+            { code: "LI", name: "Liechtenstein", flag: "🇱🇮", currency: "CHF", symbol: "CHF" },
+            { code: "LT", name: "Lithuania", flag: "🇱🇹", currency: "EUR", symbol: "€" },
+            { code: "LU", name: "Luxembourg", flag: "🇱🇺", currency: "EUR", symbol: "€" },
+            { code: "MO", name: "Macau", flag: "🇲🇴", currency: "MOP", symbol: "P" },
+            { code: "MG", name: "Madagascar", flag: "🇲🇬", currency: "MGA", symbol: "Ar" },
+            { code: "MW", name: "Malawi", flag: "🇲🇼", currency: "MWK", symbol: "MK" },
+            { code: "MY", name: "Malaysia", flag: "🇲🇾", currency: "MYR", symbol: "RM" },
+            { code: "MV", name: "Maldives", flag: "🇲🇻", currency: "MVR", symbol: "Rf" },
+            { code: "ML", name: "Mali", flag: "🇲🇱", currency: "XOF", symbol: "CFA" },
+            { code: "MT", name: "Malta", flag: "🇲🇹", currency: "EUR", symbol: "€" },
+            { code: "MH", name: "Marshall Islands", flag: "🇲🇭", currency: "USD", symbol: "$" },
+            { code: "MR", name: "Mauritania", flag: "🇲🇷", currency: "MRU", symbol: "UM" },
+            { code: "MU", name: "Mauritius", flag: "🇲🇺", currency: "MUR", symbol: "₨" },
+            { code: "MX", name: "Mexico", flag: "🇲🇽", currency: "MXN", symbol: "$" },
+            { code: "FM", name: "Micronesia", flag: "🇫🇲", currency: "USD", symbol: "$" },
+            { code: "MD", name: "Moldova", flag: "🇲🇩", currency: "MDL", symbol: "L" },
+            { code: "MC", name: "Monaco", flag: "🇲🇨", currency: "EUR", symbol: "€" },
+            { code: "MN", name: "Mongolia", flag: "🇲🇳", currency: "MNT", symbol: "₮" },
+            { code: "ME", name: "Montenegro", flag: "🇲🇪", currency: "EUR", symbol: "€" },
+            { code: "MA", name: "Morocco", flag: "🇲🇦", currency: "MAD", symbol: "DH" },
+            { code: "MZ", name: "Mozambique", flag: "🇲🇿", currency: "MZN", symbol: "MT" },
+            { code: "MM", name: "Myanmar", flag: "🇲🇲", currency: "MMK", symbol: "K" },
+            { code: "NA", name: "Namibia", flag: "🇳🇦", currency: "NAD", symbol: "$" },
+            { code: "NR", name: "Nauru", flag: "🇳🇷", currency: "AUD", symbol: "$" },
+            { code: "NP", name: "Nepal", flag: "🇳🇵", currency: "NPR", symbol: "₨" },
+            { code: "NL", name: "Netherlands", flag: "🇳🇱", currency: "EUR", symbol: "€" },
+            { code: "NZ", name: "New Zealand", flag: "🇳🇿", currency: "NZD", symbol: "$" },
+            { code: "NI", name: "Nicaragua", flag: "🇳🇮", currency: "NIO", symbol: "C$" },
+            { code: "NE", name: "Niger", flag: "🇳🇪", currency: "XOF", symbol: "CFA" },
+            { code: "NG", name: "Nigeria", flag: "🇳🇬", currency: "NGN", symbol: "₦" },
+            { code: "MK", name: "North Macedonia", flag: "🇲🇰", currency: "MKD", symbol: "ден" },
+            { code: "NO", name: "Norway", flag: "🇳🇴", currency: "NOK", symbol: "kr" },
+            { code: "OM", name: "Oman", flag: "🇴🇲", currency: "OMR", symbol: "ر.ع." },
+            { code: "PK", name: "Pakistan", flag: "🇵🇰", currency: "PKR", symbol: "₨" },
+            { code: "PW", name: "Palau", flag: "🇵🇼", currency: "USD", symbol: "$" },
+            { code: "PA", name: "Panama", flag: "🇵🇦", currency: "PAB", symbol: "B/." },
+            { code: "PG", name: "Papua New Guinea", flag: "🇵🇬", currency: "PGK", symbol: "K" },
+            { code: "PY", name: "Paraguay", flag: "🇵🇾", currency: "PYG", symbol: "₲" },
+            { code: "PE", name: "Peru", flag: "🇵🇪", currency: "PEN", symbol: "S/." },
+            { code: "PH", name: "Philippines", flag: "🇵🇭", currency: "PHP", symbol: "₱" },
+            { code: "PL", name: "Poland", flag: "🇵🇱", currency: "PLN", symbol: "zł" },
+            { code: "PT", name: "Portugal", flag: "🇵🇹", currency: "EUR", symbol: "€" },
+            { code: "QA", name: "Qatar", flag: "🇶🇦", currency: "QAR", symbol: "﷼" },
+            { code: "RO", name: "Romania", flag: "🇷🇴", currency: "RON", symbol: "lei" },
+            { code: "RU", name: "Russia", flag: "🇷🇺", currency: "RUB", symbol: "₽" },
+            { code: "RW", name: "Rwanda", flag: "🇷🇼", currency: "RWF", symbol: "FRw" },
+            { code: "KN", name: "Saint Kitts & Nevis", flag: "🇰🇳", currency: "XCD", symbol: "$" },
+            { code: "LC", name: "Saint Lucia", flag: "🇱🇨", currency: "XCD", symbol: "$" },
+            { code: "VC", name: "St. Vincent & Grenadines", flag: "🇻🇨", currency: "XCD", symbol: "$" },
+            { code: "WS", name: "Samoa", flag: "🇼🇸", currency: "WST", symbol: "SAT" },
+            { code: "SM", name: "San Marino", flag: "🇸🇲", currency: "EUR", symbol: "€" },
+            { code: "ST", name: "Säo Tomé & Príncipe", flag: "🇸🇹", currency: "STN", symbol: "Db" },
+            { code: "SA", name: "Saudi Arabia", flag: "🇸🇦", currency: "SAR", symbol: "﷼" },
+            { code: "SN", name: "Senegal", flag: "🇸🇳", currency: "XOF", symbol: "CFA" },
+            { code: "RS", name: "Serbia", flag: "🇷🇸", currency: "RSD", symbol: "din" },
+            { code: "SC", name: "Seychelles", flag: "🇸🇨", currency: "SCR", symbol: "₨" },
+            { code: "SL", name: "Sierra Leone", flag: "🇸🇱", currency: "SLE", symbol: "Le" },
+            { code: "SG", name: "Singapore", flag: "🇸🇬", currency: "SGD", symbol: "S$" },
+            { code: "SK", name: "Slovakia", flag: "🇸🇰", currency: "EUR", symbol: "€" },
+            { code: "SI", name: "Slovenia", flag: "🇸🇮", currency: "EUR", symbol: "€" },
+            { code: "SB", name: "Solomon Islands", flag: "🇸🇧", currency: "SBD", symbol: "$" },
+            { code: "SO", name: "Somalia", flag: "🇸🇴", currency: "SOS", symbol: "Sh" },
+            { code: "ZA", name: "South Africa", flag: "🇿🇦", currency: "ZAR", symbol: "R" },
+            { code: "SS", name: "South Sudan", flag: "🇸🇸", currency: "SSP", symbol: "£" },
+            { code: "ES", name: "Spain", flag: "🇪🇸", currency: "EUR", symbol: "€" },
+            { code: "LK", name: "Sri Lanka", flag: "🇱🇰", currency: "LKR", symbol: "Rs" },
+            { code: "SD", name: "Sudan", flag: "🇸🇩", currency: "SDG", symbol: "🇸🇩" },
+            { code: "SR", name: "Suriname", flag: "🇸🇷", currency: "SRD", symbol: "$" },
+            { code: "SE", name: "Sweden", flag: "🇸🇪", currency: "SEK", symbol: "kr" },
+            { code: "CH", name: "Switzerland", flag: "🇨🇭", currency: "CHF", symbol: "CHF" },
+            { code: "SY", name: "Syria", flag: "🇸🇾", currency: "SYP", symbol: "£" },
+            { code: "TW", name: "Taiwan", flag: "🇹🇼", currency: "TWD", symbol: "NT$" },
+            { code: "TJ", name: "Tajikistan", flag: "🇹🇯", currency: "TJS", symbol: "SM" },
+            { code: "TZ", name: "Tanzania", flag: "🇹🇿", currency: "TZS", symbol: "TSh" },
+            { code: "TH", name: "Thailand", flag: "🇹🇭", currency: "THB", symbol: "฿" },
+            { code: "TL", name: "Timor-Leste", flag: "🇹🇱", currency: "USD", symbol: "$" },
+            { code: "TG", name: "Togo", flag: "🇹🇬", currency: "XOF", symbol: "CFA" },
+            { code: "TO", name: "Tonga", flag: "🇹🇴", currency: "TOP", symbol: "T$" },
+            { code: "TT", name: "Trinidad & Tobago", flag: "🇹🇹", currency: "TTD", symbol: "TT$" },
+            { code: "TN", name: "Tunisia", flag: "🇹🇳", currency: "TND", symbol: "DT" },
+            { code: "TR", name: "Turkey", flag: "🇹🇷", currency: "TRY", symbol: "₺" },
+            { code: "TM", name: "Turkmenistan", flag: "🇹🇲", currency: "TMT", symbol: "T" },
+            { code: "TV", name: "Tuvalu", flag: "🇹🇻", currency: "AUD", symbol: "$" },
+            { code: "UG", name: "Uganda", flag: "🇺🇬", currency: "UGX", symbol: "USh" },
+            { code: "UA", name: "Ukraine", flag: "🇺🇦", currency: "UAH", symbol: "₴" },
+            { code: "AE", name: "UAE", flag: "🇦🇪", currency: "AED", symbol: "د.إ" },
+            { code: "UY", name: "Uruguay", flag: "🇺🇾", currency: "UYU", symbol: "$U" },
+            { code: "UZ", name: "Uzbekistan", flag: "🇺🇿", currency: "UZS", symbol: "so'm" },
+            { code: "VU", name: "Vanuatu", flag: "🇻🇺", currency: "VUV", symbol: "VT" },
+            { code: "VE", name: "Venezuela", flag: "🇻🇪", currency: "VES", symbol: "Bs.S" },
+            { code: "VN", name: "Vietnam", flag: "🇻🇳", currency: "VND", symbol: "₫" },
+            { code: "YE", name: "Yemen", flag: "🇾🇪", currency: "YER", symbol: "﷼" },
+            { code: "ZM", name: "Zambia", flag: "🇿🇲", currency: "ZMW", symbol: "ZK" },
+            { code: "ZW", name: "Zimbabwe", flag: "🇿🇼", currency: "ZWL", symbol: "$" },
+            { code: "OTHER", name: "Other / Custom", flag: "🌍", currency: "USD", symbol: "$" }
         ];
 
-        const INIT_BILLS = [
-            { id: "1", label: "Rent", amount: 14000, category: "OTHER", active: true },
-            { id: "2", label: "Utilities", amount: 1200, category: "OTHER", active: true },
-            { id: "3", label: "Internet", amount: 600, category: "OTHER", active: true },
-            { id: "4", label: "Spotify", amount: 200, category: "OTHER", active: true },
-            { id: "5", label: "Savings goal", amount: 3000, category: "OTHER", active: true }
-        ];
-
-        const SKEY = "dayburn_v3";
+        const SKEY = "dayburn_v4";
 
         function netIncome(gross, countryCode, settings) {
             if (gross <= 0) return 0;
+            // 2026 accurate surcharges for key engine zones
             if (countryCode === "CZ") {
                 const soc = gross * 0.071, hlt = gross * 0.045;
                 const base = gross - soc - hlt;
@@ -102,9 +277,8 @@
                 const fica = gross * 0.0765;
                 return gross - ft - fica;
             }
-            const c = COUNTRIES.find(x => x.code === countryCode);
-            const rate = c && c.flat !== undefined ? c.flat : (settings.flat ?? 25);
-            return gross * (1 - rate / 100);
+            // Global standard proxy fallback for any other country
+            return gross * 0.75; 
         }
 
         const dayKey = () => new Date().toISOString().slice(0, 10);
@@ -120,15 +294,15 @@
                     if (r) return JSON.parse(r);
                 } catch(e){}
                 return {
-                    gross: 60000,
+                    gross: "",
                     country: "CZ",
                     currency: "CZK",
                     sym: "Kč",
-                    flat: 25,
                     children: 0,
                     filing: "single",
-                    bills: INIT_BILLS,
-                    transactions: []
+                    bills: [],
+                    transactions: [],
+                    onboarded: false
                 };
             }, []);
 
@@ -136,13 +310,13 @@
             const [country, setCountry] = useState(initialData.country);
             const [currency, setCurrency] = useState(initialData.currency);
             const [sym, setSym] = useState(initialData.sym);
-            const [flat, setFlat] = useState(initialData.flat);
             const [children, setChildren] = useState(initialData.children);
             const [filing, setFiling] = useState(initialData.filing);
             const [bills, setBills] = useState(initialData.bills);
             const [transactions, setTransactions] = useState(initialData.transactions);
+            const [onboarded, setOnboarded] = useState(initialData.onboarded);
             
-            const [showSettings, setShowSettings] = useState(false);
+            const [showSettings, setShowSettings] = useState(!initialData.onboarded);
             const [burnAmt, setBurnAmt] = useState("");
             const [burnNote, setBurnNote] = useState("");
 
@@ -150,11 +324,12 @@
             const [newBillAmount, setNewBillAmount] = useState("");
 
             useEffect(() => {
-                const data = { gross, country, currency, sym, flat, children, filing, bills, transactions };
+                const data = { gross, country, currency, sym, children, filing, bills, transactions, onboarded };
                 localStorage.setItem(SKEY, JSON.stringify(data));
-            }, [gross, country, currency, sym, flat, children, filing, bills, transactions]);
+            }, [gross, country, currency, sym, children, filing, bills, transactions, onboarded]);
 
-            const net = useMemo(() => netIncome(gross, country, { children, filing, flat }), [gross, country, children, filing, flat]);
+            const parsedGross = parseFloat(gross) || 0;
+            const net = useMemo(() => netIncome(parsedGross, country, { children, filing }), [parsedGross, country, children, filing]);
             const totalBills = useMemo(() => bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0), [bills]);
             const disposable = Math.max(0, net - totalBills);
             
@@ -241,15 +416,20 @@
                 setCountry(code);
                 setCurrency(c.currency);
                 setSym(c.symbol);
-                if (c.flat !== undefined) setFlat(c.flat);
             };
 
-            const curCountry = COUNTRIES.find(c => c.code === country);
+            const saveProfile = () => {
+                if (!gross || parseFloat(gross) <= 0) {
+                    alert("Please enter a valid gross monthly income.");
+                    return;
+                }
+                setOnboarded(true);
+                setShowSettings(false);
+            };
 
             return (
                 <div className="min-h-screen bg-zinc-950 text-zinc-100 antialiased flex flex-col justify-between relative overflow-x-hidden select-none">
                     
-                    {/* Glow pozadí */}
                     <div className="fixed inset-0 pointer-events-none z-0">
                         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-[0.065] rounded-full"
                             style={{background: "radial-gradient(ellipse at center,#10b981 0%,transparent 70%)", filter: "blur(80px)"}}></div>
@@ -266,44 +446,48 @@
                             <span className="text-xs font-medium text-zinc-500 bg-zinc-900/60 border border-zinc-800/40 px-2.5 py-1 rounded-full">
                                 {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                             </span>
-                            <button 
-                                onClick={() => setShowSettings(!showSettings)}
-                                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-zinc-800 transition-all text-zinc-400 active:scale-95 text-xs"
-                            >
-                                {showSettings ? "✕" : "⚙️"}
-                            </button>
-                            {/* Logo vpravo nahoře */}
+                            {onboarded && (
+                                <button 
+                                    onClick={() => setShowSettings(!showSettings)}
+                                    className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-zinc-800 transition-all text-zinc-400 active:scale-95 text-xs"
+                                >
+                                    {showSettings ? "✕" : "⚙️"}
+                                </button>
+                            )}
                             <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shadow-inner ml-1">
                                 <img src={LOGO_B64} alt="Logo" className="w-6 h-6 object-cover" />
                             </div>
                         </div>
                     </header>
 
-                    {/* Hlavní obsah */}
+                    {/* Hlavní Tělo */}
                     <main className="w-full max-w-md mx-auto px-6 flex-1 flex flex-col justify-center py-6 relative z-10">
                         
                         {showSettings ? (
-                            /* NASTAVENÍ */
+                            /* PANEL NASTAVENÍ (ÚDAJE) */
                             <div className="space-y-5 bg-zinc-900/40 border border-zinc-800/60 p-5 rounded-2xl backdrop-blur-md">
                                 <div>
-                                    <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 font-display">Profile & Income</h2>
+                                    <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-1 font-display">Setup Your Profile</h2>
+                                    <p className="text-[11px] text-zinc-500 mb-4 font-mono">Fill in your financials to seed the algorithm.</p>
+                                    
                                     <div className="grid grid-cols-2 gap-3">
                                         <div>
                                             <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Country</label>
                                             <select 
                                                 value={country} 
                                                 onChange={e => handleCountryChange(e.target.value)}
-                                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white focus:border-zinc-700"
+                                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white focus:border-zinc-700 max-h-40"
                                             >
                                                 {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.name}</option>)}
                                             </select>
                                         </div>
                                         <div>
-                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Gross Monthly</label>
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Gross Income / Mo</label>
                                             <input 
                                                 type="number" 
+                                                placeholder="e.g. 60000"
                                                 value={gross} 
-                                                onChange={e => setGross(Math.max(0, parseFloat(e.target.value) || 0))}
+                                                onChange={e => setGross(e.target.value)}
                                                 className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white font-mono focus:border-zinc-700"
                                             />
                                         </div>
@@ -324,44 +508,44 @@
                                             </select>
                                         </div>
                                     )}
-                                    {(!curCountry || (!curCountry.engine && curCountry.flat === undefined)) && (
-                                        <div className="mt-3">
-                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Estimated Tax Rate (%)</label>
-                                            <input type="number" value={flat} onChange={e => setFlat(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:border-zinc-700" />
-                                        </div>
-                                    )}
                                 </div>
 
                                 <div className="border-t border-zinc-800/80 pt-4">
                                     <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-2 font-display">Fixed Monthly Bills</h2>
-                                    <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1 mb-3">
-                                        {bills.map(b => (
-                                            <div key={b.id} className="flex items-center justify-between bg-zinc-950/60 border border-zinc-800/40 p-2 rounded-xl text-xs">
-                                                <div className="flex items-center gap-2">
-                                                    <input type="checkbox" checked={b.active} onChange={() => setBills(prev => prev.map(x => x.id === b.id ? {...x, active: !x.active} : x))} className="accent-emerald-500" />
-                                                    <span className={b.active ? "text-zinc-200" : "text-zinc-600 line-through"}>{b.label}</span>
+                                    
+                                    {bills.length > 0 && (
+                                        <div className="max-h-32 overflow-y-auto space-y-1.5 pr-1 mb-3">
+                                            {bills.map(b => (
+                                                <div key={b.id} className="flex items-center justify-between bg-zinc-950/60 border border-zinc-800/40 p-2 rounded-xl text-xs">
+                                                    <div className="flex items-center gap-2">
+                                                        <input type="checkbox" checked={b.active} onChange={() => setBills(prev => prev.map(x => x.id === b.id ? {...x, active: !x.active} : x))} className="accent-emerald-500" />
+                                                        <span className={b.active ? "text-zinc-200" : "text-zinc-600 line-through"}>{b.label}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="font-mono text-zinc-400">{parseFloat(b.amount).toLocaleString()} {sym}</span>
+                                                        <button onClick={() => deleteBill(b.id)} className="text-rose-400 opacity-60 hover:opacity-100">✕</button>
+                                                    </div>
                                                 </div>
-                                                <div className="flex items-center gap-3">
-                                                    <span className="font-mono text-zinc-400">{b.amount.toLocaleString()} {sym}</span>
-                                                    <button onClick={() => deleteBill(b.id)} className="text-rose-400 opacity-60 hover:opacity-100">✕</button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
+                                            ))}
+                                        </div>
+                                    )}
 
                                     <form onSubmit={addBill} className="grid grid-cols-3 gap-1.5">
-                                        <input type="text" placeholder="Bill label" value={newBillLabel} onChange={e => setNewBillLabel(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white outline-none focus:border-zinc-700" />
-                                        <input type="number" placeholder="Amount" value={newBillAmount} onChange={e => setNewBillAmount(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white font-mono outline-none focus:border-zinc-700" />
+                                        <input type="text" placeholder="Rent, Gym..." value={newBillLabel} onChange={e => setNewBillLabel(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white outline-none focus:border-zinc-700" />
+                                        <input type="number" placeholder="Cost" value={newBillAmount} onChange={e => setNewBillAmount(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white font-mono outline-none focus:border-zinc-700" />
                                         <button type="submit" className="bg-zinc-800 border border-zinc-700 text-white rounded-lg text-xs font-bold hover:bg-zinc-700 transition-colors">Add</button>
                                     </form>
                                 </div>
                                 
-                                <button onClick={() => setShowSettings(false)} className="w-full py-2.5 bg-zinc-100 hover:bg-white text-zinc-950 font-display font-bold text-xs rounded-xl transition-all uppercase tracking-wider">
-                                    View Dashboard
+                                <button 
+                                    onClick={saveProfile} 
+                                    className="w-full py-2.5 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-display font-black text-xs rounded-xl transition-all uppercase tracking-wider shadow-lg"
+                                >
+                                    Activate DayBurn →
                                 </button>
                             </div>
                         ) : (
-                            /* DASHBOARD */
+                            /* HLAVNÍ DASHBOARD */
                             <div className="flex flex-col items-center justify-center flex-1">
                                 
                                 <div className="text-center space-y-1.5 mb-8 w-full">
@@ -370,10 +554,9 @@
                                         {remainingToday.toLocaleString()} <span className="text-2xl font-normal align-middle ml-0.5">{sym}</span>
                                     </div>
                                     <span className="text-xs text-zinc-500 font-mono block">
-                                        Calculated cap: {baseDailyLimit.toLocaleString()} {sym} / day
+                                        Calculated base: {baseDailyLimit.toLocaleString()} {sym} / day
                                     </span>
 
-                                    {/* Progress bar */}
                                     <div className="w-64 mx-auto mt-6">
                                         <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/20">
                                             <div className={`h-full ${barColor} transition-all duration-500`} style={{ width: `${progressPercent}%` }}></div>
@@ -385,7 +568,6 @@
                                     </div>
                                 </div>
 
-                                {/* BURN FORM */}
                                 <form onSubmit={handleBurn} className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3.5 shadow-xl space-y-2.5 mb-6">
                                     <div className="flex items-center gap-3">
                                         <span className="font-mono text-zinc-500 text-lg font-bold">{sym}</span>
@@ -405,14 +587,13 @@
                                     </div>
                                     <input 
                                         type="text" 
-                                        placeholder="Optional annotation (e.g., Grocery, Cafe)" 
+                                        placeholder="Optional note (e.g. Uber, Dinner)" 
                                         value={burnNote}
                                         onChange={e => setBurnNote(e.target.value)}
                                         className="w-full bg-transparent border-t border-zinc-800/40 pt-2 text-[11px] font-mono text-zinc-400 placeholder-zinc-700 outline-none"
                                     />
                                 </form>
 
-                                {/* TRASAKCE */}
                                 <div className="w-full space-y-2">
                                     <h3 className="text-[10px] font-mono uppercase tracking-widest text-zinc-600">Today's Activity Feed</h3>
                                     <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 w-full">
