@@ -1,426 +1,468 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>DayBurn — Anti-Budget Tracker</title><script src="https://unpkg.com/react@18/umd/react.production.min.js"></script><script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script><script src="https://unpkg.com/@babel/standalone/babel.min.js"></script><script src="https://cdn.tailwindcss.com"></script><link rel="preconnect" href="https://fonts.googleapis.com"/><link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/><style>*{box-sizing:border-box;margin:0;padding:0}body{background:#09090b;overflow-x:hidden;color:#e4e4e7;font-family:'DM Mono',monospace}.font-display{font-family:'Syne',sans-serif}.hero-num{font-family:'Syne',sans-serif;font-weight:800;letter-spacing:-0.04em;line-height:1}.t-em{text-shadow:0 0 40px rgba(16,185,129,0.2)}.t-am{text-shadow:0 0 40px rgba(245,158,11,0.2)}.t-ro{text-shadow:0 0 40px rgba(239,68,68,0.2)}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none}::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:999px}body::before{content:'';position:fixed;inset:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");z-index:0}body::after{content:'';position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,0.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.015) 1px,transparent 1px);background-size:48px 48px;z-index:0}#root{position:relative;z-index:1}</style></head><body><div id="root"></div><script type="text/babel">const{useState,useEffect,useMemo}=React;
-
-// Embedded high-tech hexagonal logo from your screenshot
-const LOGO_B64="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADXElEQVRoQ+2ZzY8TZRSGnzNvd6Z0SgcolS8REgXiwZtXvXg1MfFGEw9GjRu96M0Y9S/wH3DFlXg0XvTi1XgTEw/e9GIsSgSREuUrdDqd78w409mZfko7HYpSks9m0ul0v7993nPe87zDWmsY96v73b/bXwXw60YBzGshgHktBDCvhQDmtbA94D4ZNo/NfQcPh2LgN+Y6Z86xOezb877fK7O9bXg4FAOfT8zYmE67vR48HAoBz/7b0zY23b0u3L/O9w6EgOfA/XvSxn76dM/w8/Hw7Gq0jR3f98P7B8Kzv9EydmI0OnwP/N7vGhtfPn/u8fPx8KwyZ+zUlSu7B0LAc+DoYWNn37p99/DzgfPszUljZ967v78uPHzGnHV6/frvFw8f7vWf9x04wK87V6/uP3jwIHT7vXb+vN+N2beXLu0aWwXfC6fXrX3p+O2b9/vOtcZ27OylS/uOHAl9Z16xYf/8+fP99evD6w503fHLV67098mwefPnzp8PrXf9ZvvGz/bNn996vTef2rBxet2BA8fXrx84Z87YqXOfXTlyJDTe8V+e93vWxo7dfPzY3O7AnXf4Vw8frvR6gXPujP24ffXqsZMnw9bC7HnzW8YOHXnkkbldAV8714a9Y089NbcrsOX9/7b20UcfXbgr0Dnz9saOnTzZf8S2fF6bM3bkyZMnZ3YFfN38gXPr7Nn/AnDu3DlrZ96+ffunXQHf99uGfXNOnTo1fPjwreE5XfG+M+ecO3v27M6BA984Z2zY99v9/fvC189rx6ydfe/+/p2BA186Z+z0pUuXvtoVWDZ37MTp09/sCHgYtnwYPn3mS6fP7gh4vzbnn7w0N/z70L+6I+D9S2fPXbkyvO8g+N6GfXf2ypWDg/vXw/vfnLNOf/LpHzM7A77fNfP9X38bHAnPvmPO+bVpW8fC5wPD8/9hS6df/fW3fWvCtz6Z7y+ePbtvdU6XzR3/be/sS0vDw3bMc7g4d/bsntXheU5rePgfbeP69fDsGttx69at/atfX8Wz17VjGzdu7F+t9V08e61rfH9j69b+3Z869qGxbw4fPtz/f5869sHcuXM/re7gP6Nf7f7H3b8K4NeNApjXQgDzWghgXgsBzGshgHktBDCvhQDmtbAtAL9p/gH/9Y0vS9vCjQAAAABJRU5ErkJggg==";
-
-const COUNTRIES = [
-  { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", symbol: "Kč", engine: "CZ" },
-  { code: "DE", name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€", engine: "DE" },
-  { code: "GB", name: "United Kingdom", flag: "🇬🇧", currency: "GBP", symbol: "£", engine: "GB" },
-  { code: "US", name: "United States", flag: "🇺🇸", currency: "USD", symbol: "$", engine: "US" },
-  { code: "AT", name: "Austria", flag: "🇦🇹", currency: "EUR", symbol: "€", flat: 42 },
-  { code: "BE", name: "Belgium", flag: "🇧🇪", currency: "EUR", symbol: "€", flat: 52 },
-  { code: "CH", name: "Switzerland", flag: "🇨🇭", currency: "CHF", symbol: "CHF", flat: 30 },
-  { code: "DK", name: "Denmark", flag: "🇩🇰", currency: "DKK", symbol: "kr", flat: 46 },
-  { code: "FR", name: "France", flag: "🇫🇷", currency: "EUR", symbol: "€", flat: 47 },
-  { code: "NL", name: "Netherlands", flag: "🇳🇱", currency: "EUR", symbol: "€", flat: 47 },
-  { code: "PL", name: "Poland", flag: "🇵🇱", currency: "PLN", symbol: "zł", flat: 32 },
-  { code: "SK", name: "Slovakia", flag: "🇸🇰", currency: "EUR", symbol: "€", flat: 33 },
-  { code: "OTHER", name: "Other / Custom", flag: "🌍", currency: "USD", symbol: "$", flat: 25 }
-];
-
-const BILL_CATS = ["RENT", "UTILITIES", "INTERNET", "SUBSCRIPTIONS", "SAVINGS", "OTHER"];
-
-const INIT_BILLS = [
-  { id: "1", label: "Rent", amount: 14000, category: "RENT", active: true },
-  { id: "2", label: "Utilities", amount: 1200, category: "UTILITIES", active: true },
-  { id: "3", label: "Internet", amount: 600, category: "INTERNET", active: true },
-  { id: "4", label: "Spotify", amount: 200, category: "SUBSCRIPTIONS", active: true },
-  { id: "5", label: "Savings goal", amount: 3000, category: "SAVINGS", active: true }
-];
-
-const SKEY = "dayburn_v3";
-
-// ─── LOCAL TAX ENGINE (2026 Accurate Surcharges) ───────────────────────────
-function netIncome(gross, countryCode, settings) {
-  if (gross <= 0) return 0;
-  if (countryCode === "CZ") {
-    const soc = gross * 0.071, hlt = gross * 0.045;
-    const base = gross - soc - hlt;
-    let tax = base <= 161328 ? base * 0.15 : 161328 * 0.15 + (base - 161328) * 0.23;
-    tax = Math.max(0, tax - 2570); // 2026 sleva na poplatníka approximation
-    if (settings.children > 0) tax = Math.max(0, tax - (settings.children * 1267));
-    return gross - soc - hlt - tax;
-  }
-  if (countryCode === "DE") {
-    const soc = gross * 0.20; // Pension, health, unemployment average employee share
-    const ti = Math.max(0, gross - 11784);
-    let tax = ti * 0.25; // Base progressive simulation simplified
-    return gross - soc - tax;
-  }
-  if (countryCode === "GB") {
-    const taxFree = 12570;
-    const tx = Math.max(0, gross - taxFree);
-    const it = tx <= 37700 ? tx * 0.20 : 37700 * 0.20 + (tx - 37700) * 0.40;
-    const ni = gross > 12570 ? (gross - 12570) * 0.08 : 0;
-    return gross - it - ni;
-  }
-  if (countryCode === "US") {
-    const sd = settings.filing === "married" ? 30000 : 15000;
-    const ti = Math.max(0, gross - sd);
-    const ft = ti * 0.18; // Flat bracket proxy
-    const fica = gross * 0.0765;
-    return gross - ft - fica;
-  }
-  const c = COUNTRIES.find(x => x.code === countryCode);
-  const rate = c && c.flat !== undefined ? c.flat : (settings.flat ?? 25);
-  return gross * (1 - rate / 100);
-}
-
-const dayKey = (d = new Date()) => d.toISOString().slice(0, 10);
-const daysInCurrentMonth = () => {
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
-};
-
-function App() {
-  // Load data or defaults
-  const initialData = useMemo(() => {
-    try {
-      const r = localStorage.getItem(SKEY);
-      if (r) return JSON.parse(r);
-    } catch(e){}
-    return {
-      gross: 60000,
-      country: "CZ",
-      currency: "CZK",
-      sym: "Kč",
-      flat: 25,
-      children: 0,
-      filing: "single",
-      bills: INIT_BILLS,
-      transactions: []
-    };
-  }, []);
-
-  const [gross, setGross] = useState(initialData.gross);
-  const [country, setCountry] = useState(initialData.country);
-  const [currency, setCurrency] = useState(initialData.currency);
-  const [sym, setSym] = useState(initialData.sym);
-  const [flat, setFlat] = useState(initialData.flat);
-  const [children, setChildren] = useState(initialData.children);
-  const [filing, setFiling] = useState(initialData.filing);
-  const [bills, setBills] = useState(initialData.bills);
-  const [transactions, setTransactions] = useState(initialData.transactions);
-  
-  const [showSettings, setShowSettings] = useState(false);
-  const [burnAmt, setBurnAmt] = useState("");
-  const [burnNote, setBurnNote] = useState("");
-
-  const [newBillLabel, setNewBillLabel] = useState("");
-  const [newBillAmount, setNewBillAmount] = useState("");
-  const [newBillCat, setNewBillCat] = useState("OTHER");
-
-  // Save changes
-  useEffect(() => {
-    const data = { gross, country, currency, sym, flat, children, filing, bills, transactions };
-    localStorage.setItem(SKEY, JSON.stringify(data));
-  }, [gross, country, currency, sym, flat, children, filing, bills, transactions]);
-
-  // Derived metrics
-  const net = useMemo(() => netIncome(gross, country, { children, filing, flat }), [gross, country, children, filing, flat]);
-  const totalBills = useMemo(() => bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0), [bills]);
-  const disposable = Math.max(0, net - totalBills);
-  
-  const dim = daysInCurrentMonth();
-  const baseDailyLimit = Math.round(disposable / dim);
-
-  // Filter transactions for today
-  const todayStr = dayKey();
-  const todaysTxs = useMemo(() => transactions.filter(t => t.date === todayStr), [transactions, todayStr]);
-  const totalSpentToday = useMemo(() => todaysTxs.reduce((s, t) => s + t.amount, 0), [todaysTxs]);
-
-  // Midnight Rollover Deficit/Surplus Calculation
-  const remainingToday = useMemo(() => {
-    // Calculate total spent in past days of the current month to compute accurate shift
-    const now = new Date();
-    const currentDay = now.getDate();
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>DayBurn — Anti-Budget Tracker</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     
-    let totalSpentThisMonthBeforeToday = 0;
-    for(let d = 1; d < currentDay; d++) {
-      const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-      const daySpent = transactions.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
-      totalSpentThisMonthBeforeToday += daySpent;
-    }
-
-    const pastExpectedSpend = baseDailyLimit * (currentDay - 1);
-    const cumulativeDiscrepancy = pastExpectedSpend - totalSpentThisMonthBeforeToday;
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
     
-    const remainingDays = dim - currentDay + 1;
-    const dynamicallyAdjustedAllowance = baseDailyLimit + (cumulativeDiscrepancy / remainingDays);
-    
-    return Math.round(dynamicallyAdjustedAllowance - totalSpentToday);
-  }, [baseDailyLimit, transactions, totalSpentToday, dim]);
-
-  // UI styling flags
-  const colorClass = remainingToday > (baseDailyLimit * 0.4) ? "text-emerald-400 t-em" : remainingToday > 0 ? "text-amber-400 t-am" : "text-rose-500 t-ro";
-  const progressPercent = baseDailyLimit > 0 ? Math.min(100, (totalSpentToday / baseDailyLimit) * 100) : 0;
-  const barColor = remainingToday > 0 ? "bg-emerald-500" : "bg-rose-500";
-
-  const handleBurn = (e) => {
-    e.preventDefault();
-    const amt = parseFloat(burnAmt);
-    if (isNaN(amt) || amt <= 0) return;
-    
-    const now = new Date();
-    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    
-    const newTx = {
-      id: Math.random().toString(36).slice(2, 10),
-      amount: amt,
-      note: burnNote.trim() || "Burned",
-      time: timeStr,
-      date: todayStr
-    };
-
-    setTransactions(prev => [newTx, ...prev]);
-    setBurnAmt("");
-    setBurnNote("");
-  };
-
-  const deleteTx = (id) => {
-    setTransactions(prev => prev.filter(t => t.id !== id));
-  };
-
-  const addBill = (e) => {
-    e.preventDefault();
-    const amt = parseFloat(newBillAmount);
-    if (!newBillLabel.trim() || isNaN(amt) || amt <= 0) return;
-
-    const b = {
-      id: Math.random().toString(36).slice(2, 10),
-      label: newBillLabel.trim(),
-      amount: amt,
-      category: newBillCat,
-      active: true
-    };
-    setBills(prev => [...prev, b]);
-    setNewBillLabel("");
-    setNewBillAmount("");
-  };
-
-  const handleCountryChange = (code) => {
-    const c = COUNTRIES.find(x => x.code === code);
-    if (!c) return;
-    setCountry(code);
-    setCurrency(c.currency);
-    setSym(c.symbol);
-    if (c.flat !== undefined) setFlat(c.flat);
-  };
-
-  return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 antialiased flex flex-col justify-between relative overflow-x-hidden select-none">
-      
-      {/* Top Header & Integrated Logo */}
-      <header className="w-full max-w-md mx-auto px-6 pt-8 pb-4 flex items-center justify-between relative z-20">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shadow-inner">
-            <img src={LOGO_B64} alt="DayBurn Hex Logo" className="w-6 h-6 object-cover" />
-          </div>
-          <div>
-            <h1 className="font-display font-bold text-lg text-white leading-none tracking-tight">DayBurn</h1>
-            <span className="text-[10px] text-zinc-600 font-mono tracking-widest uppercase">Anti-Budget</span>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <span className="text-xs font-medium text-zinc-500 bg-zinc-900/60 border border-zinc-800/40 px-2.5 py-1 rounded-full">
-            {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-          </span>
-          <button 
-            onClick={() => setShowSettings(!showSettings)}
-            className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-zinc-800 transition-all text-zinc-400 active:scale-95"
-          >
-            {showSettings ? "✕" : "⚙️"}
-          </button>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="w-full max-w-md mx-auto px-6 flex-1 flex flex-col justify-center py-6 relative z-10">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #09090b; overflow-x: hidden; color: #e4e4e7; font-family: 'DM Mono', monospace; }
+        .font-display { font-family: 'Syne', sans-serif; }
+        .hero-num { font-family: 'Syne', sans-serif; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+        .t-em { text-shadow: 0 0 40px rgba(16,185,129,0.2); }
+        .t-am { text-shadow: 0 0 40px rgba(245,158,11,0.2); }
+        .t-ro { text-shadow: 0 0 40px rgba(239,68,68,0.2); }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; }
         
-        {showSettings ? (
-          /* CONFIGURATION PANEL */
-          <div className="space-y-5 bg-zinc-900/40 border border-zinc-800/60 p-5 rounded-2xl backdrop-blur-md animate-fade-in">
-            <div>
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 font-display">Profile & Income</h2>
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Country</label>
-                  <select 
-                    value={country} 
-                    onChange={e => handleCountryChange(e.target.value)}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white focus:border-zinc-700"
-                  >
-                    {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.name}</option>)}
-                  </select>
-                </div>
-                <div>
-                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Gross Monthly</label>
-                  <input 
-                    type="number" 
-                    value={gross} 
-                    onChange={e => setGross(Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white font-mono focus:border-zinc-700"
-                  />
-                </div>
-              </div>
+        body::before {
+            content: ''; position: fixed; inset: 0; pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.02'/%3E%3C/svg%3E");
+            z-index: 0;
+        }
+        body::after {
+            content: ''; position: fixed; inset: 0; pointer-events: none;
+            background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+            background-size: 48px 48px; z-index: 0;
+        }
+        #root { position: relative; z-index: 1; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
 
-              {/* Dynamic Parameter Injections based on Country Choice */}
-              {country === "CZ" && (
-                <div className="mt-3">
-                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Children (Tax Discounts)</label>
-                  <input type="number" value={children} onChange={e => setChildren(Math.max(0, parseInt(e.target.value) || 0))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono" />
-                </div>
-              )}
-              {country === "US" && (
-                <div className="mt-3">
-                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Filing Status</label>
-                  <select value={filing} onChange={e => setFiling(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white">
-                    <option value="single">Single</option>
-                    <option value="married">Married (Joint)</option>
-                  </select>
-                </div>
-              )}
-              {(!curCountry || (!curCountry.engine && curCountry.flat === undefined)) && (
-                <div className="mt-3">
-                  <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Estimated Tax Rate (%)</label>
-                  <input type="number" value={flat} onChange={e => setFlat(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono" />
-                </div>
-              )}
-            </div>
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
 
-            <div className="border-t border-zinc-800/80 pt-4">
-              <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-2 font-display">Fixed Monthly Bills</h2>
-              <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1 mb-3">
-                {bills.map(b => (
-                  <div key={b.id} className="flex items-center justify-between bg-zinc-950/60 border border-zinc-800/40 p-2 rounded-xl text-xs">
-                    <div className="flex items-center gap-2">
-                      <input type="checkbox" checked={b.active} onChange={() => setBills(prev => prev.map(x => x.id === b.id ? {...x, active: !x.active} : x))} className="accent-emerald-500" />
-                      <span className={b.active ? "text-zinc-200" : "text-zinc-600 line-through"}>{b.label}</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className="font-mono text-zinc-400">{b.amount.toLocaleString()} {sym}</span>
-                      <button onClick={() => deleteBill(b.id)} className="text-rose-400 opacity-60 hover:opacity-100">✕</button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+        // Logo base64 z tvého screenshotu
+        const LOGO_B64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADXElEQVRoQ+2ZzY8TZRSGnzNvd6Z0SgcolS8REgXiwZtXvXg1MfFGEw9GjRu96M0Y9S/wH3DFlXg0XvTi1XgTEw/e9GIsSgSREuUrdDqd78w409mZfko7HYpSks9m0ul0v7993nPe87zDWmsY96v73b/bXwXw60YBzGshgHktBDCvhQDmtbA94D4ZNo/NfQcPh2LgN+Y6Z86xOezb877fK7O9bXg4FAOfT8zYmE67vR48HAoBz/7b0zY23b0u3L/O9w6EgOfA/XvSxn76dM/w8/Hw7Gq0jR3f98P7B8Kzv9EydmI0OnwP/N7vGhtfPn/u8fPx8KwyZ+zUlSu7B0LAc+DoYWNn37p99/DzgfPszUljZ967v78uPHzGnHV6/frvFw8f7vWf9x04wK87V6/uP3jwIHT7vXb+vN+N2beXLu0aWwXfC6fXrX3p+O2b9/vOtcZ27OylS/uOHAl9Z16xYf/8+fP99evD6w503fHLV67098mwefPnzp8PrXf9ZvvGz/bNn996vTef2rBxet2BA8fXrx84Z87YqXOfXTlyJDTe8V+e93vWxo7dfPzY3O7AnXf4Vw8frvR6gXPujP24ffXqsZMnw9bC7HnzW8YOHXnkkbldAV8714a9Y089NbcrsOX9/7b20UcfXbgr0Dnz9saOnTzZf8S2fF6bM3bkyZMnZ3YFfN38gXPr7Nn/AnDu3DlrZ96+ffunXQHf99uGfXNOnTo1fPjwreE5XfG+M+ecO3v27M6BA984Z2zY99v9/fvC189rx6ydfe/+/p2BA186Z+z0pUuXvtoVWDZ37MTp09/sCHgYtnwYPn3mS6fP7gh4vzbnn7w0N/z70L+6I+D9S2fPXbkyvO8g+N6GfXf2ypWDg/vXw/vfnLNOf/LpHzM7A77fNfP9X38bHAnPvmPO+bVpW8fC5wPD8/9hS6df/fW3fWvCtz6Z7y+ePbtvdU6XzR3/be/sS0vDw3bMc7g4d/bsntXheU5rePgfbeP69fDsGttx69at/atfX8Wz17VjGzdu7F+t9V08e61rfH9j69b+3Z869qGxbw4fPtz/f5869sHcuXM/re7gP6Nf7f7H3b8K4NeNApjXQgDzWghgXgsBzGshgHktBDCvhQDmtbAtAL9p/gH/9Y0vS9vCjQAAAABJRU5ErkJggg==";
 
-              <form onSubmit={addBill} className="grid grid-cols-3 gap-1.5">
-                <input type="text" placeholder="Bill label" value={newBillLabel} onChange={e => setNewBillLabel(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white" />
-                <input type="number" placeholder="Amount" value={newBillAmount} onChange={e => setNewBillAmount(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white font-mono" />
-                <button type="submit" className="bg-zinc-800 border border-zinc-700 text-white rounded-lg text-xs font-bold hover:bg-zinc-700">Add</button>
-              </form>
-            </div>
+        const COUNTRIES = [
+            { code: "CZ", name: "Czech Republic", flag: "🇨🇿", currency: "CZK", symbol: "Kč", engine: "CZ" },
+            { code: "DE", name: "Germany", flag: "🇩🇪", currency: "EUR", symbol: "€", engine: "DE" },
+            { code: "GB", name: "United Kingdom", flag: "🇬🇧", currency: "GBP", symbol: "£", engine: "GB" },
+            { code: "US", name: "United States", flag: "🇺🇸", currency: "USD", symbol: "$", engine: "US" },
+            { code: "AT", name: "Austria", flag: "🇦🇹", currency: "EUR", symbol: "€", flat: 42 },
+            { code: "BE", name: "Belgium", flag: "🇧🇪", currency: "EUR", symbol: "€", flat: 52 },
+            { code: "CH", name: "Switzerland", flag: "🇨🇭", currency: "CHF", symbol: "CHF", flat: 30 },
+            { code: "DK", name: "Denmark", flag: "🇩🇰", currency: "DKK", symbol: "kr", flat: 46 },
+            { code: "FR", name: "France", flag: "🇫🇷", currency: "EUR", symbol: "€", flat: 47 },
+            { code: "NL", name: "Netherlands", flag: "🇳🇱", currency: "EUR", symbol: "€", flat: 47 },
+            { code: "PL", name: "Poland", flag: "🇵🇱", currency: "PLN", symbol: "zł", flat: 32 },
+            { code: "SK", name: "Slovakia", flag: "🇸🇰", currency: "EUR", symbol: "€", flat: 33 },
+            { code: "OTHER", name: "Other / Custom", flag: "🌍", currency: "USD", symbol: "$", flat: 25 }
+        ];
+
+        const INIT_BILLS = [
+            { id: "1", label: "Rent", amount: 14000, category: "OTHER", active: true },
+            { id: "2", label: "Utilities", amount: 1200, category: "OTHER", active: true },
+            { id: "3", label: "Internet", amount: 600, category: "OTHER", active: true },
+            { id: "4", label: "Spotify", amount: 200, category: "OTHER", active: true },
+            { id: "5", label: "Savings goal", amount: 3000, category: "OTHER", active: true }
+        ];
+
+        const SKEY = "dayburn_v3";
+
+        function netIncome(gross, countryCode, settings) {
+            if (gross <= 0) return 0;
+            if (countryCode === "CZ") {
+                const soc = gross * 0.071, hlt = gross * 0.045;
+                const base = gross - soc - hlt;
+                let tax = base <= 161328 ? base * 0.15 : 161328 * 0.15 + (base - 161328) * 0.23;
+                tax = Math.max(0, tax - 2570); 
+                if (settings.children > 0) tax = Math.max(0, tax - (settings.children * 1267));
+                return gross - soc - hlt - tax;
+            }
+            if (countryCode === "DE") {
+                const soc = gross * 0.20; 
+                const ti = Math.max(0, gross - 11784);
+                let tax = ti * 0.25; 
+                return gross - soc - tax;
+            }
+            if (countryCode === "GB") {
+                const taxFree = 12570;
+                const tx = Math.max(0, gross - taxFree);
+                const it = tx <= 37700 ? tx * 0.20 : 37700 * 0.20 + (tx - 37700) * 0.40;
+                const ni = gross > 12570 ? (gross - 12570) * 0.08 : 0;
+                return gross - it - ni;
+            }
+            if (countryCode === "US") {
+                const sd = settings.filing === "married" ? 30000 : 15000;
+                const ti = Math.max(0, gross - sd);
+                const ft = ti * 0.18; 
+                const fica = gross * 0.0765;
+                return gross - ft - fica;
+            }
+            const c = COUNTRIES.find(x => x.code === countryCode);
+            const rate = c && c.flat !== undefined ? c.flat : (settings.flat ?? 25);
+            return gross * (1 - rate / 100);
+        }
+
+        const dayKey = () => new Date().toISOString().slice(0, 10);
+        const daysInCurrentMonth = () => {
+            const now = new Date();
+            return new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+        };
+
+        function App() {
+            const initialData = useMemo(() => {
+                try {
+                    const r = localStorage.getItem(SKEY);
+                    if (r) return JSON.parse(r);
+                } catch(e){}
+                return {
+                    gross: 60000,
+                    country: "CZ",
+                    currency: "CZK",
+                    sym: "Kč",
+                    flat: 25,
+                    children: 0,
+                    filing: "single",
+                    bills: INIT_BILLS,
+                    transactions: []
+                };
+            }, []);
+
+            const [gross, setGross] = useState(initialData.gross);
+            const [country, setCountry] = useState(initialData.country);
+            const [currency, setCurrency] = useState(initialData.currency);
+            const [sym, setSym] = useState(initialData.sym);
+            const [flat, setFlat] = useState(initialData.flat);
+            const [children, setChildren] = useState(initialData.children);
+            const [filing, setFiling] = useState(initialData.filing);
+            const [bills, setBills] = useState(initialData.bills);
+            const [transactions, setTransactions] = useState(initialData.transactions);
             
-            <button onClick={() => setShowSettings(false)} className="w-full py-2.5 bg-zinc-100 hover:bg-white text-zinc-950 font-display font-bold text-xs rounded-xl transition-all uppercase tracking-wider">
-              Save & View Dashboard
-            </button>
-          </div>
-        ) : (
-          /* CORE ANTI-BUDGET METRIC DASHBOARD */
-          <div className="flex flex-col items-center justify-center flex-1">
+            const [showSettings, setShowSettings] = useState(false);
+            const [burnAmt, setBurnAmt] = useState("");
+            const [burnNote, setBurnNote] = useState("");
+
+            const [newBillLabel, setNewBillLabel] = useState("");
+            const [newBillAmount, setNewBillAmount] = useState("");
+
+            useEffect(() => {
+                const data = { gross, country, currency, sym, flat, children, filing, bills, transactions };
+                localStorage.setItem(SKEY, JSON.stringify(data));
+            }, [gross, country, currency, sym, flat, children, filing, bills, transactions]);
+
+            const net = useMemo(() => netIncome(gross, country, { children, filing, flat }), [gross, country, children, filing, flat]);
+            const totalBills = useMemo(() => bills.filter(b => b.active).reduce((s, b) => s + b.amount, 0), [bills]);
+            const disposable = Math.max(0, net - totalBills);
             
-            <div className="text-center space-y-1.5 mb-8">
-              <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 block">Today's Remaining Capacity</span>
-              <div className={`hero-num tracking-tighter transition-all duration-300 ${colorClass}`} style={{ fontSize: "clamp(3.5rem, 16vw, 6rem)" }}>
-                {remainingToday.toLocaleString()} <span className="text-2xl font-normal align-middle ml-0.5">{sym}</span>
-              </div>
-              <span className="text-xs text-zinc-500 font-mono block">
-                Calculated cap: {baseDailyLimit.toLocaleString()} {sym} / day
-              </span>
+            const dim = daysInCurrentMonth();
+            const baseDailyLimit = Math.round(disposable / dim);
 
-              {/* Progress Indicator */}
-              <div className="w-64 mx-auto mt-6">
-                <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/20">
-                  <div className={`h-full ${barColor} transition-all duration-500`} style={{ width: `${progressPercent}%` }}></div>
-                </div>
-                <div className="flex justify-between items-center mt-1.5 text-[9px] font-mono text-zinc-600">
-                  <span>Spent: {totalSpentToday.toLocaleString()} {sym}</span>
-                  <span>{dim - new Date().getDate() + 1} Days Left</span>
-                </div>
-              </div>
-            </div>
+            const todayStr = dayKey();
+            const todaysTxs = useMemo(() => transactions.filter(t => t.date === todayStr), [transactions, todayStr]);
+            const totalSpentToday = useMemo(() => todaysTxs.reduce((s, t) => s + t.amount, 0), [todaysTxs]);
 
-            {/* QUICK TRANSACTION EMISSION (THE BURN BUTTON) */}
-            <form onSubmit={handleBurn} className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3.5 shadow-xl space-y-2.5 mb-6">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-zinc-500 text-lg font-bold">{sym}</span>
-                <input 
-                  type="number" 
-                  pattern="[0-9]*" 
-                  inputMode="decimal"
-                  placeholder="0.00" 
-                  value={burnAmt}
-                  onChange={e => setBurnAmt(e.target.value)}
-                  className="flex-1 bg-transparent text-xl font-display font-bold outline-none text-white placeholder-zinc-800"
-                />
-                <button 
-                  type="submit" 
-                  className="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-display font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-950/20"
-                >
-                  Burn
-                </button>
-              </div>
-              <input 
-                type="text" 
-                placeholder="Optional annotation (e.g., Grocery, Cafe)" 
-                value={burnNote}
-                onChange={e => setBurnNote(e.target.value)}
-                className="w-full bg-transparent border-t border-zinc-800/40 pt-2 text-[11px] font-mono text-zinc-400 placeholder-zinc-700 outline-none"
-              />
-            </form>
+            const remainingToday = useMemo(() => {
+                const now = new Date();
+                const currentDay = now.getDate();
+                
+                let totalSpentThisMonthBeforeToday = 0;
+                for(let d = 1; d < currentDay; d++) {
+                    const dateStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                    const daySpent = transactions.filter(t => t.date === dateStr).reduce((s, t) => s + t.amount, 0);
+                    totalSpentThisMonthBeforeToday += daySpent;
+                }
 
-            {/* TRANSACTION FEED */}
-            <div className="w-full space-y-2">
-              <h3 className="text-[10px] font-mono uppercase tracking-widest text-zinc-600">Today's Activity Feed</h3>
-              <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 w-full">
-                {todaysTxs.length === 0 ? (
-                  <div className="text-center py-6 border border-dashed border-zinc-900 rounded-xl">
-                    <span className="text-xs text-zinc-700 font-mono">No burns recorded today. Clean sheet.</span>
-                  </div>
-                ) : (
-                  todaysTxs.map(t => (
-                    <div key={t.id} className="flex items-center justify-between bg-zinc-900/20 border border-zinc-900 p-3 rounded-xl hover:border-zinc-800 transition-colors">
-                      <div className="flex flex-col">
-                        <span className="text-xs text-zinc-200 font-medium">{t.note}</span>
-                        <span className="text-[9px] text-zinc-600 font-mono">{t.time}</span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <span className="font-mono text-xs text-rose-400 font-bold">-{t.amount.toLocaleString()} {sym}</span>
-                        <button onClick={() => deleteTx(t.id)} className="text-[11px] text-zinc-700 hover:text-zinc-400 transition-colors">✕</button>
-                      </div>
+                const pastExpectedSpend = baseDailyLimit * (currentDay - 1);
+                const cumulativeDiscrepancy = pastExpectedSpend - totalSpentThisMonthBeforeToday;
+                
+                const remainingDays = dim - currentDay + 1;
+                const dynamicallyAdjustedAllowance = baseDailyLimit + (cumulativeDiscrepancy / remainingDays);
+                
+                return Math.round(dynamicallyAdjustedAllowance - totalSpentToday);
+            }, [baseDailyLimit, transactions, totalSpentToday, dim]);
+
+            const colorClass = remainingToday > (baseDailyLimit * 0.4) ? "text-emerald-400 t-em" : remainingToday > 0 ? "text-amber-400 t-am" : "text-rose-500 t-ro";
+            const progressPercent = baseDailyLimit > 0 ? Math.min(100, (totalSpentToday / baseDailyLimit) * 100) : 0;
+            const barColor = remainingToday > 0 ? "bg-emerald-500" : "bg-rose-500";
+
+            const handleBurn = (e) => {
+                e.preventDefault();
+                const amt = parseFloat(burnAmt);
+                if (isNaN(amt) || amt <= 0) return;
+                
+                const now = new Date();
+                const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+                
+                const newTx = {
+                    id: Math.random().toString(36).slice(2, 10),
+                    amount: amt,
+                    note: burnNote.trim() || "Burned",
+                    time: timeStr,
+                    date: todayStr
+                };
+
+                setTransactions(prev => [newTx, ...prev]);
+                setBurnAmt("");
+                setBurnNote("");
+            };
+
+            const deleteTx = (id) => {
+                setTransactions(prev => prev.filter(t => t.id !== id));
+            };
+
+            const addBill = (e) => {
+                e.preventDefault();
+                const amt = parseFloat(newBillAmount);
+                if (!newBillLabel.trim() || isNaN(amt) || amt <= 0) return;
+
+                const b = {
+                    id: Math.random().toString(36).slice(2, 10),
+                    label: newBillLabel.trim(),
+                    amount: amt,
+                    category: "OTHER",
+                    active: true
+                };
+                setBills(prev => [...prev, b]);
+                setNewBillLabel("");
+                setNewBillAmount("");
+            };
+
+            const deleteBill = (id) => {
+                setBills(prev => prev.filter(b => b.id !== id));
+            };
+
+            const handleCountryChange = (code) => {
+                const c = COUNTRIES.find(x => x.code === code);
+                if (!c) return;
+                setCountry(code);
+                setCurrency(c.currency);
+                setSym(c.symbol);
+                if (c.flat !== undefined) setFlat(c.flat);
+            };
+
+            const curCountry = COUNTRIES.find(c => c.code === country);
+
+            return (
+                <div className="min-h-screen bg-zinc-950 text-zinc-100 antialiased flex flex-col justify-between relative overflow-x-hidden select-none">
+                    
+                    {/* Glow pozadí */}
+                    <div className="fixed inset-0 pointer-events-none z-0">
+                        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] opacity-[0.065] rounded-full"
+                            style={{background: "radial-gradient(ellipse at center,#10b981 0%,transparent 70%)", filter: "blur(80px)"}}></div>
                     </div>
-                  ))
-                )}
-              </div>
-            </div>
 
-          </div>
-        )}
-      </main>
+                    {/* Header s Logem vpravo nahoře */}
+                    <header className="w-full max-w-md mx-auto px-6 pt-8 pb-4 flex items-center justify-between relative z-20">
+                        <div>
+                            <h1 className="font-display font-bold text-lg text-white leading-none tracking-tight">DayBurn</h1>
+                            <span className="text-[10px] text-zinc-600 font-mono tracking-widest uppercase">Anti-Budget</span>
+                        </div>
 
-      {/* Meta-Metrics Bottom Ticker */}
-      <footer className="w-full max-w-md mx-auto px-6 py-4 border-t border-zinc-900/60 bg-zinc-950/80 backdrop-blur-sm flex justify-between items-center text-[10px] font-mono text-zinc-500 relative z-10">
-        <div className="flex flex-col">
-          <span>Net/Mo Estimate</span>
-          <span className="text-zinc-300 font-bold">{Math.round(net/12).toLocaleString()} {sym}</span>
-        </div>
-        <div className="flex flex-col items-center">
-          <span>Fixed Bills</span>
-          <span className="text-zinc-300 font-bold">{totalBills.toLocaleString()} {sym}</span>
-        </div>
-        <div className="flex flex-col items-end">
-          <span>Safe Disposable</span>
-          <span className="text-zinc-300 font-bold">{disposable.toLocaleString()} {sym}</span>
-        </div>
-      </footer>
+                        <div className="flex items-center gap-3">
+                            <span className="text-xs font-medium text-zinc-500 bg-zinc-900/60 border border-zinc-800/40 px-2.5 py-1 rounded-full">
+                                {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                            </span>
+                            <button 
+                                onClick={() => setShowSettings(!showSettings)}
+                                className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center hover:bg-zinc-800 transition-all text-zinc-400 active:scale-95 text-xs"
+                            >
+                                {showSettings ? "✕" : "⚙️"}
+                            </button>
+                            {/* Logo vpravo nahoře */}
+                            <div className="w-8 h-8 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center overflow-hidden shadow-inner ml-1">
+                                <img src={LOGO_B64} alt="Logo" className="w-6 h-6 object-cover" />
+                            </div>
+                        </div>
+                    </header>
 
-    </div>
-  );
-}
+                    {/* Hlavní obsah */}
+                    <main className="w-full max-w-md mx-auto px-6 flex-1 flex flex-col justify-center py-6 relative z-10">
+                        
+                        {showSettings ? (
+                            /* NASTAVENÍ */
+                            <div className="space-y-5 bg-zinc-900/40 border border-zinc-800/60 p-5 rounded-2xl backdrop-blur-md">
+                                <div>
+                                    <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-3 font-display">Profile & Income</h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <div>
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Country</label>
+                                            <select 
+                                                value={country} 
+                                                onChange={e => handleCountryChange(e.target.value)}
+                                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white focus:border-zinc-700"
+                                            >
+                                                {COUNTRIES.map(c => <option key={c.code} value={c.code}>{c.flag} {c.name}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Gross Monthly</label>
+                                            <input 
+                                                type="number" 
+                                                value={gross} 
+                                                onChange={e => setGross(Math.max(0, parseFloat(e.target.value) || 0))}
+                                                className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-2 text-xs outline-none text-white font-mono focus:border-zinc-700"
+                                            />
+                                        </div>
+                                    </div>
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(React.createElement(App));
-</script></body></html>
+                                    {country === "CZ" && (
+                                        <div className="mt-3">
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Children (Tax Discounts)</label>
+                                            <input type="number" value={children} onChange={e => setChildren(Math.max(0, parseInt(e.target.value) || 0))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:border-zinc-700" />
+                                        </div>
+                                    )}
+                                    {country === "US" && (
+                                        <div className="mt-3">
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Filing Status</label>
+                                            <select value={filing} onChange={e => setFiling(e.target.value)} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white focus:border-zinc-700">
+                                                <option value="single">Single</option>
+                                                <option value="married">Married (Joint)</option>
+                                            </select>
+                                        </div>
+                                    )}
+                                    {(!curCountry || (!curCountry.engine && curCountry.flat === undefined)) && (
+                                        <div className="mt-3">
+                                            <label className="text-[10px] text-zinc-500 uppercase font-bold block mb-1">Estimated Tax Rate (%)</label>
+                                            <input type="number" value={flat} onChange={e => setFlat(Math.min(100, Math.max(0, parseInt(e.target.value) || 0)))} className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-3 py-1.5 text-xs text-white font-mono focus:border-zinc-700" />
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="border-t border-zinc-800/80 pt-4">
+                                    <h2 className="text-sm font-bold text-white uppercase tracking-wider mb-2 font-display">Fixed Monthly Bills</h2>
+                                    <div className="max-h-36 overflow-y-auto space-y-1.5 pr-1 mb-3">
+                                        {bills.map(b => (
+                                            <div key={b.id} className="flex items-center justify-between bg-zinc-950/60 border border-zinc-800/40 p-2 rounded-xl text-xs">
+                                                <div className="flex items-center gap-2">
+                                                    <input type="checkbox" checked={b.active} onChange={() => setBills(prev => prev.map(x => x.id === b.id ? {...x, active: !x.active} : x))} className="accent-emerald-500" />
+                                                    <span className={b.active ? "text-zinc-200" : "text-zinc-600 line-through"}>{b.label}</span>
+                                                </div>
+                                                <div className="flex items-center gap-3">
+                                                    <span className="font-mono text-zinc-400">{b.amount.toLocaleString()} {sym}</span>
+                                                    <button onClick={() => deleteBill(b.id)} className="text-rose-400 opacity-60 hover:opacity-100">✕</button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <form onSubmit={addBill} className="grid grid-cols-3 gap-1.5">
+                                        <input type="text" placeholder="Bill label" value={newBillLabel} onChange={e => setNewBillLabel(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white outline-none focus:border-zinc-700" />
+                                        <input type="number" placeholder="Amount" value={newBillAmount} onChange={e => setNewBillAmount(e.target.value)} className="bg-zinc-950 border border-zinc-800 rounded-lg px-2 py-1 text-xs text-white font-mono outline-none focus:border-zinc-700" />
+                                        <button type="submit" className="bg-zinc-800 border border-zinc-700 text-white rounded-lg text-xs font-bold hover:bg-zinc-700 transition-colors">Add</button>
+                                    </form>
+                                </div>
+                                
+                                <button onClick={() => setShowSettings(false)} className="w-full py-2.5 bg-zinc-100 hover:bg-white text-zinc-950 font-display font-bold text-xs rounded-xl transition-all uppercase tracking-wider">
+                                    View Dashboard
+                                </button>
+                            </div>
+                        ) : (
+                            /* DASHBOARD */
+                            <div className="flex flex-col items-center justify-center flex-1">
+                                
+                                <div className="text-center space-y-1.5 mb-8 w-full">
+                                    <span className="text-[10px] font-mono uppercase tracking-[0.3em] text-zinc-500 block">Today's Remaining Capacity</span>
+                                    <div className={`hero-num tracking-tighter transition-all duration-300 ${colorClass}`} style={{ fontSize: "clamp(3.5rem, 16vw, 6rem)" }}>
+                                        {remainingToday.toLocaleString()} <span className="text-2xl font-normal align-middle ml-0.5">{sym}</span>
+                                    </div>
+                                    <span className="text-xs text-zinc-500 font-mono block">
+                                        Calculated cap: {baseDailyLimit.toLocaleString()} {sym} / day
+                                    </span>
+
+                                    {/* Progress bar */}
+                                    <div className="w-64 mx-auto mt-6">
+                                        <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden border border-zinc-800/20">
+                                            <div className={`h-full ${barColor} transition-all duration-500`} style={{ width: `${progressPercent}%` }}></div>
+                                        </div>
+                                        <div className="flex justify-between items-center mt-1.5 text-[9px] font-mono text-zinc-600">
+                                            <span>Spent: {totalSpentToday.toLocaleString()} {sym}</span>
+                                            <span>{dim - new Date().getDate() + 1} Days Left</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* BURN FORM */}
+                                <form onSubmit={handleBurn} className="w-full bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-3.5 shadow-xl space-y-2.5 mb-6">
+                                    <div className="flex items-center gap-3">
+                                        <span className="font-mono text-zinc-500 text-lg font-bold">{sym}</span>
+                                        <input 
+                                            type="number" 
+                                            placeholder="0.00" 
+                                            value={burnAmt}
+                                            onChange={e => setBurnAmt(e.target.value)}
+                                            className="flex-1 bg-transparent text-xl font-display font-bold outline-none text-white placeholder-zinc-800"
+                                        />
+                                        <button 
+                                            type="submit" 
+                                            className="bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-display font-black text-xs uppercase tracking-wider px-5 py-2.5 rounded-xl transition-all active:scale-95 shadow-lg shadow-emerald-950/20"
+                                        >
+                                            Burn
+                                        </button>
+                                    </div>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Optional annotation (e.g., Grocery, Cafe)" 
+                                        value={burnNote}
+                                        onChange={e => setBurnNote(e.target.value)}
+                                        className="w-full bg-transparent border-t border-zinc-800/40 pt-2 text-[11px] font-mono text-zinc-400 placeholder-zinc-700 outline-none"
+                                    />
+                                </form>
+
+                                {/* TRASAKCE */}
+                                <div className="w-full space-y-2">
+                                    <h3 className="text-[10px] font-mono uppercase tracking-widest text-zinc-600">Today's Activity Feed</h3>
+                                    <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1 w-full">
+                                        {todaysTxs.length === 0 ? (
+                                            <div className="text-center py-6 border border-dashed border-zinc-900 rounded-xl">
+                                                <span className="text-xs text-zinc-700 font-mono">No burns recorded today. Clean sheet.</span>
+                                            </div>
+                                        ) : (
+                                            todaysTxs.map(t => (
+                                                <div key={t.id} className="flex items-center justify-between bg-zinc-900/20 border border-zinc-900 p-3 rounded-xl hover:border-zinc-800 transition-colors">
+                                                    <div className="flex flex-col">
+                                                        <span className="text-xs text-zinc-200 font-medium">{t.note}</span>
+                                                        <span className="text-[9px] text-zinc-600 font-mono">{t.time}</span>
+                                                    </div>
+                                                    <div className="flex items-center gap-3">
+                                                        <span className="font-mono text-xs text-rose-400 font-bold">-{t.amount.toLocaleString()} {sym}</span>
+                                                        <button onClick={() => deleteTx(t.id)} className="text-[11px] text-zinc-700 hover:text-zinc-400 transition-colors">✕</button>
+                                                    </div>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+
+							</div>
+                        )}
+                    </main>
+
+                    {/* Spodní lišta */}
+                    <footer className="w-full max-w-md mx-auto px-6 py-4 border-t border-zinc-900/60 bg-zinc-950/80 backdrop-blur-sm flex justify-between items-center text-[10px] font-mono text-zinc-500 relative z-10">
+                        <div className="flex flex-col">
+                            <span>Net/Mo Estimate</span>
+                            <span className="text-zinc-300 font-bold">{Math.round(net/12).toLocaleString()} {sym}</span>
+                        </div>
+                        <div className="flex flex-col items-center">
+                            <span>Fixed Bills</span>
+                            <span className="text-zinc-300 font-bold">{totalBills.toLocaleString()} {sym}</span>
+                        </div>
+                        <div className="flex flex-col items-end">
+                            <span>Safe Disposable</span>
+                            <span className="text-zinc-300 font-bold">{disposable.toLocaleString()} {sym}</span>
+                        </div>
+                    </footer>
+
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(App));
+    </script>
+</body>
+</html>
